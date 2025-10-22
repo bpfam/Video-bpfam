@@ -13,7 +13,12 @@
     }
     h1 {
       color: #00ffff;
-      text-shadow: 0 0 10px #00ffff, 0 0 30px #00ffff;
+      text-shadow: 0 0 15px #00ffff, 0 0 40px #00ffff;
+      animation: glow 2s infinite alternate;
+    }
+    @keyframes glow {
+      from { text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff; }
+      to { text-shadow: 0 0 30px #00ffff, 0 0 60px #00ffff; }
     }
     video {
       width: 90%;
@@ -22,6 +27,11 @@
       border-radius: 12px;
       margin: 20px 0;
       box-shadow: 0 0 25px #00ffff;
+      animation: pulse 2s infinite alternate;
+    }
+    @keyframes pulse {
+      from { box-shadow: 0 0 15px #00ffff; }
+      to { box-shadow: 0 0 40px #00ffff; }
     }
     a {
       display: inline-block;
@@ -33,23 +43,30 @@
       border-radius: 8px;
       text-decoration: none;
       transition: 0.3s;
+      animation: blink 2s infinite alternate;
+    }
+    @keyframes blink {
+      from { box-shadow: 0 0 10px #00ffff; }
+      to { box-shadow: 0 0 30px #00ffff; }
     }
     a:hover {
       background: #00ffff;
       color: #000;
-      box-shadow: 0 0 15px #00ffff;
     }
   </style>
 </head>
 <body>
   <h1>🎥 HASH VIDEOS 💎</h1>
+
+  <!-- 🔹 Qui i video hash -->
   <video controls>
-    <source src="../video.mp4" type="video/mp4">
-    Il tuo browser non supporta i video.
+    <source src="./hash1.mp4" type="video/mp4">
   </video>
+
   <video controls>
-    <source src="../video2.mp4" type="video/mp4">
+    <source src="./hash2.mp4" type="video/mp4">
   </video>
+
   <br>
   <a href="../../index.html">⬅️ Torna al menù</a>
 </body>
