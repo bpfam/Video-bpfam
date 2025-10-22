@@ -1,103 +1,102 @@
-/* ======== VARIABILI E BASE ======== */
 :root {
-  --neon-a: #00eaff;
-  --neon-b: #00ffff;
-  --bg: #000;
-  --text: #fff;
+  --bg: #0b0f14;
+  --fg: #e8f0ff;
+  --muted: #a6b3c2;
+  --accent: #00ffd0; /* verde acqua BPFAM */
+  --card: #121821;
+  --border: #1c2633;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+* { box-sizing: border-box; }
 
-body {
+html, body {
+  margin: 0;
   background: var(--bg);
-  color: var(--text);
-  font-family: "Poppins", sans-serif;
+  color: var(--fg);
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+.topbar {
+  padding: 24px 16px 8px;
   text-align: center;
-  overflow-x: hidden;
-  position: relative;
-  min-height: 100vh;
 }
-
-/* ======== SFONDO SPAZIALE ======== */
-.stars {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: radial-gradient(ellipse at bottom, #020111 0%, #000000 100%);
-  z-index: -1;
-  overflow: hidden;
+.topbar h1 {
+  margin: 0;
+  font-size: 1.6rem;
+  letter-spacing: 0.3px;
 }
-.stars::after {
-  content: "";
-  position: absolute;
-  top: -2000px;
-  left: -2000px;
-  width: 4000px;
-  height: 4000px;
-  background: transparent url('https://i.postimg.cc/zD0P1fL3/stars-bg.png') repeat;
-  animation: spaceMove 180s linear infinite;
-  opacity: 0.5;
-}
-@keyframes spaceMove {
-  from { transform: translate(0, 0); }
-  to { transform: translate(1000px, 1000px); }
-}
-
-/* ======== TITOLO ======== */
-h1 {
-  margin-top: 30px;
-  color: var(--neon-a);
-  font-size: clamp(30px, 6vw, 60px);
-  text-shadow: 0 0 10px var(--neon-a), 0 0 40px var(--neon-b);
-  line-height: 1.1;
-}
-
-/* ======== GRIGLIA VIDEO ======== */
-.video-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 20px;
-  padding: 25px;
-  max-width: 1100px;
-  margin: auto;
-}
-
-/* ======== BOX VIDEO ======== */
-@keyframes neonPulse {
-  0%   { box-shadow: 0 0 12px var(--neon-a), inset 0 0 6px var(--neon-a); border-color: var(--neon-a); }
-  50%  { box-shadow: 0 0 26px var(--neon-b), inset 0 0 16px var(--neon-b); border-color: var(--neon-b); }
-  100% { box-shadow: 0 0 12px var(--neon-a), inset 0 0 6px var(--neon-a); border-color: var(--neon-a); }
-}
-.video-box {
-  background: rgba(0,0,0,0.85);
-  border: 2px solid var(--neon-a);
-  border-radius: 15px;
-  padding: 12px;
-  animation: neonPulse 2.5s infinite ease-in-out;
-  transition: transform .25s ease;
-}
-.video-box:hover {
-  transform: scale(1.03);
-}
-.video-box.playing {
-  animation: neonPulse 1.2s infinite ease-in-out;
-  filter: brightness(1.15);
-}
-
-/* ======== VIDEO ======== */
-video {
-  width: 100%;
-  height: 160px;
-  object-fit: cover;
-  border-radius: 10px;
-  display: block;
-  background: #000;
-}
-
-/* ======== TESTO SOTTO ======== */
-.video-box p {
+.topbar .hint {
   margin-top: 6px;
-  font-size: 14px;
-  color: var(--neon-a);
-  text-shadow: 0 0 10px var(--neon-a);
+  color: var(--muted);
+  font-size: .9rem;
 }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+  padding: 16px;
+  max-width: 1200px;
+  margin: 0 auto 40px;
+}
+
+.card {
+  background: linear-gradient(180deg, rgba(0,255,208,0.08), rgba(0,0,0,0)) , var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 0 0 1px rgba(0,255,208,0.06), 0 10px 24px rgba(0,0,0,0.25);
+}
+
+.ratio {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: #0a0a0a;
+}
+.ratio video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  outline: none;
+  border: none;
+  display: block;
+}
+
+.meta {
+  padding: 10px 12px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.name {
+  font-size: 1rem;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.raw {
+  color: var(--accent);
+  text-decoration: none;
+  border: 1px solid rgba(0,255,208,0.4);
+  padding: 6px 10px;
+  border-radius: 10px;
+  font-size: .85rem;
+}
+.raw:hover { border-color: var(--accent); }
+
+.loading, .empty, .error {
+  max-width: 760px;
+  margin: 40px auto;
+  padding: 14px 16px;
+  text-align: center;
+  color: var(--muted);
+  background: rgba(0,0,0,0.2);
+  border: 1px dashed var(--border);
+  border-radius: 12px;
+}
+
+code { color: var(--accent); }
