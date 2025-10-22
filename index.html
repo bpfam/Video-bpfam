@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>🎬 BPFAM — Video Ufficiali 💎</title>
-  <link rel="stylesheet" href="style.css">
   <style>
     body {
       background: #000;
@@ -40,15 +39,38 @@
 </head>
 <body>
   <h1>🎬 BPFAM — Video Ufficiali 💎</h1>
-  <p>Guarda i video ufficiali e i contenuti del network BPFAM</p>
+  <p>Guarda tutti i video ufficiali del network BPFAM</p>
 
-  <div class="video-container">
-    <video controls>
-      <source src="video/video.MP4" type="video/mp4">
-      Il tuo browser non supporta la riproduzione video.
-    </video>
-  </div>
+  <div class="video-container" id="videos"></div>
 
   <footer>© 2025 — BPFAM Official Network 💎</footer>
+
+  <script>
+    // Lista automatica di video nella cartella /video/
+    const folder = 'video/';
+    const videoList = [
+      'video.MP4',
+      'video1.mp4',
+      'video2.mp4',
+      'video3.mp4',
+      'clip.mp4',
+      'bpfam.mp4'
+    ];
+
+    const container = document.getElementById('videos');
+
+    videoList.forEach(file => {
+      fetch(folder + file, { method: 'HEAD' })
+        .then(res => {
+          if (res.ok) {
+            const vid = document.createElement('video');
+            vid.controls = true;
+            vid.innerHTML = `<source src="${folder + file}" type="video/mp4">`;
+            container.appendChild(vid);
+          }
+        })
+        .catch(() => {});
+    });
+  </script>
 </body>
 </html>
