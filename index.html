@@ -1,99 +1,73 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🎬 BPFAM — Video Ufficiali 💎</title>
-  <style>
-    body {
-      background: #000;
-      color: #00c8ff;
-      font-family: 'Poppins', sans-serif;
-      text-align: center;
-      padding: 40px 10px;
-    }
-    h1 {
-      color: #00c8ff;
-      text-shadow: 0 0 15px #00c8ff;
-      margin-bottom: 10px;
-    }
-    p {
-      color: #ccc;
-      font-size: 1rem;
-    }
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 30px;
-      margin-top: 40px;
-    }
-    .video-box {
-      background: #0a0a0a;
-      border: 2px solid #00c8ff;
-      border-radius: 12px;
-      padding: 15px;
-      box-shadow: 0 0 20px #00c8ff44;
-      transition: 0.3s;
-    }
-    .video-box:hover {
-      box-shadow: 0 0 25px #00c8ff99;
-      transform: scale(1.02);
-    }
-    video {
-      width: 100%;
-      border-radius: 10px;
-      margin-bottom: 10px;
-    }
-    .video-title {
-      font-size: 1rem;
-      font-weight: 600;
-      color: #00c8ff;
-      text-shadow: 0 0 6px #00c8ff;
-    }
-    footer {
-      margin-top: 50px;
-      color: #777;
-      font-size: 0.9rem;
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>🎬 BPFAM — Video Ufficiali 💎</title>
+<style>
+  body{background:#000;color:#00c8ff;font-family:Poppins,system-ui,sans-serif;text-align:center;margin:0;padding:40px 10px}
+  h1{color:#00c8ff;text-shadow:0 0 15px #00c8ff;margin:0 0 8px}
+  p.desc{color:#bcd; margin:0 0 24px}
+  .gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:28px;max-width:1100px;margin:0 auto}
+  .card{background:#0a0a0a;border:2px solid #00c8ff;border-radius:14px;padding:14px;box-shadow:0 0 22px #00c8ff44;transition:.25s}
+  .card:hover{box-shadow:0 0 28px #00c8ffaa;transform:scale(1.01)}
+  video{width:100%;border-radius:10px}
+  .title{margin-top:8px;color:#8fe7ff;font-weight:600}
+  .foot{margin:36px 0 10px;color:#789;font-size:.9rem}
+</style>
 </head>
 <body>
   <h1>🎬 BPFAM — Video Ufficiali 💎</h1>
-  <p>Guarda tutti i video ufficiali del network BPFAM</p>
+  <p class="desc">Carica i tuoi file <code>.mp4</code> nella cartella <code>/video</code> e compaiono qui, da soli.</p>
 
-  <div class="gallery" id="videos"></div>
+  <div id="grid" class="gallery">Caricamento…</div>
 
-  <footer>© 2025 — BPFAM Official Network 💎</footer>
+  <div class="foot">© 2025 — BPFAM Official Network 💎</div>
 
-  <script>
-    const folder = 'video/';
-    const videoList = [
-      { file: 'video.MP4', title: '🎥 Video Promozionale #1' },
-      { file: 'video1.mp4', title: '💎 Presentazione BPFAM' },
-      { file: 'video2.mp4', title: '🚀 Evento Ufficiale' },
-      { file: 'video3.mp4', title: '🎬 Backstage Exclusive' },
-      { file: 'clip.mp4', title: '🔥 Anteprima Clip' }
-    ];
+<script>
+(async () => {
+  const repo = "bpfam/Video-bpfam";   // <— tuo repo
+  const folder = "video";             // cartella con i video
+  const api = `https://api.github.com/repos/${repo}/contents/${folder}`;
+  const grid = document.getElementById('grid');
 
-    const container = document.getElementById('videos');
+  try {
+    const res = await fetch(api);
+    if (!res.ok) throw new Error('API error');
+    const items = await res.json();
 
-    videoList.forEach(v => {
-      fetch(folder + v.file, { method: 'HEAD' })
-        .then(res => {
-          if (res.ok) {
-            const box = document.createElement('div');
-            box.className = 'video-box';
-            box.innerHTML = `
-              <video controls>
-                <source src="${folder + v.file}" type="video/mp4">
-              </video>
-              <div class="video-title">${v.title}</div>
-            `;
-            container.appendChild(box);
-          }
-        })
-        .catch(() => {});
-    });
-  </script>
+    // prendi solo .mp4
+    const videos = items.filter(i => i.type === "file" && /\.mp4$/i.test(i.name));
+
+    if (!videos.length) {
+      grid.textContent = "Nessun video caricato nella cartella /video.";
+      return;
+    }
+
+    grid.innerHTML = "";
+    for (const v of videos) {
+      const url = `https://bpfam.github.io/Video-bpfam/${folder}/${encodeURIComponent(v.name)}`;
+
+      // Titolo leggibile dal nome file
+      const nice = v.name
+        .replace(/\.[^/.]+$/,"")
+        .replace(/[_-]+/g," ")
+        .replace(/\b\w/g, c => c.toUpperCase()); // capitalizza parole
+
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <video controls preload="metadata">
+          <source src="${url}" type="video/mp4">
+        </video>
+        <div class="title">🎥 ${nice}</div>
+      `;
+      grid.appendChild(card);
+    }
+  } catch (e) {
+    grid.textContent = "Errore nel caricamento. Riprova fra poco.";
+  }
+})();
+</script>
 </body>
 </html>
