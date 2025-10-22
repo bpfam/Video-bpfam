@@ -1,86 +1,103 @@
-/* ====== Base ====== */
-:root{
-  --neon-a:#00eaff;   /* azzurro */
-  --neon-b:#00ffff;   /* ciano */
-  --text:#ffffff;
-  --bg:#000000;
+/* ======== VARIABILI E BASE ======== */
+:root {
+  --neon-a: #00eaff;
+  --neon-b: #00ffff;
+  --bg: #000;
+  --text: #fff;
 }
 
-* { box-sizing: border-box; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
-html, body {
-  margin: 0; padding: 0;
+body {
   background: var(--bg);
   color: var(--text);
-  font-family: "Poppins", system-ui, -apple-system, Arial, sans-serif;
+  font-family: "Poppins", sans-serif;
   text-align: center;
+  overflow-x: hidden;
+  position: relative;
+  min-height: 100vh;
 }
 
-/* Titolo con glow */
-h1{
-  margin: 22px 12px 8px;
-  font-size: clamp(28px, 5.8vw, 56px);
-  line-height: 1.1;
+/* ======== SFONDO SPAZIALE ======== */
+.stars {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: radial-gradient(ellipse at bottom, #020111 0%, #000000 100%);
+  z-index: -1;
+  overflow: hidden;
+}
+.stars::after {
+  content: "";
+  position: absolute;
+  top: -2000px;
+  left: -2000px;
+  width: 4000px;
+  height: 4000px;
+  background: transparent url('https://i.postimg.cc/zD0P1fL3/stars-bg.png') repeat;
+  animation: spaceMove 180s linear infinite;
+  opacity: 0.5;
+}
+@keyframes spaceMove {
+  from { transform: translate(0, 0); }
+  to { transform: translate(1000px, 1000px); }
+}
+
+/* ======== TITOLO ======== */
+h1 {
+  margin-top: 30px;
   color: var(--neon-a);
-  text-shadow:
-    0 0 10px var(--neon-a),
-    0 0 25px var(--neon-a),
-    0 0 45px var(--neon-b);
+  font-size: clamp(30px, 6vw, 60px);
+  text-shadow: 0 0 10px var(--neon-a), 0 0 40px var(--neon-b);
+  line-height: 1.1;
 }
 
-/* ====== Layout griglia ====== */
-.video-grid{
+/* ======== GRIGLIA VIDEO ======== */
+.video-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 20px;
-  padding: 20px;
+  padding: 25px;
   max-width: 1100px;
-  margin: 0 auto 40px;
+  margin: auto;
 }
 
-/* ====== Box video con neon pulsante ====== */
+/* ======== BOX VIDEO ======== */
 @keyframes neonPulse {
-  0%   { box-shadow: 0 0 14px var(--neon-a), inset 0 0 8px var(--neon-a); border-color: var(--neon-a); }
+  0%   { box-shadow: 0 0 12px var(--neon-a), inset 0 0 6px var(--neon-a); border-color: var(--neon-a); }
   50%  { box-shadow: 0 0 26px var(--neon-b), inset 0 0 16px var(--neon-b); border-color: var(--neon-b); }
-  100% { box-shadow: 0 0 14px var(--neon-a), inset 0 0 8px var(--neon-a); border-color: var(--neon-a); }
+  100% { box-shadow: 0 0 12px var(--neon-a), inset 0 0 6px var(--neon-a); border-color: var(--neon-a); }
 }
-
-.video-box{
+.video-box {
   background: rgba(0,0,0,0.85);
   border: 2px solid var(--neon-a);
-  border-radius: 16px;
-  padding: 12px 12px 10px;
-  animation: neonPulse 2.6s infinite ease-in-out;
+  border-radius: 15px;
+  padding: 12px;
+  animation: neonPulse 2.5s infinite ease-in-out;
   transition: transform .25s ease;
 }
-
-.video-box:hover{ transform: scale(1.02); }
-
-/* Stato “playing” -> glow più forte e veloce */
-.video-box.playing{
-  animation: neonPulse 1.4s infinite ease-in-out;
-  filter: brightness(1.05);
+.video-box:hover {
+  transform: scale(1.03);
+}
+.video-box.playing {
+  animation: neonPulse 1.2s infinite ease-in-out;
+  filter: brightness(1.15);
 }
 
-/* ====== Video compatti ====== */
-video{
+/* ======== VIDEO ======== */
+video {
   width: 100%;
-  height: 160px;         /* altezza compatta */
-  object-fit: cover;     /* riempie senza deformare, tagliando i bordi */
+  height: 160px;
+  object-fit: cover;
   border-radius: 10px;
   display: block;
-  background: #000;      /* evita flash bianco in caricamento */
+  background: #000;
 }
 
-/* Didascalia */
-.video-box p{
-  margin: 8px 0 0;
+/* ======== TESTO SOTTO ======== */
+.video-box p {
+  margin-top: 6px;
   font-size: 14px;
   color: var(--neon-a);
-  text-shadow: 0 0 8px var(--neon-a);
-}
-
-/* Un po' di respiro ai lati su mobile con notch */
-@supports (padding: env(safe-area-inset-left)){
-  body{ padding-left: env(safe-area-inset-left); padding-right: env(safe-area-inset-right); }
+  text-shadow: 0 0 10px var(--neon-a);
 }
