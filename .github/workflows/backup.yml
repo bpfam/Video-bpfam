@@ -18,7 +18,7 @@ jobs:
         run: |
           mkdir -p dist
           ZIPNAME="Video-bpfam-$(date +'%Y%m%d-%H%M').zip"
-          zip -r "dist/$ZIPNAME" . -x "*.git*"
+          zip -r "dist/$ZIPNAME" . -x "*.git*" -x "*.github*" -x "dist/*"
           ls -lh dist
 
       - name: Upload backup artifact
