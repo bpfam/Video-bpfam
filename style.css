@@ -1,102 +1,96 @@
-:root {
+:root{
+  /* Palette BPFAM */
   --bg: #0b0f14;
-  --fg: #e8f0ff;
-  --muted: #a6b3c2;
-  --accent: #00ffd0; /* verde acqua BPFAM */
-  --card: #121821;
-  --border: #1c2633;
+  --fg: #eef5ff;
+  --card: #0f1622;
+  --border: #1a2533;
+
+  /* LED azzurro (puoi cambiare qui il tono) */
+  --led-1: #39b5ff;
+  --led-2: #00eaff;
+
+  /* Oro titolo */
+  --gold-1:#ffea8a;
+  --gold-2:#ffc13a;
+  --gold-3:#ff9f0d;
+  --gold-4:#ffd36e;
 }
 
-* { box-sizing: border-box; }
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
 
-html, body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--fg);
-  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-}
-
-.topbar {
-  padding: 24px 16px 8px;
-  text-align: center;
-}
-.topbar h1 {
-  margin: 0;
-  font-size: 1.6rem;
-  letter-spacing: 0.3px;
-}
-.topbar .hint {
-  margin-top: 6px;
-  color: var(--muted);
-  font-size: .9rem;
+/* TITOLONE DORATO STILE BPFAM */
+.topbar{padding:28px 16px 8px;text-align:center}
+.bpfam-title{
+  margin:0;
+  font-size:clamp(24px,4.8vw,40px);
+  font-weight:900;
+  letter-spacing:.4px;
+  /* effetto oro: gradiente + luci */
+  background:
+    linear-gradient(180deg,var(--gold-1),var(--gold-2) 40%,var(--gold-3) 60%,var(--gold-4) 90%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  text-shadow:
+    0 2px 0 rgba(0,0,0,.25),
+    0 0 12px rgba(255,170,40,.45),
+    0 0 28px rgba(255,170,40,.25);
 }
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 16px;
-  padding: 16px;
-  max-width: 1200px;
-  margin: 0 auto 40px;
+/* GRIGLIA */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:16px;
+  padding:16px;
+  max-width:1200px;
+  margin:0 auto 56px;
 }
 
-.card {
-  background: linear-gradient(180deg, rgba(0,255,208,0.08), rgba(0,0,0,0)) , var(--card);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  overflow: hidden;
-  box-shadow: 0 0 0 1px rgba(0,255,208,0.06), 0 10px 24px rgba(0,0,0,0.25);
+/* CARD con cornice LED azzurra */
+.card{
+  position:relative;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:16px;
+  overflow:hidden;
+}
+.card.led{
+  box-shadow:
+    0 0 0 1px rgba(0,170,255,.35),
+    0 8px 22px rgba(0,0,0,.35);
+}
+.card.led::before{
+  content:"";
+  position:absolute; inset:-1px; border-radius:16px;
+  background:linear-gradient(135deg,var(--led-1),var(--led-2) 45%,transparent 65%);
+  filter:blur(18px);
+  opacity:.55; pointer-events:none; z-index:0;
+}
+.card.led:hover{
+  box-shadow:
+    0 0 0 1px var(--led-1),
+    0 0 28px rgba(0,170,255,.30),
+    0 14px 34px rgba(0,0,0,.45);
 }
 
-.ratio {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16/9;
-  background: #0a0a0a;
-}
-.ratio video {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  outline: none;
-  border: none;
-  display: block;
+/* Area video */
+.ratio{position:relative;width:100%;aspect-ratio:16/9;background:#000}
+.ratio video{
+  position:absolute; inset:0; width:100%; height:100%;
+  display:block; object-fit:cover; border:0; outline:none;
 }
 
-.meta {
-  padding: 10px 12px 14px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-}
-.name {
-  font-size: 1rem;
-  margin: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.raw {
-  color: var(--accent);
-  text-decoration: none;
-  border: 1px solid rgba(0,255,208,0.4);
-  padding: 6px 10px;
-  border-radius: 10px;
-  font-size: .85rem;
-}
-.raw:hover { border-color: var(--accent); }
-
-.loading, .empty, .error {
-  max-width: 760px;
-  margin: 40px auto;
-  padding: 14px 16px;
-  text-align: center;
-  color: var(--muted);
-  background: rgba(0,0,0,0.2);
-  border: 1px dashed var(--border);
-  border-radius: 12px;
+/* Messaggi di stato */
+.empty{
+  max-width:760px; margin:34px auto; padding:14px 16px; text-align:center;
+  color:#a9b6c6; background:rgba(255,255,255,.04);
+  border:1px dashed var(--border); border-radius:12px;
 }
 
-code { color: var(--accent); }
+/* (opzionale) Bagliore interno al player */
+.ratio::after{
+  content:""; position:absolute; inset:0; pointer-events:none; border-radius:12px;
+  box-shadow: inset 0 0 0 1px rgba(0,170,255,.25), inset 0 0 20px rgba(0,170,255,.12);
+}
