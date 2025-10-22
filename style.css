@@ -1,0 +1,83 @@
+/* ===== BPFAM STYLE – versione neon celeste uniforme ===== */
+
+body {
+  background: radial-gradient(circle at top, #0a0a0a 20%, #111 100%);
+  color: #f4faff;
+  font-family: "Poppins", sans-serif;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+
+/* Layout più arioso */
+.wrap {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 56px 24px;
+}
+
+.hero {
+  margin-top: 10px;
+  margin-bottom: 28px;
+}
+
+h1 {
+  font-size: 2.2rem;
+  color: #00ccff;
+  text-shadow: 0 0 15px #00ccff, 0 0 30px #0099cc;
+}
+
+p.muted {
+  font-size: 1rem;
+  color: #ccc;
+  max-width: 720px;
+  margin: 0 auto 28px;
+  line-height: 1.7;
+}
+
+/* ===== BOTTONI ===== */
+.links {
+  margin: 26px 0;
+}
+
+.btn {
+  display: block;
+  width: 90%;
+  max-width: 420px;
+  margin: 20px auto;
+  padding: 18px 24px;
+  border-radius: 16px;
+  background: linear-gradient(90deg, #0a0a0a, #111);
+  border: 1.5px solid #00ccff;
+  color: #fff;
+  font-weight: 600;
+  font-size: 1.05rem;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  box-shadow: 0 0 15px rgba(0, 204, 255, 0.3);
+}
+
+.btn:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 25px rgba(0, 204, 255, 0.8);
+  border-color: #33e0ff;
+}
+
+/* ===== FOOTER ===== */
+.foot {
+  margin: 60px 0 18px;
+  color: #888;
+  font-size: 14px;
+}
+
+/* Mobile */
+@media (max-width: 420px) {
+  .wrap {
+    padding: 64px 18px;
+  }
+  .btn {
+    width: 92%;
+    font-size: 1rem;
+    margin: 18px auto;
+  }
+}
