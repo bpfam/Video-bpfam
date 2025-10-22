@@ -3,71 +3,77 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🎥 BPFAM - HASH VIDEOS 💎</title>
+  <title>🎥 BPFAM – HASH VIDEO 💎</title>
   <style>
     body {
-      background-color: #000;
+      background: radial-gradient(circle at center, #020202 40%, #000 100%);
       color: #fff;
+      font-family: "Poppins", sans-serif;
+      margin: 0;
       text-align: center;
-      font-family: 'Poppins', sans-serif;
     }
+
     h1 {
-      color: #00ffff;
-      text-shadow: 0 0 15px #00ffff, 0 0 40px #00ffff;
+      margin-top: 40px;
+      font-size: clamp(26px, 5vw, 50px);
+      color: #00eaff;
+      text-shadow: 0 0 10px #00eaff, 0 0 30px #00eaff, 0 0 60px #00eaff;
       animation: glow 2s infinite alternate;
     }
+
     @keyframes glow {
-      from { text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff; }
-      to { text-shadow: 0 0 30px #00ffff, 0 0 60px #00ffff; }
+      from { text-shadow: 0 0 10px #00eaff, 0 0 20px #00eaff; }
+      to { text-shadow: 0 0 30px #00eaff, 0 0 60px #00eaff; }
     }
+
     video {
       width: 90%;
-      max-width: 500px;
-      border: 2px solid #00ffff;
-      border-radius: 12px;
-      margin: 20px 0;
-      box-shadow: 0 0 25px #00ffff;
-      animation: pulse 2s infinite alternate;
+      max-width: 600px;
+      border: 2px solid #00eaff;
+      border-radius: 15px;
+      margin-top: 30px;
+      box-shadow: 0 0 25px #00eaff;
     }
-    @keyframes pulse {
-      from { box-shadow: 0 0 15px #00ffff; }
-      to { box-shadow: 0 0 40px #00ffff; }
-    }
-    a {
+
+    a.back {
       display: inline-block;
-      margin-top: 20px;
-      background: #111;
-      border: 2px solid #00ffff;
-      color: #00ffff;
+      margin-top: 40px;
       padding: 10px 20px;
-      border-radius: 8px;
+      color: #00eaff;
+      border: 2px solid #00eaff;
+      border-radius: 10px;
       text-decoration: none;
-      transition: 0.3s;
-      animation: blink 2s infinite alternate;
+      font-weight: bold;
+      transition: all 0.3s ease;
     }
-    @keyframes blink {
-      from { box-shadow: 0 0 10px #00ffff; }
-      to { box-shadow: 0 0 30px #00ffff; }
-    }
-    a:hover {
-      background: #00ffff;
+
+    a.back:hover {
+      background: #00eaff;
       color: #000;
+      box-shadow: 0 0 20px #00eaff;
+    }
+
+    footer {
+      margin-top: 40px;
+      font-size: 14px;
+      color: #aaa;
     }
   </style>
 </head>
 <body>
-  <h1>🎥 HASH VIDEOS 💎</h1>
 
-  <!-- 🔹 Qui i video hash -->
-  <video controls>
-    <source src="./hash1.mp4" type="video/mp4">
-  </video>
+  <h1>🎥 HASH — VIDEO UFFICIALE 💎</h1>
 
   <video controls>
-    <source src="./hash2.mp4" type="video/mp4">
+    <source src="./video.mp4" type="video/mp4">
+    Il tuo browser non supporta la riproduzione video.
   </video>
 
-  <br>
-  <a href="../../index.html">⬅️ Torna al menù</a>
+  <a class="back" href="/Video-bpfam/">⬅️ Torna al Menu</a>
+
+  <footer>
+    💎 Serietà, Qualità e Rispetto — BPFAM Official Network 💎
+  </footer>
+
 </body>
 </html>
