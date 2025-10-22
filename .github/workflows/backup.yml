@@ -2,10 +2,10 @@ name: Backup site ZIP
 
 on:
   push:
-    branches: [ main ]     # backup ogni volta che fai un commit su main
-  workflow_dispatch:        # puoi avviarlo manualmente dal tab "Actions"
+    branches: [ main ]
+  workflow_dispatch:
   schedule:
-    - cron: "0 3 * * *"     # backup giornaliero alle 03:00 UTC
+    - cron: "0 3 * * *"
 
 jobs:
   backup:
@@ -13,24 +13,22 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
-      - name: Crea archivio ZIP
+      - name: Create ZIP archive
         run: |
           mkdir -p dist
           ZIPNAME="Video-bpfam-$(date +'%Y%m%d-%H%M').zip"
           zip -r "dist/$ZIPNAME" . -x "*.git*"
           ls -lh dist
 
-      - name: Carica archivio come Artifact
+      - name: Upload backup artifact
         uses: actions/upload-artifact@v4
         with:
-          name: backup-video-bpfam
+          name: video-bpfam-backup
           path: dist/*.zip
           retention-days: 90
 
-      - name: Crea Release automatica con ZIP
+      - name: Create release with ZIP
         uses: softprops/action-gh-release@v2
         with:
           tag_name: backup-${{ github.run_id }}
