@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BPFAM — Video Gallery</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="stars"></div>
+
+  <h1>🎬 BPFAM OFFICIAL<br>VIDEO GALLERY</h1>
+
+  <div class="video-grid">
+    <div class="video-box">
+      <video src="video/video1.mp4" controls playsinline preload="metadata"></video>
+      <p>Video 1</p>
+    </div>
+
+    <div class="video-box">
+      <video src="video/video2.mp4" controls playsinline preload="metadata"></video>
+      <p>Video 2</p>
+    </div>
+  </div>
+
+  <script>
+    // Glow "play" effect — aumenta la luce quando il video parte
+    document.querySelectorAll('.video-box video').forEach(v => {
+      const box = v.closest('.video-box');
+      const onPlay = () => box.classList.add('playing');
+      const onPause = () => box.classList.remove('playing');
+      v.addEventListener('play', onPlay);
+      v.addEventListener('pause', onPause);
+      v.addEventListener('ended', onPause);
+      if (!v.paused) onPlay();
+    });
+  </script>
+
+</body>
+</html>
