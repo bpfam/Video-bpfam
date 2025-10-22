@@ -1,68 +1,66 @@
 <!doctype html>
 <html lang="it">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>🎬 BPFAM — Video Ufficiali 💎</title>
-<style>
-  body{background:#000;color:#00c8ff;font-family:Poppins,system-ui,sans-serif;text-align:center;margin:0;padding:40px 10px}
-  h1{color:#00c8ff;text-shadow:0 0 15px #00c8ff;margin:0 0 8px}
-  .gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:28px;max-width:1100px;margin:40px auto}
-  .card{background:#0a0a0a;border:2px solid #00c8ff;border-radius:14px;padding:14px;box-shadow:0 0 22px #00c8ff44;transition:.25s}
-  .card:hover{box-shadow:0 0 28px #00c8ffaa;transform:scale(1.01)}
-  video{width:100%;border-radius:10px}
-  .title{margin-top:8px;color:#8fe7ff;font-weight:600}
-  .foot{margin:36px 0 10px;color:#789;font-size:.9rem}
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>BPFAM — Video Ufficiali</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>🎬 BPFAM — Video Ufficiali 💎</h1>
+  <main class="wrap">
+    <h1 class="brand">🎬 BPFAM — <span>Video Ufficiali</span> 💎</h1>
 
-  <div id="grid" class="gallery">Caricamento…</div>
+    <!-- Griglia automatica -->
+    <section id="grid" class="grid"></section>
 
-  <div class="foot">© 2025 — BPFAM Official Network 💎</div>
+    <footer class="foot">© 2025 — BPFAM Official Network 💎</footer>
+  </main>
 
-<script>
-(async () => {
-  const repo = "bpfam/Video-bpfam";   // <— tuo repo
-  const folder = "video";             // cartella con i video
-  const api = `https://api.github.com/repos/${repo}/contents/${folder}`;
-  const grid = document.getElementById('grid');
+  <script>
+    // 🔧 CONFIG — se il nome repo/utente cambia, modifica qui
+    const OWNER = "bpfam";
+    const REPO  = "Video-bpfam";      // esatto come su GitHub
+    const FOLDER = "video";            // cartella che contiene gli .mp4
 
-  try {
-    const res = await fetch(api);
-    if (!res.ok) throw new Error('API error');
-    const items = await res.json();
+    // API GitHub: lista file nella cartella /video della branch main
+    const API = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${FOLDER}?ref=main`;
 
-    const videos = items.filter(i => i.type === "file" && /\.mp4$/i.test(i.name));
-
-    if (!videos.length) {
-      grid.textContent = "Nessun video caricato nella cartella /video.";
-      return;
-    }
-
-    grid.innerHTML = "";
-    for (const v of videos) {
-      const url = `https://bpfam.github.io/Video-bpfam/${folder}/${encodeURIComponent(v.name)}`;
-      const nice = v.name
-        .replace(/\.[^/.]+$/,"")
-        .replace(/[_-]+/g," ")
-        .replace(/\b\w/g, c => c.toUpperCase());
-
-      const card = document.createElement('div');
-      card.className = 'card';
-      card.innerHTML = `
-        <video controls preload="metadata">
-          <source src="${url}" type="video/mp4">
-        </video>
-        <div class="title">🎥 ${nice}</div>
+    // Helper: crea card singola
+    function cardFor(file){
+      const name = (file.name || "").replace(/\.[^/.]+$/,""); // senza estensione
+      const src  = `./${FOLDER}/${file.name}`;                 // path diretto al file
+      const el = document.createElement("article");
+      el.className = "tile";
+      el.innerHTML = `
+        <div class="thumb">
+          <video preload="metadata" controls playsinline>
+            <source src="${src}" type="video/mp4" />
+          </video>
+        </div>
+        <div class="caption" title="${name}">${name}</div>
       `;
-      grid.appendChild(card);
+      return el;
     }
-  } catch (e) {
-    grid.textContent = "Errore nel caricamento. Riprova fra poco.";
-  }
-})();
-</script>
+
+    async function load(){
+      try{
+        const res = await fetch(API, { headers: { "Accept":"application/vnd.github+json" }});
+        const list = await res.json();
+        const mp4s = (Array.isArray(list) ? list : []).filter(f => /\.mp4$/i.test(f.name));
+        const grid = document.getElementById("grid");
+        if(!mp4s.length){
+          grid.innerHTML = `<p class="empty">Nessun video trovato nella cartella <code>/${FOLDER}</code>.</p>`;
+          return;
+        }
+        mp4s.sort((a,b)=> a.name.localeCompare(b.name, 'it', {numeric:true}));
+        mp4s.forEach(f => grid.appendChild(cardFor(f)));
+      }catch(e){
+        document.getElementById("grid").innerHTML =
+          `<p class="empty">Impossibile caricare i video. Riprova tra poco.</p>`;
+        console.error(e);
+      }
+    }
+    load();
+  </script>
 </body>
 </html>
