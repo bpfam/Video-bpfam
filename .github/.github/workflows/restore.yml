@@ -1,0 +1,72 @@
+name: Restore website from ZIP and enable Pages
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "*.zip"
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Trova lo ZIP più recente
+        id: findzip
+        shell: bash
+        run: |
+          set -e
+          ZIP_FILE=$(ls -t *.zip 2>/dev/null | head -n 1 || true)
+          if [ -z "$ZIP_FILE" ]; then
+            echo "Nessun .zip trovato nella radice del repo."
+            exit 1
+          fi
+          echo "zip=$ZIP_FILE" >> "$GITHUB_OUTPUT"
+      - name: Estrai ZIP
+        run: |
+          mkdir -p restored
+          unzip -o "${{ steps.findzip.outputs.zip }}" -d restored
+          ls -lah restored
+      - name: Sposta file estratti nella radice
+        run: |
+          shopt -s dotglob nullglob
+          if [ -d restored/Video-bpfam ]; then
+            mv restored/Video-bpfam/* .
+          else
+            mv restored/* .
+          fi
+          rm -rf restored .git
+      - name: Commit e push dei file ripristinati
+        run: |
+          git init
+          git config user.name  "${{ github.actor }}"
+          git config user.email "${{ github.actor }}@users.noreply.github.com"
+          git add .
+          if ! git diff --cached --quiet; then
+            git commit -m "Restore automatico da backup ZIP"
+            git branch -M main
+            git remote add origin "https://github.com/${{ github.repository }}.git" || true
+            git push -u origin main --force
+          else
+            echo "Nessuna modifica da committare."
+          fi
+      - name: Abilita GitHub Pages (branch main / root)
+        run: |
+          gh api \
+            -X PUT \
+            -H "Accept: application/vnd.github+json" \
+            /repos/${{ github.repository }}/pages \
+            -f "source[branch]=main" \
+            -f "source[path]=/" || echo "Pages già attivo o account non supportato"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: URL del sito
+        run: |
+          echo "✅ Ripristino completato!"
+          echo "🌐 Il sito sarà online entro 1 minuto su:"
+          echo "   https://${{ github.actor }}.github.io/${{ github.event.repository.name }}/"
