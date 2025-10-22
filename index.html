@@ -1,66 +1,80 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>BPFAM — Video Ufficiali</title>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BPFAM — Video</title>
+
+<style>
+  body {
+    background-color: #000;
+    font-family: 'Poppins', sans-serif;
+    color: white;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+  }
+
+  h1 {
+    margin: 20px 0;
+    color: #00eaff;
+    text-shadow: 0 0 10px #00eaff;
+  }
+
+  /* 🔹 Griglia responsive per i video */
+  .video-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px;
+  }
+
+  /* 🔹 Stile per i video */
+  .video-box {
+    background: rgba(0, 0, 0, 0.8);
+    border: 2px solid #00eaff;
+    box-shadow: 0 0 20px #00eaff;
+    border-radius: 15px;
+    padding: 10px;
+  }
+
+  video {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    display: block;
+  }
+
+  p {
+    margin-top: 8px;
+    font-size: 14px;
+    color: #00eaff;
+    text-shadow: 0 0 8px #00eaff;
+  }
+</style>
 </head>
 <body>
-  <main class="wrap">
-    <h1 class="brand">🎬 BPFAM — <span>Video Ufficiali</span> 💎</h1>
 
-    <!-- Griglia automatica -->
-    <section id="grid" class="grid"></section>
+<h1>🎬 BPFAM OFFICIAL VIDEO GALLERY</h1>
 
-    <footer class="foot">© 2025 — BPFAM Official Network 💎</footer>
-  </main>
+<div class="video-grid">
+  <div class="video-box">
+    <video src="video1.mp4" controls></video>
+    <p>Video 1</p>
+  </div>
+  <div class="video-box">
+    <video src="video2.mp4" controls></video>
+    <p>Video 2</p>
+  </div>
+  <div class="video-box">
+    <video src="video3.mp4" controls></video>
+    <p>Video 3</p>
+  </div>
+  <div class="video-box">
+    <video src="video4.mp4" controls></video>
+    <p>Video 4</p>
+  </div>
+</div>
 
-  <script>
-    // 🔧 CONFIG — se il nome repo/utente cambia, modifica qui
-    const OWNER = "bpfam";
-    const REPO  = "Video-bpfam";      // esatto come su GitHub
-    const FOLDER = "video";            // cartella che contiene gli .mp4
-
-    // API GitHub: lista file nella cartella /video della branch main
-    const API = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${FOLDER}?ref=main`;
-
-    // Helper: crea card singola
-    function cardFor(file){
-      const name = (file.name || "").replace(/\.[^/.]+$/,""); // senza estensione
-      const src  = `./${FOLDER}/${file.name}`;                 // path diretto al file
-      const el = document.createElement("article");
-      el.className = "tile";
-      el.innerHTML = `
-        <div class="thumb">
-          <video preload="metadata" controls playsinline>
-            <source src="${src}" type="video/mp4" />
-          </video>
-        </div>
-        <div class="caption" title="${name}">${name}</div>
-      `;
-      return el;
-    }
-
-    async function load(){
-      try{
-        const res = await fetch(API, { headers: { "Accept":"application/vnd.github+json" }});
-        const list = await res.json();
-        const mp4s = (Array.isArray(list) ? list : []).filter(f => /\.mp4$/i.test(f.name));
-        const grid = document.getElementById("grid");
-        if(!mp4s.length){
-          grid.innerHTML = `<p class="empty">Nessun video trovato nella cartella <code>/${FOLDER}</code>.</p>`;
-          return;
-        }
-        mp4s.sort((a,b)=> a.name.localeCompare(b.name, 'it', {numeric:true}));
-        mp4s.forEach(f => grid.appendChild(cardFor(f)));
-      }catch(e){
-        document.getElementById("grid").innerHTML =
-          `<p class="empty">Impossibile caricare i video. Riprova tra poco.</p>`;
-        console.error(e);
-      }
-    }
-    load();
-  </script>
 </body>
 </html>
