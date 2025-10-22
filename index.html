@@ -1,78 +1,43 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BPFAM — Video Gallery</title>
-
-<style>
-  body {
-    background-color: #000;
-    font-family: 'Poppins', sans-serif;
-    color: white;
-    text-align: center;
-    margin: 0;
-    padding: 0;
-  }
-
-  h1 {
-    margin: 20px 0;
-    color: #00eaff;
-    text-shadow: 0 0 10px #00eaff;
-  }
-
-  /* 🔹 Griglia responsive per 2 video */
-  .video-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-    padding: 20px;
-  }
-
-  .video-box {
-    background: rgba(0, 0, 0, 0.85);
-    border: 2px solid #00eaff;
-    box-shadow: 0 0 15px #00eaff;
-    border-radius: 15px;
-    padding: 10px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-
-  .video-box:hover {
-    transform: scale(1.03);
-    box-shadow: 0 0 25px #00ffff;
-  }
-
-  video {
-    width: 100%;
-    height: 160px; /* altezza compatta */
-    object-fit: cover;
-    border-radius: 10px;
-  }
-
-  p {
-    margin-top: 6px;
-    font-size: 14px;
-    color: #00eaff;
-    text-shadow: 0 0 8px #00eaff;
-  }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BPFAM — Video Gallery</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-<h1>🎬 BPFAM OFFICIAL VIDEO GALLERY</h1>
+  <h1>🎬 BPFAM OFFICIAL<br>VIDEO GALLERY</h1>
 
-<div class="video-grid">
-  <div class="video-box">
-    <video src="video1.mp4" controls></video>
-    <p>Video 1</p>
+  <div class="video-grid">
+    <div class="video-box">
+      <video src="video/video1.mp4" controls playsinline preload="metadata"></video>
+      <p>Video 1</p>
+    </div>
+
+    <div class="video-box">
+      <video src="video/video2.mp4" controls playsinline preload="metadata"></video>
+      <p>Video 2</p>
+    </div>
   </div>
 
-  <div class="video-box">
-    <video src="video2.mp4" controls></video>
-    <p>Video 2</p>
-  </div>
-</div>
+  <script>
+    // Glow “play” effect: quando il video parte -> glow più forte; quando pausa/fine -> normale
+    document.querySelectorAll('.video-box video').forEach(v => {
+      const box = v.closest('.video-box');
+
+      const onPlay = () => box.classList.add('playing');
+      const onPause = () => box.classList.remove('playing');
+
+      v.addEventListener('play', onPlay);
+      v.addEventListener('pause', onPause);
+      v.addEventListener('ended', onPause);
+
+      // se arriva già in “autoplay” (non dovrebbe su iOS), sistemiamo lo stato
+      if (!v.paused) onPlay();
+    });
+  </script>
 
 </body>
 </html>
