@@ -1,43 +1,93 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BPFAM — Video Gallery</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BPFAM — Video</title>
   <link rel="stylesheet" href="style.css" />
+  <meta name="color-scheme" content="dark light" />
 </head>
 <body>
+  <header class="topbar">
+    <h1>🎬 BPFAM — Video</h1>
+    <div class="hint">Carica nuovi .mp4 nella cartella <code>/videos</code> del repo: compaiono qui in automatico.</div>
+  </header>
 
-  <h1>🎬 BPFAM OFFICIAL<br>VIDEO GALLERY</h1>
+  <main id="gallery" class="grid"></main>
 
-  <div class="video-grid">
-    <div class="video-box">
-      <video src="video/video1.mp4" controls playsinline preload="metadata"></video>
-      <p>Video 1</p>
-    </div>
-
-    <div class="video-box">
-      <video src="video/video2.mp4" controls playsinline preload="metadata"></video>
-      <p>Video 2</p>
-    </div>
-  </div>
+  <template id="video-card">
+    <article class="card">
+      <div class="ratio">
+        <video preload="metadata" playsinline controls></video>
+      </div>
+      <div class="meta">
+        <h2 class="name"></h2>
+        <a class="raw" target="_blank" rel="noopener">Apri originale</a>
+      </div>
+    </article>
+  </template>
 
   <script>
-    // Glow “play” effect: quando il video parte -> glow più forte; quando pausa/fine -> normale
-    document.querySelectorAll('.video-box video').forEach(v => {
-      const box = v.closest('.video-box');
+    // ====== CONFIG: owner/repo/cartella ======
+    const OWNER   = "bpfam";
+    const REPO    = "Video-bpfam";
+    const FOLDER  = "videos"; // cartella dove carichi i file
 
-      const onPlay = () => box.classList.add('playing');
-      const onPause = () => box.classList.remove('playing');
+    const API_URL = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${FOLDER}`;
 
-      v.addEventListener('play', onPlay);
-      v.addEventListener('pause', onPause);
-      v.addEventListener('ended', onPause);
+    async function loadVideos() {
+      const gallery = document.getElementById("gallery");
+      gallery.innerHTML = '<div class="loading">Carico i video…</div>';
 
-      // se arriva già in “autoplay” (non dovrebbe su iOS), sistemiamo lo stato
-      if (!v.paused) onPlay();
-    });
+      try {
+        const res = await fetch(API_URL, { headers: { "Accept": "application/vnd.github+json" }});
+        if (!res.ok) throw new Error(`GitHub API ${res.status}`);
+        const files = await res.json();
+
+        // Filtra solo file video (mp4/webm/mov). Consigliato MP4.
+        const videoFiles = (Array.isArray(files) ? files : [])
+          .filter(f => f.type === "file")
+          .filter(f => /\.(mp4|webm|mov)$/i.test(f.name));
+
+        if (videoFiles.length === 0) {
+          gallery.innerHTML = '<div class="empty">Nessun video nella cartella <code>/videos</code>.</div>';
+          return;
+        }
+
+        // Pulisci e monta le card
+        gallery.innerHTML = "";
+        const tpl = document.getElementById("video-card");
+        videoFiles.forEach(file => {
+          const node = tpl.content.cloneNode(true);
+          const v    = node.querySelector("video");
+          const name = node.querySelector(".name");
+          const raw  = node.querySelector(".raw");
+
+          // usa il download_url che punta a raw.githubusercontent.com
+          v.src = file.download_url + "#t=0.1"; // start leggermente dopo per mostrare anteprima
+          v.setAttribute("controls", "");
+          v.setAttribute("playsinline", "");
+          v.setAttribute("preload", "metadata");
+
+          // titolo “pulito”
+          name.textContent = file.name.replace(/\.[^.]+$/,"");
+
+          raw.href = file.download_url;
+          raw.textContent = "Apri originale";
+
+          gallery.appendChild(node);
+        });
+      } catch (err) {
+        console.error(err);
+        gallery.innerHTML = `
+          <div class="error">
+            Impossibile caricare l'elenco dei video.<br/>
+            Verifica che il repo sia pubblico e che esista la cartella <code>/${FOLDER}</code>.
+          </div>`;
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", loadVideos);
   </script>
-
 </body>
 </html>
