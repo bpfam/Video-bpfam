@@ -5,7 +5,11 @@ on:
     branches: [ main ]
   workflow_dispatch:
   schedule:
-    - cron: "0 3 * * *"
+    - cron: "0 3 * * *"   # backup giornaliero alle 03:00 UTC
+
+# ⬅️ Permessi necessari per creare la Release
+permissions:
+  contents: write
 
 jobs:
   backup:
@@ -21,14 +25,14 @@ jobs:
           zip -r "dist/$ZIPNAME" . -x "*.git*" -x "*.github*" -x "dist/*"
           ls -lh dist
 
-      - name: Upload backup artifact
+      - name: Upload backup artifact (Actions)
         uses: actions/upload-artifact@v4
         with:
           name: video-bpfam-backup
           path: dist/*.zip
           retention-days: 90
 
-      - name: Create release with ZIP
+      - name: Create GitHub Release with ZIP
         uses: softprops/action-gh-release@v2
         with:
           tag_name: backup-${{ github.run_id }}
