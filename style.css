@@ -1,84 +1,73 @@
 :root{
   --bg:#06090e;
-  --fg:#f5f5f5;
+  --fg:#eef5ff;
   --led-1:#00ffe6;
   --led-2:#00aaff;
-  --gold-1:#ffdf8a;
-  --gold-2:#ffc13a;
+  --gold-1:#ffeaa0;
+  --gold-2:#ffc149;
   --gold-3:#ff9f0d;
   --gold-4:#ffd36e;
 }
 
 *{box-sizing:border-box;margin:0;padding:0}
-body{
-  background:var(--bg);
-  color:var(--fg);
-  font-family:'Poppins',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-  text-align:center;
-}
+body{background:var(--bg);color:var(--fg);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
 
-/* TITOLO DORATO STILE BPFAM */
-h1.bpfam-title{
-  margin:30px 0 20px;
+.topbar{padding:28px 16px 8px;text-align:center}
+
+/* TITOLO DORATO */
+.bpfam-title{
+  margin:0 0 14px;
   font-size:clamp(28px,5vw,44px);
   font-weight:900;
-  letter-spacing:1px;
+  letter-spacing:.6px;
   background:linear-gradient(180deg,var(--gold-1),var(--gold-2) 40%,var(--gold-3) 70%,var(--gold-4) 100%);
   -webkit-background-clip:text;
   background-clip:text;
   color:transparent;
   text-shadow:
-    0 0 10px rgba(255,160,30,0.6),
-    0 0 25px rgba(255,190,60,0.4),
-    0 0 45px rgba(255,200,80,0.2);
+    0 0 10px rgba(255,160,30,.55),
+    0 0 24px rgba(255,190,60,.35),
+    0 0 40px rgba(255,200,80,.18);
 }
 
-/* Griglia video */
+/* GRIGLIA */
 .grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap:20px;
-  padding:20px;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:18px;
+  padding:16px;
   max-width:1200px;
-  margin:0 auto;
+  margin:0 auto 56px;
 }
 
+/* CARD + LED */
 .card{
   position:relative;
+  background:#0f1622;
+  border:1px solid #1a2533;
   border-radius:16px;
   overflow:hidden;
-  background:#0c1118;
-  box-shadow:0 0 15px rgba(0,255,255,0.08);
-  transition:0.3s;
 }
-.card:hover{
-  transform:translateY(-3px);
-  box-shadow:0 0 25px rgba(0,255,255,0.25);
+.card.led{
+  box-shadow:0 0 0 1px rgba(0,170,255,.35),0 8px 22px rgba(0,0,0,.35);
 }
-
-.ratio{
-  position:relative;
-  width:100%;
-  aspect-ratio:16/9;
-  background:#000;
-  border-radius:12px;
-  overflow:hidden;
-  border:1px solid rgba(0,255,255,0.3);
-  box-shadow:0 0 15px rgba(0,255,255,0.25);
-}
-.ratio video{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  display:block;
-}
-
-/* effetto LED intorno */
-.ratio::after{
+.card.led::before{
   content:"";
-  position:absolute;
-  inset:0;
-  border-radius:12px;
-  box-shadow:0 0 20px rgba(0,255,255,0.5),0 0 40px rgba(0,255,255,0.2);
-  pointer-events:none;
+  position:absolute; inset:-1px; border-radius:16px;
+  background:linear-gradient(135deg,var(--led-1),var(--led-2) 45%,transparent 65%);
+  filter:blur(18px); opacity:.55; pointer-events:none; z-index:0;
+}
+
+/* VIDEO */
+.ratio{position:relative;width:100%;aspect-ratio:16/9;background:#000;border-radius:12px;overflow:hidden}
+.ratio video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.ratio::after{
+  content:""; position:absolute; inset:0; border-radius:12px; pointer-events:none;
+  box-shadow: inset 0 0 0 1px rgba(0,170,255,.25), inset 0 0 18px rgba(0,170,255,.14);
+}
+
+/* Stato */
+.empty{
+  max-width:760px;margin:32px auto;padding:14px 16px;text-align:center;
+  color:#a9b6c6;background:rgba(255,255,255,.04);border:1px dashed #1a2533;border-radius:12px;
 }
