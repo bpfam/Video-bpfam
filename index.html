@@ -15,25 +15,45 @@
     h1 {
       color: #00c8ff;
       text-shadow: 0 0 15px #00c8ff;
+      margin-bottom: 10px;
     }
-    .video-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 25px;
-      margin-top: 30px;
+    p {
+      color: #ccc;
+      font-size: 1rem;
     }
-    video {
-      width: 90%;
-      max-width: 600px;
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      margin-top: 40px;
+    }
+    .video-box {
+      background: #0a0a0a;
       border: 2px solid #00c8ff;
       border-radius: 12px;
-      box-shadow: 0 0 25px #00c8ff66;
+      padding: 15px;
+      box-shadow: 0 0 20px #00c8ff44;
+      transition: 0.3s;
+    }
+    .video-box:hover {
+      box-shadow: 0 0 25px #00c8ff99;
+      transform: scale(1.02);
+    }
+    video {
+      width: 100%;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+    .video-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #00c8ff;
+      text-shadow: 0 0 6px #00c8ff;
     }
     footer {
-      margin-top: 40px;
-      color: #999;
-      font-size: 0.9em;
+      margin-top: 50px;
+      color: #777;
+      font-size: 0.9rem;
     }
   </style>
 </head>
@@ -41,32 +61,35 @@
   <h1>🎬 BPFAM — Video Ufficiali 💎</h1>
   <p>Guarda tutti i video ufficiali del network BPFAM</p>
 
-  <div class="video-container" id="videos"></div>
+  <div class="gallery" id="videos"></div>
 
   <footer>© 2025 — BPFAM Official Network 💎</footer>
 
   <script>
-    // Lista automatica di video nella cartella /video/
     const folder = 'video/';
     const videoList = [
-      'video.MP4',
-      'video1.mp4',
-      'video2.mp4',
-      'video3.mp4',
-      'clip.mp4',
-      'bpfam.mp4'
+      { file: 'video.MP4', title: '🎥 Video Promozionale #1' },
+      { file: 'video1.mp4', title: '💎 Presentazione BPFAM' },
+      { file: 'video2.mp4', title: '🚀 Evento Ufficiale' },
+      { file: 'video3.mp4', title: '🎬 Backstage Exclusive' },
+      { file: 'clip.mp4', title: '🔥 Anteprima Clip' }
     ];
 
     const container = document.getElementById('videos');
 
-    videoList.forEach(file => {
-      fetch(folder + file, { method: 'HEAD' })
+    videoList.forEach(v => {
+      fetch(folder + v.file, { method: 'HEAD' })
         .then(res => {
           if (res.ok) {
-            const vid = document.createElement('video');
-            vid.controls = true;
-            vid.innerHTML = `<source src="${folder + file}" type="video/mp4">`;
-            container.appendChild(vid);
+            const box = document.createElement('div');
+            box.className = 'video-box';
+            box.innerHTML = `
+              <video controls>
+                <source src="${folder + v.file}" type="video/mp4">
+              </video>
+              <div class="video-title">${v.title}</div>
+            `;
+            container.appendChild(box);
           }
         })
         .catch(() => {});
