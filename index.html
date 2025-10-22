@@ -7,8 +7,7 @@
 <style>
   body{background:#000;color:#00c8ff;font-family:Poppins,system-ui,sans-serif;text-align:center;margin:0;padding:40px 10px}
   h1{color:#00c8ff;text-shadow:0 0 15px #00c8ff;margin:0 0 8px}
-  p.desc{color:#bcd; margin:0 0 24px}
-  .gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:28px;max-width:1100px;margin:0 auto}
+  .gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:28px;max-width:1100px;margin:40px auto}
   .card{background:#0a0a0a;border:2px solid #00c8ff;border-radius:14px;padding:14px;box-shadow:0 0 22px #00c8ff44;transition:.25s}
   .card:hover{box-shadow:0 0 28px #00c8ffaa;transform:scale(1.01)}
   video{width:100%;border-radius:10px}
@@ -18,7 +17,6 @@
 </head>
 <body>
   <h1>🎬 BPFAM — Video Ufficiali 💎</h1>
-  <p class="desc">Carica i tuoi file <code>.mp4</code> nella cartella <code>/video</code> e compaiono qui, da soli.</p>
 
   <div id="grid" class="gallery">Caricamento…</div>
 
@@ -36,7 +34,6 @@
     if (!res.ok) throw new Error('API error');
     const items = await res.json();
 
-    // prendi solo .mp4
     const videos = items.filter(i => i.type === "file" && /\.mp4$/i.test(i.name));
 
     if (!videos.length) {
@@ -47,12 +44,10 @@
     grid.innerHTML = "";
     for (const v of videos) {
       const url = `https://bpfam.github.io/Video-bpfam/${folder}/${encodeURIComponent(v.name)}`;
-
-      // Titolo leggibile dal nome file
       const nice = v.name
         .replace(/\.[^/.]+$/,"")
         .replace(/[_-]+/g," ")
-        .replace(/\b\w/g, c => c.toUpperCase()); // capitalizza parole
+        .replace(/\b\w/g, c => c.toUpperCase());
 
       const card = document.createElement('div');
       card.className = 'card';
