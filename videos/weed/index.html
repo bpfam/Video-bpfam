@@ -3,92 +3,109 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>💨 BPFAM — Weed</title>
+<title>BPFAM — Weed Video</title>
 <style>
   :root { --neon:#00ffcc; --gap:12px; }
   * { box-sizing:border-box; }
   body { margin:0; background:#000; color:#dffff6; font-family:system-ui, Arial, sans-serif; }
 
   /* Header */
-  header {
+  header{
     position:sticky; top:0; z-index:10;
     display:flex; align-items:center; gap:10px; justify-content:space-between;
     padding:12px; background:#000; border-bottom:1px solid rgba(0,255,204,.15);
   }
-  .left { display:flex; gap:10px; align-items:center; }
-  .back {
+  .left{ display:flex; gap:10px; align-items:center; min-width:0; }
+  .back{
     text-decoration:none; padding:.5rem .9rem; border:1px solid var(--neon); border-radius:999px;
-    color:var(--neon); box-shadow:0 0 12px var(--neon);
-    transition:all .2s ease;
+    color:var(--neon); box-shadow:0 0 12px var(--neon); transition:all .2s ease; white-space:nowrap;
   }
-  .back:hover { background:var(--neon); color:#000; }
-  h1 { margin:0; font-size:1rem; text-shadow:0 0 12px var(--neon); white-space:nowrap; }
-
-  /* Switch colonne */
-  .cols { display:flex; gap:6px; }
-  .cols button{
-    background:transparent; color:var(--neon); border:1px solid var(--neon);
-    padding:.35rem .6rem; border-radius:999px; cursor:pointer; box-shadow:0 0 8px var(--neon);
-    font-weight:600;
+  .back:hover{ background:var(--neon); color:#000; }
+  .title{
+    margin:0; font-size:1rem; line-height:1; display:flex; align-items:center; gap:8px;
+    text-shadow:0 0 12px var(--neon); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
   }
-  .cols button.active { background:var(--neon); color:#000; }
+  .title .emoji{ filter:drop-shadow(0 0 6px var(--neon)); }
 
-  /* GRIGLIA LED */
-  .wrap { max-width:1200px; margin:0 auto; padding:16px; }
-  .grid { display:grid; gap:var(--gap); }
-  /* default 4 per riga */
-  .grid[data-cols="4"] { grid-template-columns: repeat(4, 1fr); }
-  .grid[data-cols="3"] { grid-template-columns: repeat(3, 1fr); }
-  .grid[data-cols="2"] { grid-template-columns: repeat(2, 1fr); }
-  .grid[data-cols="1"] { grid-template-columns: repeat(1, 1fr); }
+  /* Griglia LED */
+  .wrap{ max-width:1200px; margin:0 auto; padding:16px; }
+  .grid{ display:grid; gap:var(--gap); }
+  .grid[data-cols="4"]{ grid-template-columns:repeat(4,1fr); }
+  .grid[data-cols="3"]{ grid-template-columns:repeat(3,1fr); }
+  .grid[data-cols="2"]{ grid-template-columns:repeat(2,1fr); }
+  .grid[data-cols="1"]{ grid-template-columns:repeat(1,1fr); }
 
-  .card {
-    padding:10px; border-radius:14px; background:#020202;
-    border:1px solid #0a302a;
-    box-shadow:
-      0 0 0 1px rgba(0,255,204,.25) inset,
-      0 0 22px rgba(0,255,204,.25),
-      0 0 44px rgba(0,255,204,.15);
+  .card{
+    padding:10px; border-radius:14px; background:#020202; border:1px solid #0a302a;
+    box-shadow:0 0 0 1px rgba(0,255,204,.25) inset, 0 0 22px rgba(0,255,204,.25), 0 0 44px rgba(0,255,204,.15);
     transition:transform .15s ease, box-shadow .15s ease;
   }
-  .card:hover { transform:scale(1.03); box-shadow:0 0 28px rgba(0,255,204,.45); }
+  .card:hover{ transform:scale(1.03); box-shadow:0 0 28px rgba(0,255,204,.45); }
 
-  /* Video mini con proporzione fissa (verticale) */
   video{
-    width:100%;
-    aspect-ratio: 9 / 16;     /* mantiene dimensione uguale per tutti */
-    object-fit: cover;        /* riempie la card */
-    display:block; border-radius:10px; background:#000;
+    width:100%; aspect-ratio:9/16; object-fit:cover; display:block; border-radius:10px; background:#000;
   }
+  .name{ margin:.45rem 0 0; text-align:center; font-size:.7rem; color:#7fffe9; word-break:break-word; }
 
-  .name{
-    margin:.45rem 0 0; text-align:center; font-size:.7rem; color:#7fffe9; word-break:break-word;
+  .empty{ color:#7fffe9; text-align:center; padding:40px 12px; }
+  footer{ text-align:center; color:#7fffe9; opacity:.8; padding:26px 12px; }
+
+  /* -------- FAB (pannello vista 1-2-3-4) -------- */
+  .fab{
+    position:fixed; right:14px; bottom:18px; z-index:20;
+    display:flex; flex-direction:column; align-items:flex-end; gap:8px;
   }
-
-  .empty { color:#7fffe9; text-align:center; padding:40px 12px; }
-  footer { text-align:center; color:#7fffe9; opacity:.8; padding:26px 12px; }
+  .fab-toggle{
+    width:52px; height:52px; border-radius:50%;
+    border:1px solid var(--neon); background:#000; color:var(--neon);
+    box-shadow:0 0 12px var(--neon), inset 0 0 10px rgba(0,255,204,.2);
+    font-size:1.2rem; cursor:pointer; transition:transform .15s ease, box-shadow .2s ease;
+  }
+  .fab-toggle:hover{ transform:scale(1.05); box-shadow:0 0 18px var(--neon); }
+  .fab-menu{
+    display:none; flex-direction:column; gap:6px; padding:8px;
+    background:#020202; border:1px solid #0a302a; border-radius:12px;
+    box-shadow:0 0 24px rgba(0,255,204,.35);
+  }
+  .fab.open .fab-menu{ display:flex; }
+  .fab-btn{
+    min-width:44px; padding:.35rem .65rem; border-radius:999px; cursor:pointer;
+    background:transparent; color:var(--neon); border:1px solid var(--neon); font-weight:700;
+    box-shadow:0 0 8px var(--neon);
+  }
+  .fab-btn.active{ background:var(--neon); color:#000; }
+  @media (hover:none){
+    .fab-toggle{ width:56px; height:56px; font-size:1.35rem; }
+  }
 </style>
 </head>
 <body>
   <header>
     <div class="left">
       <a class="back" href="/Video-bpfam/">⬅️ Torna indietro</a>
-      <h1>💨 BPFAM — Weed Video 💎</h1>
-    </div>
-    <div class="cols" aria-label="Numero colonne">
-      <button data-c="1">1</button>
-      <button data-c="2">2</button>
-      <button data-c="3">3</button>
-      <button data-c="4" class="active">4</button>
+      <h1 class="title"><span class="emoji">💨</span><span>BPFAM — Weed Video</span><span class="emoji">💎</span></h1>
     </div>
   </header>
 
   <div class="wrap">
-    <div id="grid" class="grid" data-cols="4"></div>
+    <div id="grid" class="grid" data-cols="2"></div>
     <div id="empty" class="empty" style="display:none">Nessun video trovato.</div>
   </div>
 
   <footer>💎 BPFAM — Serietà, Qualità e Rispetto</footer>
+
+  <!-- FAB: controllo vista -->
+  <div class="fab" id="fab">
+    <div class="fab-menu" id="fabMenu" aria-label="Numero colonne">
+      <button class="fab-btn" data-c="1">1</button>
+      <button class="fab-btn" data-c="2">2</button>
+      <button class="fab-btn" data-c="3">3</button>
+      <button class="fab-btn" data-c="4">4</button>
+    </div>
+    <button class="fab-toggle" id="fabToggle" aria-label="Vista">
+      ⧉
+    </button>
+  </div>
 
 <script>
 (async () => {
@@ -97,30 +114,42 @@
   const path  = "videos/weed";
   const api   = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
 
-  // --- Colonne: ricorda l'ultima scelta
+  // --- Vista salvata (default "2")
   const grid = document.getElementById("grid");
-  const saved = localStorage.getItem("bpfam_cols");
-  if (saved) { grid.setAttribute("data-cols", saved);
-    document.querySelectorAll('.cols button').forEach(b=>{
-      b.classList.toggle('active', b.dataset.c===saved);
-    });
+  const saved = localStorage.getItem("bpfam_cols") || "2";
+  grid.setAttribute("data-cols", saved);
+
+  const fab = document.getElementById("fab");
+  const toggle = document.getElementById("fabToggle");
+  const menu = document.getElementById("fabMenu");
+  const btns = menu.querySelectorAll(".fab-btn");
+
+  function setActive(c){
+    grid.setAttribute("data-cols", c);
+    localStorage.setItem("bpfam_cols", c);
+    btns.forEach(b => b.classList.toggle("active", b.dataset.c === c));
   }
-  document.querySelectorAll('.cols button').forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      const c = btn.dataset.c;
-      grid.setAttribute('data-cols', c);
-      localStorage.setItem('bpfam_cols', c);
-      document.querySelectorAll('.cols button').forEach(b=>b.classList.toggle('active', b===btn));
+  setActive(saved);
+
+  toggle.addEventListener("click", ()=> fab.classList.toggle("open"));
+  document.addEventListener("click", (e)=>{
+    if(!fab.contains(e.target)) fab.classList.remove("open");
+  });
+
+  btns.forEach(b=>{
+    b.addEventListener("click", ()=>{
+      setActive(b.dataset.c);
+      fab.classList.remove("open");
     });
   });
 
-  // --- Carica file .mp4 automaticamente
+  // --- Carica i video .mp4 automaticamente
   try{
     const res = await fetch(api, { headers:{ "Accept":"application/vnd.github+json" }});
     const data = await res.json();
     const files = (Array.isArray(data)?data:[])
       .filter(f => f.type==="file" && /\.mp4$/i.test(f.name))
-      .sort((a,b)=>a.name.localeCompare(b.name)); // ordina
+      .sort((a,b)=>a.name.localeCompare(b.name));
 
     if(!files.length){
       document.getElementById("empty").style.display = "block";
