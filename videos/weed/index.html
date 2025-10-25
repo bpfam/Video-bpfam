@@ -3,105 +3,47 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>💨 BPFAM — Weed Mini</title>
+<title>💨 BPFAM — Weed</title>
 <style>
-  :root { --neon:#00ffcc; }
-  * { box-sizing:border-box; scroll-behavior:smooth; }
-  body {
-    margin:0;
-    background:#000;
-    color:#dffff6;
-    font-family:system-ui, Arial, sans-serif;
-    overflow-x:hidden;
+  :root { --bg:#0b0b0c; --card:#151517; --text:#e8fdf8; --muted:#98fff0; --neon:#00ffcc; }
+  * { box-sizing:border-box; }
+  body{ margin:0; background:#000; color:var(--text); font-family:system-ui, Arial, sans-serif; }
+  header{
+    position:sticky; top:0; z-index:10; background:#000; border-bottom:1px solid rgba(0,255,204,.15);
+    display:flex; align-items:center; gap:10px; padding:12px 14px;
   }
+  .back{
+    text-decoration:none; padding:.5rem .9rem; border:1px solid var(--neon); border-radius:999px;
+    color:var(--neon); box-shadow:0 0 12px rgba(0,255,204,.5);
+  }
+  h1{ margin:0; font-size:1rem; text-shadow:0 0 12px var(--neon); }
 
-  header {
-    position:sticky;
-    top:0;
-    background:#000;
-    padding:10px 12px;
-    border-bottom:1px solid #0a302a;
-    display:flex;
-    align-items:center;
-    gap:10px;
-    z-index:10;
+  .wrap{ max-width:720px; margin:0 auto; padding:18px 12px 40px; }
+  .item{
+    background:var(--card); border:1px solid rgba(0,255,204,.12); border-radius:16px;
+    box-shadow:0 0 30px rgba(0,255,204,.08); margin:18px 0; padding:14px;
   }
-  .back {
-    text-decoration:none;
-    padding:.35rem .6rem;
-    border:1px solid var(--neon);
-    border-radius:999px;
-    box-shadow:0 0 8px var(--neon);
-    color:var(--neon);
-    font-size:.8rem;
-    transition:all .3s ease;
+  .title{
+    font-weight:600; font-size:1rem; margin:0 0 10px;
   }
-  .back:hover { background:var(--neon); color:#000; }
-  h1 { margin:0; font-size:.9rem; text-shadow:0 0 10px var(--neon); }
-
-  /* MINI SCROLL ORIZZONTALE */
-  .scroll-container {
-    display:flex;
-    gap:12px;
-    overflow-x:auto;
-    scroll-snap-type:x mandatory;
-    padding:16px;
-    -webkit-overflow-scrolling: touch;
+  .meta{
+    font-size:.8rem; color:var(--muted); opacity:.85; margin:-4px 0 10px;
   }
-  .scroll-container::-webkit-scrollbar { height:5px; }
-  .scroll-container::-webkit-scrollbar-thumb {
-    background:var(--neon);
-    border-radius:10px;
+  video{
+    display:block; width:100%; height:auto; border-radius:12px;
+    background:#000; /* effetto “letterbox” pulito */
+    box-shadow:0 0 20px rgba(0,255,204,.18);
   }
-
-  .card {
-    flex:0 0 auto;
-    width:110px;
-    scroll-snap-align:center;
-    padding:5px;
-    border-radius:8px;
-    background:#020202;
-    border:1px solid #0a302a;
-    box-shadow:0 0 12px rgba(0,255,204,.25);
-    transition:transform .2s ease, box-shadow .2s ease;
-  }
-  .card:hover {
-    transform:scale(1.05);
-    box-shadow:0 0 20px var(--neon);
-  }
-
-  video {
-    display:block;
-    width:100%;
-    height:auto;
-    border-radius:6px;
-  }
-  .name {
-    font-size:.55rem;
-    margin-top:3px;
-    color:#7fffe9;
-    text-align:center;
-    word-break:break-word;
-  }
-
-  .empty { padding:40px 20px; text-align:center; color:#6fffe6; }
-  footer {
-    text-align:center;
-    padding:20px 12px;
-    color:#6fffe6;
-    opacity:.8;
-    font-size:.75rem;
-  }
+  footer{ text-align:center; color:#7fffe9; opacity:.8; padding:28px 12px; }
 </style>
 </head>
 <body>
   <header>
-    <a class="back" href="/Video-bpfam/">⬅️ Torna</a>
-    <h1>💨 BPFAM — Weed 💎</h1>
+    <a class="back" href="/Video-bpfam/">⬅️ Torna indietro</a>
+    <h1>💨 BPFAM — Weed Video 💎</h1>
   </header>
 
-  <div id="scroll" class="scroll-container"></div>
-  <div id="empty" class="empty" style="display:none">Nessun video trovato.</div>
+  <main id="list" class="wrap"></main>
 
   <footer>💎 BPFAM — Serietà, Qualità e Rispetto</footer>
 
@@ -112,24 +54,41 @@
   const path  = "videos/weed";
   const api   = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
 
-  try {
-    const res = await fetch(api, { headers: { "Accept": "application/vnd.github+json" } });
-    const data = await res.json();
-    const files = (Array.isArray(data) ? data : []).filter(f =>
-      f.type === "file" && /\.mp4$/i.test(f.name)
-    );
+  function fmtSize(bytes){
+    if (!bytes && bytes !== 0) return "";
+    const units = ["B","KB","MB","GB"]; let i=0; let n=bytes;
+    while(n>=1024 && i<units.length-1){ n/=1024; i++; }
+    return `${n.toFixed(n<10 && i>0 ? 1 : 0)} ${units[i]}`;
+  }
 
-    const scroll = document.getElementById("scroll");
-    if (!files.length) {
-      document.getElementById("empty").style.display = "block";
+  try{
+    const res = await fetch(api, { headers:{ "Accept":"application/vnd.github+json" }});
+    const data = await res.json();
+    const files = (Array.isArray(data)?data:[])
+      .filter(f => f.type==="file" && /\.mp4$/i.test(f.name))
+      // opzionale: ordina dal più recente alfabeticamente
+      .sort((a,b)=>a.name.localeCompare(b.name)).reverse();
+
+    const list = document.getElementById("list");
+    if(!files.length){
+      list.innerHTML = `<p style="color:#7fffe9;text-align:center">Nessun video trovato.</p>`;
       return;
     }
 
-    for (const f of files) {
+    for(const f of files){
       const encoded = encodeURIComponent(f.name);
       const src = `./${encoded}`;
-      const card = document.createElement("div");
-      card.className = "card";
+
+      const item = document.createElement("section");
+      item.className = "item";
+
+      const title = document.createElement("h2");
+      title.className = "title";
+      title.textContent = f.name;
+
+      const meta = document.createElement("div");
+      meta.className = "meta";
+      meta.textContent = `MP4 • ${fmtSize(f.size)}`;
 
       const v = document.createElement("video");
       v.controls = true;
@@ -137,18 +96,15 @@
       v.preload = "metadata";
       v.src = src;
 
-      const p = document.createElement("div");
-      p.className = "name";
-      p.textContent = f.name;
-
-      card.appendChild(v);
-      card.appendChild(p);
-      scroll.appendChild(card);
+      item.appendChild(title);
+      item.appendChild(meta);
+      item.appendChild(v);
+      list.appendChild(item);
     }
-  } catch (e) {
+  }catch(e){
     console.error(e);
-    document.getElementById("empty").style.display = "block";
-    document.getElementById("empty").textContent = "Errore nel caricare i file.";
+    document.getElementById("list").innerHTML =
+      `<p style="color:#7fffe9;text-align:center">Errore nel caricare i file.</p>`;
   }
 })();
 </script>
