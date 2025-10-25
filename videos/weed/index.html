@@ -5,45 +5,88 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>💨 BPFAM — Weed</title>
 <style>
-  :root { --bg:#0b0b0c; --card:#151517; --text:#e8fdf8; --muted:#98fff0; --neon:#00ffcc; }
+  :root { --neon:#00ffcc; --gap:12px; }
   * { box-sizing:border-box; }
-  body{ margin:0; background:#000; color:var(--text); font-family:system-ui, Arial, sans-serif; }
-  header{
-    position:sticky; top:0; z-index:10; background:#000; border-bottom:1px solid rgba(0,255,204,.15);
-    display:flex; align-items:center; gap:10px; padding:12px 14px;
-  }
-  .back{
-    text-decoration:none; padding:.5rem .9rem; border:1px solid var(--neon); border-radius:999px;
-    color:var(--neon); box-shadow:0 0 12px rgba(0,255,204,.5);
-  }
-  h1{ margin:0; font-size:1rem; text-shadow:0 0 12px var(--neon); }
+  body { margin:0; background:#000; color:#dffff6; font-family:system-ui, Arial, sans-serif; }
 
-  .wrap{ max-width:720px; margin:0 auto; padding:18px 12px 40px; }
-  .item{
-    background:var(--card); border:1px solid rgba(0,255,204,.12); border-radius:16px;
-    box-shadow:0 0 30px rgba(0,255,204,.08); margin:18px 0; padding:14px;
+  /* Header */
+  header {
+    position:sticky; top:0; z-index:10;
+    display:flex; align-items:center; gap:10px; justify-content:space-between;
+    padding:12px; background:#000; border-bottom:1px solid rgba(0,255,204,.15);
   }
-  .title{
-    font-weight:600; font-size:1rem; margin:0 0 10px;
+  .left { display:flex; gap:10px; align-items:center; }
+  .back {
+    text-decoration:none; padding:.5rem .9rem; border:1px solid var(--neon); border-radius:999px;
+    color:var(--neon); box-shadow:0 0 12px var(--neon);
+    transition:all .2s ease;
   }
-  .meta{
-    font-size:.8rem; color:var(--muted); opacity:.85; margin:-4px 0 10px;
+  .back:hover { background:var(--neon); color:#000; }
+  h1 { margin:0; font-size:1rem; text-shadow:0 0 12px var(--neon); white-space:nowrap; }
+
+  /* Switch colonne */
+  .cols { display:flex; gap:6px; }
+  .cols button{
+    background:transparent; color:var(--neon); border:1px solid var(--neon);
+    padding:.35rem .6rem; border-radius:999px; cursor:pointer; box-shadow:0 0 8px var(--neon);
+    font-weight:600;
   }
+  .cols button.active { background:var(--neon); color:#000; }
+
+  /* GRIGLIA LED */
+  .wrap { max-width:1200px; margin:0 auto; padding:16px; }
+  .grid { display:grid; gap:var(--gap); }
+  /* default 4 per riga */
+  .grid[data-cols="4"] { grid-template-columns: repeat(4, 1fr); }
+  .grid[data-cols="3"] { grid-template-columns: repeat(3, 1fr); }
+  .grid[data-cols="2"] { grid-template-columns: repeat(2, 1fr); }
+  .grid[data-cols="1"] { grid-template-columns: repeat(1, 1fr); }
+
+  .card {
+    padding:10px; border-radius:14px; background:#020202;
+    border:1px solid #0a302a;
+    box-shadow:
+      0 0 0 1px rgba(0,255,204,.25) inset,
+      0 0 22px rgba(0,255,204,.25),
+      0 0 44px rgba(0,255,204,.15);
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .card:hover { transform:scale(1.03); box-shadow:0 0 28px rgba(0,255,204,.45); }
+
+  /* Video mini con proporzione fissa (verticale) */
   video{
-    display:block; width:100%; height:auto; border-radius:12px;
-    background:#000; /* effetto “letterbox” pulito */
-    box-shadow:0 0 20px rgba(0,255,204,.18);
+    width:100%;
+    aspect-ratio: 9 / 16;     /* mantiene dimensione uguale per tutti */
+    object-fit: cover;        /* riempie la card */
+    display:block; border-radius:10px; background:#000;
   }
-  footer{ text-align:center; color:#7fffe9; opacity:.8; padding:28px 12px; }
+
+  .name{
+    margin:.45rem 0 0; text-align:center; font-size:.7rem; color:#7fffe9; word-break:break-word;
+  }
+
+  .empty { color:#7fffe9; text-align:center; padding:40px 12px; }
+  footer { text-align:center; color:#7fffe9; opacity:.8; padding:26px 12px; }
 </style>
 </head>
 <body>
   <header>
-    <a class="back" href="/Video-bpfam/">⬅️ Torna indietro</a>
-    <h1>💨 BPFAM — Weed Video 💎</h1>
+    <div class="left">
+      <a class="back" href="/Video-bpfam/">⬅️ Torna indietro</a>
+      <h1>💨 BPFAM — Weed Video 💎</h1>
+    </div>
+    <div class="cols" aria-label="Numero colonne">
+      <button data-c="1">1</button>
+      <button data-c="2">2</button>
+      <button data-c="3">3</button>
+      <button data-c="4" class="active">4</button>
+    </div>
   </header>
 
-  <main id="list" class="wrap"></main>
+  <div class="wrap">
+    <div id="grid" class="grid" data-cols="4"></div>
+    <div id="empty" class="empty" style="display:none">Nessun video trovato.</div>
+  </div>
 
   <footer>💎 BPFAM — Serietà, Qualità e Rispetto</footer>
 
@@ -54,24 +97,33 @@
   const path  = "videos/weed";
   const api   = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
 
-  function fmtSize(bytes){
-    if (!bytes && bytes !== 0) return "";
-    const units = ["B","KB","MB","GB"]; let i=0; let n=bytes;
-    while(n>=1024 && i<units.length-1){ n/=1024; i++; }
-    return `${n.toFixed(n<10 && i>0 ? 1 : 0)} ${units[i]}`;
+  // --- Colonne: ricorda l'ultima scelta
+  const grid = document.getElementById("grid");
+  const saved = localStorage.getItem("bpfam_cols");
+  if (saved) { grid.setAttribute("data-cols", saved);
+    document.querySelectorAll('.cols button').forEach(b=>{
+      b.classList.toggle('active', b.dataset.c===saved);
+    });
   }
+  document.querySelectorAll('.cols button').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const c = btn.dataset.c;
+      grid.setAttribute('data-cols', c);
+      localStorage.setItem('bpfam_cols', c);
+      document.querySelectorAll('.cols button').forEach(b=>b.classList.toggle('active', b===btn));
+    });
+  });
 
+  // --- Carica file .mp4 automaticamente
   try{
     const res = await fetch(api, { headers:{ "Accept":"application/vnd.github+json" }});
     const data = await res.json();
     const files = (Array.isArray(data)?data:[])
       .filter(f => f.type==="file" && /\.mp4$/i.test(f.name))
-      // opzionale: ordina dal più recente alfabeticamente
-      .sort((a,b)=>a.name.localeCompare(b.name)).reverse();
+      .sort((a,b)=>a.name.localeCompare(b.name)); // ordina
 
-    const list = document.getElementById("list");
     if(!files.length){
-      list.innerHTML = `<p style="color:#7fffe9;text-align:center">Nessun video trovato.</p>`;
+      document.getElementById("empty").style.display = "block";
       return;
     }
 
@@ -79,32 +131,27 @@
       const encoded = encodeURIComponent(f.name);
       const src = `./${encoded}`;
 
-      const item = document.createElement("section");
-      item.className = "item";
+      const card = document.createElement('div');
+      card.className = 'card';
 
-      const title = document.createElement("h2");
-      title.className = "title";
-      title.textContent = f.name;
-
-      const meta = document.createElement("div");
-      meta.className = "meta";
-      meta.textContent = `MP4 • ${fmtSize(f.size)}`;
-
-      const v = document.createElement("video");
+      const v = document.createElement('video');
       v.controls = true;
       v.playsInline = true;
       v.preload = "metadata";
       v.src = src;
 
-      item.appendChild(title);
-      item.appendChild(meta);
-      item.appendChild(v);
-      list.appendChild(item);
+      const name = document.createElement('div');
+      name.className = 'name';
+      name.textContent = f.name;
+
+      card.appendChild(v);
+      card.appendChild(name);
+      grid.appendChild(card);
     }
   }catch(e){
     console.error(e);
-    document.getElementById("list").innerHTML =
-      `<p style="color:#7fffe9;text-align:center">Errore nel caricare i file.</p>`;
+    document.getElementById("empty").style.display = "block";
+    document.getElementById("empty").textContent = "Errore nel caricare i file.";
   }
 })();
 </script>
