@@ -1,53 +1,115 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🎥 BPFAM - Weed</title>
-  <style>
-    body {
-      background-color: #000;
-      color: #00ffcc;
-      font-family: 'Arial', sans-serif;
-      text-align: center;
-      margin: 0;
-      padding: 20px;
-    }
-    h1 {
-      text-shadow: 0 0 15px #00ffcc, 0 0 25px #00ffcc;
-    }
-    video {
-      width: 320px;
-      height: auto;
-      border: 2px solid #00ffcc;
-      border-radius: 10px;
-      box-shadow: 0 0 20px #00ffcc;
-      margin: 15px;
-    }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>💨 BPFAM — Weed</title>
+<style>
+  :root { --neon:#00ffcc; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:#000; color:#dffff6; font-family:system-ui, Arial, sans-serif; }
+  header { position:sticky; top:0; background:#000; padding:14px 12px; border-bottom:1px solid #0a302a; display:flex; gap:12px; align-items:center; z-index:1; }
+  .back { text-decoration:none; padding:.55rem .8rem; border:1px solid var(--neon); border-radius:999px; box-shadow:0 0 12px var(--neon); color:var(--neon); }
+  h1 { margin:0; font-size:1.05rem; text-shadow:0 0 10px var(--neon); }
+
+  .grid {
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap:18px;
+    padding:18px;
+    max-width:1100px;
+    margin:0 auto;
+  }
+  .card {
+    max-width: 300px;      /* <<< larghezza massima della card */
+    margin: 0 auto;        /* centra la card nella colonna */
+    padding:14px;
+    border-radius:16px;
+    background: #020202;
+    border:1px solid #0a302a;
+    box-shadow:
+      0 0 0 1px rgba(0,255,204,.25) inset,
+      0 0 22px rgba(0,255,204,.25),
+      0 0 44px rgba(0,255,204,.15);
+  }
+  video {
+    display:block;
+    width:100%;
+    height: auto;          /* mantiene proporzioni */
+    border-radius:10px;
+    outline:none;
+  }
+  .name {
+    font-size:.9rem;
+    margin:.5rem 0 0;
+    color:#7fffe9;
+    word-break:break-word;
+    text-align:center;
+  }
+  .empty { padding:50px 20px; text-align:center; color:#6fffe6; }
+  footer { text-align:center; padding:30px 12px; color:#6fffe6; opacity:.8; }
+</style>
 </head>
 <body>
-  <h1>💨 BPFAM - Weed Video 💎</h1>
+  <header>
+    <a class="back" href="/Video-bpfam/">⬅️ Torna indietro</a>
+    <h1>💨 BPFAM — Weed Video 💎</h1>
+  </header>
 
-  <video controls>
-    <source src="Weed 1.MP4" type="video/mp4">
-    Il tuo browser non supporta i video.
-  </video>
+  <div id="grid" class="grid"></div>
+  <div id="empty" class="empty" style="display:none">Nessun video trovato nella cartella.</div>
 
-  <video controls>
-    <source src="Weed2.MP4" type="video/mp4">
-    Il tuo browser non supporta i video.
-  </video>
+  <footer>💎 BPFAM — Serietà, Qualità e Rispetto</footer>
 
-  <video controls>
-    <source src="Weed3.MP4" type="video/mp4">
-    Il tuo browser non supporta i video.
-  </video>
+<script>
+(async () => {
+  // Legge i file dalla cartella usando la GitHub API pubblica
+  const owner = "bpfam";
+  const repo  = "Video-bpfam";
+  const path  = "videos/weed";
+  const api   = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
 
-  <video controls>
-    <source src="Weed🇪🇸.MP4" type="video/mp4">
-    Il tuo browser non supporta i video.
-  </video>
+  try {
+    const res = await fetch(api, { headers: { "Accept": "application/vnd.github+json" } });
+    const data = await res.json();
+    const files = (Array.isArray(data) ? data : []).filter(f =>
+      f.type === "file" && /\.mp4$/i.test(f.name)
+    );
 
+    const grid = document.getElementById("grid");
+    if (!files.length) {
+      document.getElementById("empty").style.display = "block";
+      return;
+    }
+
+    // Crea le card. Usiamo il percorso relativo alla cartella e codifichiamo il nome (spazi/emoji)
+    for (const f of files) {
+      const encoded = encodeURIComponent(f.name);
+      const src = `./${encoded}`;
+
+      const card = document.createElement("div");
+      card.className = "card";
+
+      const v = document.createElement("video");
+      v.controls = true;
+      v.playsInline = true;          // iOS inline
+      v.preload = "metadata";        // carica solo metadati
+      v.src = src;
+
+      const p = document.createElement("div");
+      p.className = "name";
+      p.textContent = f.name;
+
+      card.appendChild(v);
+      card.appendChild(p);
+      grid.appendChild(card);
+    }
+  } catch (e) {
+    console.error(e);
+    document.getElementById("empty").style.display = "block";
+    document.getElementById("empty").textContent = "Errore nel caricare i file.";
+  }
+})();
+</script>
 </body>
 </html>
