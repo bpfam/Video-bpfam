@@ -3,37 +3,52 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>💨 BPFAM — Weed</title>
+<title>💨 BPFAM — Weed Mini</title>
 <style>
   :root { --neon:#00ffcc; }
   * { box-sizing:border-box; scroll-behavior:smooth; }
-  body { margin:0; background:#000; color:#dffff6; font-family:system-ui, Arial, sans-serif; overflow-x:hidden; }
+  body {
+    margin:0;
+    background:#000;
+    color:#dffff6;
+    font-family:system-ui, Arial, sans-serif;
+    overflow-x:hidden;
+  }
 
   header {
-    position:sticky; top:0; background:#000; padding:12px;
-    border-bottom:1px solid #0a302a; display:flex; gap:10px; align-items:center; z-index:10;
+    position:sticky;
+    top:0;
+    background:#000;
+    padding:10px 12px;
+    border-bottom:1px solid #0a302a;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    z-index:10;
   }
   .back {
-    text-decoration:none; padding:.45rem .7rem;
-    border:1px solid var(--neon); border-radius:999px;
-    box-shadow:0 0 10px var(--neon); color:var(--neon);
-    transition:all .3s ease; font-size:.9rem;
+    text-decoration:none;
+    padding:.35rem .6rem;
+    border:1px solid var(--neon);
+    border-radius:999px;
+    box-shadow:0 0 8px var(--neon);
+    color:var(--neon);
+    font-size:.8rem;
+    transition:all .3s ease;
   }
   .back:hover { background:var(--neon); color:#000; }
-  h1 { margin:0; font-size:.95rem; text-shadow:0 0 10px var(--neon); }
+  h1 { margin:0; font-size:.9rem; text-shadow:0 0 10px var(--neon); }
 
-  /* SCROLL ORIZZONTALE */
+  /* MINI SCROLL ORIZZONTALE */
   .scroll-container {
     display:flex;
-    gap:16px;
+    gap:12px;
     overflow-x:auto;
     scroll-snap-type:x mandatory;
-    padding:20px;
+    padding:16px;
     -webkit-overflow-scrolling: touch;
   }
-  .scroll-container::-webkit-scrollbar {
-    height:6px;
-  }
+  .scroll-container::-webkit-scrollbar { height:5px; }
   .scroll-container::-webkit-scrollbar-thumb {
     background:var(--neon);
     border-radius:10px;
@@ -41,46 +56,52 @@
 
   .card {
     flex:0 0 auto;
-    width:160px;
+    width:110px;
     scroll-snap-align:center;
-    padding:8px;
-    border-radius:12px;
+    padding:5px;
+    border-radius:8px;
     background:#020202;
     border:1px solid #0a302a;
-    box-shadow:0 0 14px rgba(0,255,204,.25);
+    box-shadow:0 0 12px rgba(0,255,204,.25);
     transition:transform .2s ease, box-shadow .2s ease;
   }
   .card:hover {
     transform:scale(1.05);
-    box-shadow:0 0 25px var(--neon);
+    box-shadow:0 0 20px var(--neon);
   }
 
   video {
     display:block;
     width:100%;
     height:auto;
-    border-radius:8px;
+    border-radius:6px;
   }
   .name {
-    font-size:.7rem;
-    margin-top:4px;
+    font-size:.55rem;
+    margin-top:3px;
     color:#7fffe9;
     text-align:center;
     word-break:break-word;
   }
 
   .empty { padding:40px 20px; text-align:center; color:#6fffe6; }
-  footer { text-align:center; padding:25px 12px; color:#6fffe6; opacity:.8; font-size:.8rem; }
+  footer {
+    text-align:center;
+    padding:20px 12px;
+    color:#6fffe6;
+    opacity:.8;
+    font-size:.75rem;
+  }
 </style>
 </head>
 <body>
   <header>
-    <a class="back" href="/Video-bpfam/">⬅️ Torna indietro</a>
-    <h1>💨 BPFAM — Weed Video 💎</h1>
+    <a class="back" href="/Video-bpfam/">⬅️ Torna</a>
+    <h1>💨 BPFAM — Weed 💎</h1>
   </header>
 
   <div id="scroll" class="scroll-container"></div>
-  <div id="empty" class="empty" style="display:none">Nessun video trovato nella cartella.</div>
+  <div id="empty" class="empty" style="display:none">Nessun video trovato.</div>
 
   <footer>💎 BPFAM — Serietà, Qualità e Rispetto</footer>
 
