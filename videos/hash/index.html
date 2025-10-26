@@ -9,7 +9,6 @@
   * { box-sizing:border-box; }
   body { margin:0; background:#000; color:#e9feff; font-family:system-ui, Arial, sans-serif; }
 
-  /* Header */
   header{
     position:sticky; top:0; z-index:10;
     display:flex; align-items:center; gap:10px; justify-content:space-between;
@@ -28,12 +27,8 @@
     white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
     animation: glow 2s infinite alternate;
   }
-  @keyframes glow {
-    from { text-shadow:0 0 10px var(--neon), 0 0 20px var(--neon); }
-    to   { text-shadow:0 0 25px var(--neon), 0 0 50px var(--neon); }
-  }
+  @keyframes glow { from { text-shadow:0 0 10px var(--neon) } to { text-shadow:0 0 25px var(--neon) } }
 
-  /* Griglia LED */
   .wrap{ max-width:1200px; margin:0 auto; padding:16px; }
   .grid{ display:grid; gap:var(--gap); }
   .grid[data-cols="4"]{ grid-template-columns:repeat(4,1fr); }
@@ -56,7 +51,7 @@
   .empty{ color:#9af6ff; text-align:center; padding:40px 12px; }
   footer{ text-align:center; color:#9af6ff; opacity:.8; padding:26px 12px; }
 
-  /* FAB (menu 1-2-3-4) */
+  /* FAB 1-2-3-4 */
   .fab{ position:fixed; right:14px; bottom:18px; z-index:20; display:flex; flex-direction:column; align-items:flex-end; gap:8px; }
   .fab-toggle{
     width:52px; height:52px; border-radius:50%; border:1px solid var(--neon); background:#000; color:var(--neon);
@@ -108,7 +103,7 @@
 (async () => {
   const owner = "bpfam";
   const repo  = "Video-bpfam";
-  const path  = "videos/hash";   // <<< cartella HASH
+  const path  = "videos/hash";
   const api   = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
 
   // Vista salvata (default "2")
@@ -127,27 +122,47 @@
     btns.forEach(b => b.classList.toggle("active", b.dataset.c === c));
   }
   setActive(saved);
-
   toggle.addEventListener("click", ()=> fab.classList.toggle("open"));
   document.addEventListener("click", (e)=>{ if(!fab.contains(e.target)) fab.classList.remove("open"); });
   btns.forEach(b=> b.addEventListener("click", ()=>{ setActive(b.dataset.c); fab.classList.remove("open"); }));
 
-  // Carica automaticamente TUTTI i .mp4 in /videos/hash
+  // --- Riconoscimento automatico dei video ---
+  const VIDEO_RE = /\.(mp4|mov|m4v|webm|mkv|avi)$/i;
+
+  function guessMime(name){
+    const ext = (name.split('.').pop() || '').toLowerCase();
+    return ({
+      mp4:'video/mp4',
+      mov:'video/quicktime',
+      m4v:'video/x-m4v',
+      webm:'video/webm',
+      mkv:'video/x-matroska',
+      avi:'video/x-msvideo'
+    })[ext] || 'video/mp4';
+  }
+
   try{
     const res = await fetch(api, { headers:{ "Accept":"application/vnd.github+json" }});
     const data = await res.json();
+    // Prendi tutti i file (escludi index.html, .gitkeep). Includi:
+    // - file con estensione video,
+    // - file senza estensione (li proveremo lo stesso).
     const files = (Array.isArray(data)?data:[])
-      .filter(f => f.type==="file" && /\.mp4$/i.test(f.name))
-      .sort((a,b)=>a.name.localeCompare(b.name));
+      .filter(f => f.type === "file" &&
+                   !/^(index\.html|\.gitkeep)$/i.test(f.name) )
+      .sort((a,b)=> a.name.localeCompare(b.name));
 
     if(!files.length){
       document.getElementById("empty").style.display = "block";
       return;
     }
 
-    for(const f of files){
-      const encoded = encodeURIComponent(f.name);  // gestisce spazi/emoji
+    for (const f of files) {
+      const encoded = encodeURIComponent(f.name);
       const src = `./${encoded}`;
+
+      // Se ha estensione nota, usala; se non ce l'ha, proviamo comunque.
+      const mime = guessMime(f.name);
 
       const card = document.createElement('div');
       card.className = 'card';
@@ -156,7 +171,24 @@
       v.controls = true;
       v.playsInline = true;
       v.preload = "metadata";
-      v.src = src;
+
+      // Usa <source> con type per aiutare i browser
+      const s = document.createElement('source');
+      s.src = src;
+      s.type = mime;
+      v.appendChild(s);
+
+      // Se il browser non può riprodurlo, non lo mostriamo (fallback pulito)
+      const can = v.canPlayType(mime);
+      if (VIDEO_RE.test(f.name) && can === "") {
+        // estensione nota ma non supportata: salta
+        continue;
+      }
+
+      // per file senza estensione, proviamo comunque (Safari iPhone legge mp4/mov)
+      v.addEventListener('error', () => {
+        card.remove(); // se non parte, togli la card
+      });
 
       const name = document.createElement('div');
       name.className = 'name';
