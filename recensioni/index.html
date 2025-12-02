@@ -3,63 +3,85 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>⭐ Recensioni BPFAM</title>
+<title>BPFAM RECENSIONI</title>
+
 <style>
   body {
     background: #000;
     color: #fff;
-    font-family: Arial;
+    font-family: Arial, sans-serif;
     text-align: center;
   }
 
   h1 {
-    margin-top: 20px;
+    margin-top: 80px;
+    font-size: 30px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    color: #00eaff;
+    text-shadow: 0 0 10px #00eaff, 0 0 20px #00eaff;
   }
 
+  /* --- Pulsante Back fisso --- */
   .back-btn {
-    display: inline-block;
-    margin-top: 10px;
-    padding: 12px 25px;
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    padding: 10px 20px;
     border-radius: 10px;
+    background: transparent;
     text-decoration: none;
     color: #00eaff;
     border: 2px solid #00eaff;
-    text-shadow: 0 0 10px #00eaff;
-    box-shadow: 0 0 15px #00eaff;
     font-weight: bold;
-    font-size: 18px;
+    font-size: 16px;
+    text-shadow: 0 0 8px #00eaff;
+    box-shadow: 0 0 15px #00eaff;
     transition: 0.25s;
+    z-index: 99;
   }
 
   .back-btn:hover {
     background: #00eaff;
     color: #000;
-    box-shadow: 0 0 25px #00eaff;
+    box-shadow: 0 0 30px #00eaff;
+  }
+
+  /* --- Animazioni immagini/video --- */
+  .fade {
+    opacity: 0;
+    transform: scale(0.98);
+    animation: fadeIn 0.6s ease forwards;
+  }
+  @keyframes fadeIn {
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
   }
 
   .grid {
     display: flex;
     flex-direction: column;
-    gap: 25px;
-    width: 90%;
-    margin: 40px auto;
+    gap: 35px;
+    width: 92%;
+    margin: 40px auto 80px;
   }
 
   video, img {
     width: 100%;
-    border-radius: 12px;
+    border-radius: 16px;
     border: 2px solid #00eaff;
-    box-shadow: 0 0 15px #00eaff;
+    box-shadow: 0 0 20px #00eaff;
   }
 </style>
 </head>
+
 <body>
 
-<h1>⭐ RECENSIONI UFFICIALI BPFAM</h1>
+<a class="back-btn" href="https://bpfam.github.io">🔙 Torna indietro</a>
 
-<a class="back-btn" href="index.html">🔙 Torna indietro</a>
-
-<p>Carica un video/immagine nella cartella <b>recensioni/</b> su GitHub e appare qui automaticamente.</p>
+<h1>⭐ BPFAM RECENSIONI ⭐</h1>
 
 <div class="grid" id="contenitore"></div>
 
@@ -73,19 +95,19 @@ fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`)
   .then(files => {
     const box = document.getElementById("contenitore");
 
-    files.forEach(file => {
+    files.reverse().forEach(file => {
       let ext = file.name.split('.').pop().toLowerCase();
 
       if(["mp4","mov","webm"].includes(ext)) {
         box.innerHTML += `
-          <video controls>
+          <video class="fade" controls preload="metadata">
             <source src="${file.download_url}">
           </video>`;
       }
 
       if(["jpg","jpeg","png","gif","webp"].includes(ext)) {
         box.innerHTML += `
-          <img src="${file.download_url}">
+          <img class="fade" src="${file.download_url}">
         `;
       }
     });
