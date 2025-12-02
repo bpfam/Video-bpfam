@@ -1,97 +1,283 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>BPFAM RECENSIONI</title>
 <style>
-  body {
-    background: #000;
-    color: #fff;
-    font-family: Arial, sans-serif;
-    text-align: center;
-    margin: 0;
+  :root { --neon:#00eaff; --gap:12px; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:#000; color:#e9feff; font-family:system-ui, Arial, sans-serif; }
+
+  /* HEADER */
+  header{
+    position:sticky; top:0; z-index:10;
+    display:flex; align-items:center; gap:10px; justify-content:space-between;
+    padding:12px; background:radial-gradient(circle at center, #030b0c 40%, #000 100%);
+    border-bottom:1px solid rgba(0,234,255,.18);
+  }
+  .left{ display:flex; gap:10px; align-items:center; min-width:0; }
+  .back{
+    text-decoration:none; padding:.5rem .9rem; border:1px solid var(--neon);
+    border-radius:999px; color:var(--neon);
+    box-shadow:0 0 12px var(--neon);
+    transition:all .2s ease; white-space:nowrap;
+  }
+  .back:hover{ background:var(--neon); color:#000; }
+
+  /* TITOLO CON GLOW POTENZIATO */
+  .title{
+    margin:0; font-size:1rem; line-height:1;
+    display:flex; align-items:center; gap:8px;
+    color:var(--neon);
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    animation: glow 2s infinite alternate;
+  }
+  @keyframes glow {
+    from {
+      text-shadow:0 0 10px var(--neon),
+                  0 0 20px var(--neon);
+    }
+    to {
+      text-shadow:0 0 20px var(--neon),
+                  0 0 40px var(--neon),
+                  0 0 70px var(--neon);
+    }
   }
 
-  h1 {
-    margin-top: 30px;
-    font-size: 28px;
-    letter-spacing: 2px;
+  .wrap{ max-width:1200px; margin:0 auto; padding:16px; }
+
+  /* GRID */
+  .grid{ display:grid; gap:var(--gap); }
+  .grid[data-cols="4"]{ grid-template-columns:repeat(4,1fr); }
+  .grid[data-cols="3"]{ grid-template-columns:repeat(3,1fr); }
+  .grid[data-cols="2"]{ grid-template-columns:repeat(2,1fr); }
+  .grid[data-cols="1"]{ grid-template-columns:repeat(1,1fr); }
+
+  /* CARD + FADE-IN */
+  .card{
+    padding:10px;
+    border-radius:14px;
+    background:#020202;
+    border:1px solid rgba(0,234,255,.2);
+    box-shadow:0 0 0 1px rgba(0,234,255,.25) inset,
+               0 0 22px rgba(0,234,255,.25),
+               0 0 44px rgba(0,234,255,.15);
+    transition:transform .18s ease, box-shadow .18s ease,
+               opacity .35s ease, transform .35s ease;
+    opacity:0;
+    transform:translateY(10px);
+  }
+  .card.show{
+    opacity:1;
+    transform:translateY(0);
+  }
+  .card:hover{
+    transform:scale(1.03);
+    box-shadow:0 0 28px rgba(0,234,255,.45);
   }
 
-  .back-btn {
-    display: inline-block;
-    margin-top: 10px;
-    padding: 12px 25px;
-    border-radius: 10px;
-    text-decoration: none;
-    color: #00eaff;
-    border: 2px solid #00eaff;
-    text-shadow: 0 0 10px #00eaff;
-    box-shadow: 0 0 15px #00eaff;
-    font-weight: bold;
-    font-size: 18px;
-    transition: 0.25s;
+  video, img{
+    width:100%;
+    aspect-ratio:9/16;
+    object-fit:cover;
+    display:block;
+    border-radius:12px;
+    background:#000;
   }
 
-  .back-btn:hover {
-    background: #00eaff;
-    color: #000;
-    box-shadow: 0 0 25px #00eaff;
+  .name{
+    margin:.45rem 0 0;
+    text-align:center;
+    font-size:.7rem;
+    color:#9af6ff;
+    word-break:break-word;
   }
 
-  .grid {
-    display: flex;
-    flex-direction: column;
-    gap: 25px;
-    width: 90%;
-    margin: 40px auto 50px;
+  footer{
+    text-align:center;
+    color:#9af6ff;
+    opacity:.8;
+    padding:26px 12px;
   }
 
-  video, img {
-    width: 100%;
-    border-radius: 12px;
-    border: 2px solid #00eaff;
-    box-shadow: 0 0 15px #00eaff;
+  /* FAB 1–2–3–4 COLONNE */
+  .fab{
+    position:fixed;
+    right:14px;
+    bottom:18px;
+    z-index:20;
+    display:flex;
+    flex-direction:column;
+    align-items:flex-end;
+    gap:8px;
+  }
+  .fab-toggle{
+    width:52px; height:52px;
+    border-radius:50%;
+    border:1px solid var(--neon);
+    background:#000; color:var(--neon);
+    box-shadow:0 0 12px var(--neon),
+               inset 0 0 10px rgba(0,234,255,.2);
+    font-size:1.2rem;
+    cursor:pointer;
+    transition:transform .15s ease, box-shadow .2s ease;
+  }
+  .fab-toggle:hover{
+    transform:scale(1.05);
+    box-shadow:0 0 18px var(--neon);
+  }
+  .fab-menu{
+    display:none;
+    flex-direction:column;
+    gap:6px;
+    padding:8px;
+    background:#020202;
+    border:1px solid rgba(0,234,255,.25);
+    border-radius:12px;
+    box-shadow:0 0 24px rgba(0,234,255,.35);
+  }
+  .fab.open .fab-menu{ display:flex; }
+
+  .fab-btn{
+    min-width:44px;
+    padding:.35rem .65rem;
+    border-radius:999px;
+    cursor:pointer;
+    background:transparent;
+    color:var(--neon);
+    border:1px solid var(--neon);
+    font-weight:700;
+    box-shadow:0 0 8px var(--neon);
+    font-size:.8rem;
+  }
+  .fab-btn.active{
+    background:var(--neon);
+    color:#000;
   }
 </style>
 </head>
+
 <body>
 
-<h1>⭐ BPFAM RECENSIONI ⭐</h1>
+  <header>
+    <div class="left">
+      <a class="back" href="/Video-bpfam/">⬅️ Torna al Menù</a>
+      <h1 class="title">⭐ BPFAM RECENSIONI ⭐</h1>
+    </div>
+  </header>
 
-<!-- 🔙 TORNA ALLA HOME DEI VIDEO -->
-<a class="back-btn" href="../">🔙 Torna indietro</a>
+  <div class="wrap">
+    <div id="grid" class="grid" data-cols="2"></div>
+  </div>
 
-<div class="grid" id="contenitore"></div>
+  <footer>💎 Serietà, Qualità e Rispetto — BPFAM</footer>
+
+  <!-- FAB -->
+  <div class="fab" id="fab">
+    <div class="fab-menu" id="fabMenu" aria-label="Numero colonne">
+      <button class="fab-btn" data-c="1">1</button>
+      <button class="fab-btn" data-c="2">2</button>
+      <button class="fab-btn" data-c="3">3</button>
+      <button class="fab-btn" data-c="4">4</button>
+    </div>
+    <button class="fab-toggle" id="fabToggle" aria-label="Vista">⧉</button>
+  </div>
 
 <script>
-const owner = "bpfam";
-const repo = "Video-bpfam";
-const path = "recensioni";
+(async () => {
+  const owner = "bpfam";
+  const repo  = "Video-bpfam";
+  const path  = "recensioni";
 
-fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`)
-  .then(r => r.json())
-  .then(files => {
-    const box = document.getElementById("contenitore");
+  const api  = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
+  const grid = document.getElementById("grid");
 
-    files.forEach(file => {
-      let ext = file.name.split('.').pop().toLowerCase();
+  // colonne salvate solo per pagina recensioni
+  const saved = localStorage.getItem("bpfam_cols_rec") || "2";
+  grid.setAttribute("data-cols", saved);
 
-      if (["mp4","mov","webm"].includes(ext)) {
-        box.innerHTML += `
-          <video controls>
-            <source src="${file.download_url}">
-          </video>`;
-      }
+  const fab    = document.getElementById("fab");
+  const toggle = document.getElementById("fabToggle");
+  const menu   = document.getElementById("fabMenu");
+  const btns   = menu.querySelectorAll(".fab-btn");
 
-      if (["jpg","jpeg","png","gif","webp"].includes(ext)) {
-        box.innerHTML += `
-          <img src="${file.download_url}">
-        `;
-      }
-    });
+  function setActive(c){
+    grid.setAttribute("data-cols", c);
+    localStorage.setItem("bpfam_cols_rec", c);
+    btns.forEach(b => b.classList.toggle("active", b.dataset.c === c));
+  }
+
+  setActive(saved);
+
+  toggle.addEventListener("click", () => fab.classList.toggle("open"));
+  document.addEventListener("click", (e) => {
+    if (!fab.contains(e.target)) fab.classList.remove("open");
   });
+  btns.forEach(b => b.addEventListener("click", () => {
+    setActive(b.dataset.c);
+    fab.classList.remove("open");
+  }));
+
+  const VIDEO_RE = /\.(mp4|mov|webm|m4v|mkv|avi)$/i;
+  const IMG_RE   = /\.(jpe?g|png|gif|webp)$/i;
+
+  try {
+    const res   = await fetch(api);
+    const files = await res.json();
+
+    for (const f of files) {
+      if (!f.download_url) continue;
+
+      const isVideo = VIDEO_RE.test(f.name);
+      const isImage = IMG_RE.test(f.name);
+      if (!isVideo && !isImage) continue;
+
+      const card = document.createElement("div");
+      card.className = "card";
+
+      if (isVideo) {
+        const v = document.createElement("video");
+        v.controls = true;
+        v.playsInline = true;
+        v.preload = "metadata";
+        v.src = f.download_url;
+        card.appendChild(v);
+      } else if (isImage) {
+        const img = document.createElement("img");
+        img.src = f.download_url;
+        img.alt = f.name;
+        card.appendChild(img);
+      }
+
+      const name = document.createElement("div");
+      name.className = "name";
+      name.textContent = f.name;
+      card.appendChild(name);
+
+      grid.appendChild(card);
+
+      // FADE-IN dopo inserimento
+      requestAnimationFrame(() => {
+        card.classList.add("show");
+      });
+    }
+  } catch (e) {
+    console.error(e);
+  }
+
+  /* ANTI-DOWNLOAD BASE */
+  // blocca tasto destro
+  document.addEventListener("contextmenu", e => e.preventDefault());
+  // blocca trascinamento di immagini/video
+  document.addEventListener("dragstart", e => e.preventDefault());
+  // blocca alcune scorciatoie (Ctrl+S, Ctrl+P, Cmd+S, Cmd+P)
+  document.addEventListener("keydown", e => {
+    if ((e.ctrlKey || e.metaKey) && ["s","p","u"].includes(e.key.toLowerCase())) {
+      e.preventDefault();
+    }
+  });
+})();
 </script>
 
 </body>
