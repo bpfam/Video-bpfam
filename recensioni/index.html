@@ -12,6 +12,31 @@
     text-align: center;
   }
 
+  h1 {
+    margin-top: 20px;
+  }
+
+  .back-btn {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 12px 25px;
+    border-radius: 10px;
+    text-decoration: none;
+    color: #00eaff;
+    border: 2px solid #00eaff;
+    text-shadow: 0 0 10px #00eaff;
+    box-shadow: 0 0 15px #00eaff;
+    font-weight: bold;
+    font-size: 18px;
+    transition: 0.25s;
+  }
+
+  .back-btn:hover {
+    background: #00eaff;
+    color: #000;
+    box-shadow: 0 0 25px #00eaff;
+  }
+
   .grid {
     display: flex;
     flex-direction: column;
@@ -31,6 +56,9 @@
 <body>
 
 <h1>⭐ RECENSIONI UFFICIALI BPFAM</h1>
+
+<a class="back-btn" href="index.html">🔙 Torna indietro</a>
+
 <p>Carica un video/immagine nella cartella <b>recensioni/</b> su GitHub e appare qui automaticamente.</p>
 
 <div class="grid" id="contenitore"></div>
@@ -48,7 +76,6 @@ fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`)
     files.forEach(file => {
       let ext = file.name.split('.').pop().toLowerCase();
 
-      // VIDEO
       if(["mp4","mov","webm"].includes(ext)) {
         box.innerHTML += `
           <video controls>
@@ -56,7 +83,6 @@ fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`)
           </video>`;
       }
 
-      // FOTO
       if(["jpg","jpeg","png","gif","webp"].includes(ext)) {
         box.innerHTML += `
           <img src="${file.download_url}">
