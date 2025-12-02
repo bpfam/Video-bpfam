@@ -11,29 +11,16 @@
 
   header{
     position:sticky; top:0; z-index:10;
-    display:flex; align-items:center; gap:10px; justify-content:space-between;
-    padding:12px; background:radial-gradient(circle at center, #030b0c 40%, #000 100%);
+    display:flex; align-items:center; justify-content:center;
+    padding:14px;
+    background:radial-gradient(circle at center, #030b0c 40%, #000 100%);
     border-bottom:1px solid rgba(0,234,255,.18);
   }
-  .back{
-    text-decoration:none; padding:.5rem .9rem; border:1px solid var(--neon);
-    border-radius:999px; color:var(--neon);
-    box-shadow:0 0 12px var(--neon);
-    transition:all .2s ease; white-space:nowrap;
-  }
-  .back:hover{ background:var(--neon); color:#000; }
-
   .title{
-    margin:0; font-size:1rem; line-height:1;
-    display:flex; align-items:center; gap:8px;
-    color:var(--neon);
+    font-size:1rem; color:var(--neon);
     animation: glow 2s infinite alternate;
-    white-space:nowrap;
   }
-  @keyframes glow {
-    from { text-shadow:0 0 10px var(--neon) }
-    to { text-shadow:0 0 35px var(--neon),0 0 70px var(--neon) }
-  }
+  @keyframes glow { from{ text-shadow:0 0 10px var(--neon)} to{ text-shadow:0 0 35px var(--neon) } }
 
   .wrap{ max-width:1200px; margin:0 auto; padding:16px; }
 
@@ -46,29 +33,24 @@
   .card{
     padding:10px; border-radius:14px;
     background:#020202;
-    border:1px solid rgba(0,234,255,.2);
     opacity:0; transform:translateY(14px);
     transition:.35s;
+    border:1px solid rgba(0,234,255,.25);
     box-shadow:0 0 22px rgba(0,234,255,.2);
   }
   .card.show{ opacity:1; transform:translateY(0); }
 
-  video, img{
-    width:100%; display:block;
-    border-radius:12px;
-    aspect-ratio:9/16;
-    object-fit:cover;
+  img, video{
+    width:100%; border-radius:12px;
+    object-fit:cover; aspect-ratio:9/16;
   }
-
   .name{
-    text-align:center;
-    font-size:.7rem; margin-top:6px;
-    color:#9af6ff;
+    text-align:center; font-size:.7rem; color:#9af6ff;
+    margin-top:6px; word-break:break-word;
   }
 
-  footer{ text-align:center; color:#9af6ff; padding:26px 12px; opacity:.8; }
+  footer{ text-align:center; color:#9af6ff; padding:26px; opacity:.8; }
 
-  /* FAB */
   .fab{
     position:fixed; right:16px; bottom:20px; z-index:20;
     display:flex; flex-direction:column; gap:10px;
@@ -77,7 +59,7 @@
     width:52px; height:52px; border-radius:50%;
     border:2px solid var(--neon); background:#000; color:var(--neon);
     box-shadow:0 0 12px var(--neon);
-    cursor:pointer; font-size:1.3rem;
+    font-size:1.3rem; cursor:pointer;
   }
   .fab-menu{
     display:none; flex-direction:column; gap:6px;
@@ -86,76 +68,55 @@
   }
   .fab.open .fab-menu{ display:flex; }
   .fab-btn{
-    padding:.4rem .7rem; border-radius:999px;
-    border:1px solid var(--neon); color:var(--neon);
-    box-shadow:0 0 8px var(--neon); cursor:pointer;
-    background:#000; font-weight:700;
+    padding:.35rem .7rem; border-radius:999px;
+    background:#000; border:1px solid var(--neon);
+    color:var(--neon); cursor:pointer;
   }
   .fab-btn.active{ background:var(--neon); color:#000; }
 
-  /* FULLSCREEN VIEWER */
-  .viewer {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,.92);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 999;
-    padding: 20px;
-    touch-action:none;
+  /* VIEWER */
+  .viewer{
+    position:fixed; inset:0;
+    display:none; justify-content:center; align-items:center;
+    background:rgba(0,0,0,.92);
+    z-index:999; touch-action:none;
+    padding:20px;
   }
-  .viewer.show { display:flex; }
-  .viewer-img {
-    max-width: 100%;
-    max-height: 100%;
-    border-radius: 14px;
-    box-shadow: 0 0 40px var(--neon);
-    transition: transform .1s linear;
+  .viewer.show{ display:flex; }
+
+  .viewer-img{
+    max-width:100%; max-height:100%;
+    border-radius:14px;
+    transition:transform .1s linear;
+    box-shadow:0 0 40px var(--neon);
   }
 
-  /* Frecce */
-  .viewer-nav {
-    position: absolute; top: 50%;
-    transform: translateY(-50%);
-    font-size: 46px; font-weight:900;
+  .viewer-nav{
+    position:absolute; top:50%; transform:translateY(-50%);
+    font-size:46px; font-weight:900;
     background:rgba(0,0,0,.6);
     border-radius:50%;
     padding:12px 20px;
     border:2px solid var(--neon);
     color:var(--neon);
-    text-shadow:0 0 12px var(--neon);
-    cursor:pointer; z-index:1001;
+    cursor:pointer;
+    user-select:none;
   }
-  .viewer-nav.prev { left:16px; }
-  .viewer-nav.next { right:16px; }
+  .viewer-nav.prev{ left:16px; }
+  .viewer-nav.next{ right:16px; }
 
-  /* Bottone CHIUDI */
-  .viewer-close {
-    position: absolute;
-    bottom:22px; left:50%; transform:translateX(-50%);
-    font-size:17px; font-weight:700;
-    background:var(--neon); color:#000;
-    padding:8px 24px; border-radius:10px;
-    border:2px solid var(--neon);
-    box-shadow:0 0 20px var(--neon);
-    text-transform:uppercase;
-  }
 </style>
 </head>
 
 <body>
 
-<header>
-  <a class="back" href="/Video-bpfam/">⬅️ Indietro</a>
-  <h1 class="title">⭐ BPFAM RECENSIONI ⭐</h1>
-</header>
+<header><h1 class="title">⭐ BPFAM RECENSIONI ⭐</h1></header>
 
 <div class="wrap">
   <div id="grid" class="grid" data-cols="2"></div>
 </div>
 
-<footer>💎 Serietà, Qualità e Rispetto — BPFAM</footer>
+<footer>Serietà, Qualità e Rispetto — BPFAM</footer>
 
 <div class="fab" id="fab">
   <div class="fab-menu" id="fabMenu">
@@ -167,123 +128,108 @@
   <button class="fab-toggle" id="fabToggle">⧉</button>
 </div>
 
-<!-- VIEWER -->
 <div class="viewer" id="viewer">
   <span class="viewer-nav prev" id="viewerPrev">❮</span>
-  <img id="viewerImg" class="viewer-img" src="">
+  <img id="viewerImg" class="viewer-img">
   <span class="viewer-nav next" id="viewerNext">❯</span>
-  <button class="viewer-close" id="viewerClose">CHIUDI</button>
 </div>
 
 <script>
 (async()=>{
-  const owner="bpfam", repo="Video-bpfam", path="recensioni";
-  const api=`https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
   const grid=document.getElementById("grid");
-
+  const api="https://api.github.com/repos/bpfam/Video-bpfam/contents/recensioni";
   const saved=localStorage.getItem("bpfam_cols_rec")||"2";
-  grid.setAttribute("data-cols",saved);
+  grid.dataset.cols=saved;
 
   const fab=document.getElementById("fab");
   const toggle=document.getElementById("fabToggle");
   const menu=document.getElementById("fabMenu");
-  const btns=menu.querySelectorAll(".fab-btn");
-  function setCols(c){
-    grid.setAttribute("data-cols",c);
-    localStorage.setItem("bpfam_cols_rec",c);
-    btns.forEach(b=>b.classList.toggle("active",b.dataset.c===c));
-  }
-  setCols(saved);
   toggle.onclick=()=>fab.classList.toggle("open");
-  document.onclick=e=>{if(!fab.contains(e.target))fab.classList.remove("open");};
-  btns.forEach(b=>b.onclick=()=>{setCols(b.dataset.c);fab.classList.remove("open");});
 
-  const VIDEO_RE=/\.(mp4|mov|webm|m4v)$/i;
-  const IMG_RE=/\.(jpe?g|png|gif|webp)$/i;
-  let imageList=[], current=0;
+  menu.onclick=e=>{
+    if(e.target.dataset.c){
+      grid.dataset.cols=e.target.dataset.c;
+      localStorage.setItem("bpfam_cols_rec",e.target.dataset.c);
+      fab.classList.remove("open");
+    }
+  };
 
-  const res=await fetch(api), files=await res.json();
-  for(const f of files){
-    if(!f.download_url)continue;
+  const res=await fetch(api);
+  const files=await res.json();
+  const images=[];
+  files.forEach((f,i)=>{
+    if(!f.download_url)return;
     const card=document.createElement("div");
     card.className="card";
-    if(IMG_RE.test(f.name)){
-      const i=imageList.length;
-      const img=document.createElement("img");
-      img.src=f.download_url; img.dataset.idx=i;
-      imageList.push(f.download_url);
-      card.appendChild(img);
-    }else if(VIDEO_RE.test(f.name)){
-      const v=document.createElement("video");
-      v.controls=true; v.src=f.download_url;
-      card.appendChild(v);
-    }else continue;
-    const name=document.createElement("div");
-    name.className="name"; name.textContent=f.name;
-    card.appendChild(name);
+    let media;
+    if(/\.(jpg|jpeg|png|gif|webp)$/i.test(f.name)){
+      media=document.createElement("img");
+      media.dataset.i=images.length;
+      media.src=f.download_url;
+      images.push(f.download_url);
+    }else if(/\.(mp4|mov|webm)$/i.test(f.name)){
+      media=document.createElement("video");
+      media.controls=true;
+      media.src=f.download_url;
+    }
+    if(!media)return;
+    card.appendChild(media);
+    card.innerHTML+=`<div class="name">${f.name}</div>`;
     grid.appendChild(card);
     requestAnimationFrame(()=>card.classList.add("show"));
-  }
+  });
 
   const viewer=document.getElementById("viewer");
   const viewerImg=document.getElementById("viewerImg");
-  const closeBtn=document.getElementById("viewerClose");
   const prev=document.getElementById("viewerPrev");
   const next=document.getElementById("viewerNext");
+  let current=0,scale=1,startX=null,startY=null,pinch=null;
 
   function open(i){
-    if(!imageList.length)return;
-    current=(i+imageList.length)%imageList.length;
-    viewerImg.src=imageList[current];
+    current=(i+images.length)%images.length;
+    viewerImg.src=images[current];
     viewer.classList.add("show");
-    viewerImg.style.transform="scale(1)";
+    scale=1; viewerImg.style.transform="scale(1)";
   }
   function close(){ viewer.classList.remove("show"); }
-  function showNext(){ open(current+1); }
-  function showPrev(){ open(current-1); }
 
   grid.onclick=e=>{
-    const img=e.target.closest("img");
-    if(!img)return;
-    open(parseInt(img.dataset.idx,10));
+    const img=e.target.closest("img"); if(!img)return;
+    open(parseInt(img.dataset.i,10));
   };
-  prev.onclick=e=>{e.stopPropagation();showPrev()};
-  next.onclick=e=>{e.stopPropagation();showNext()};
-  closeBtn.onclick=close;
+  prev.onclick=e=>{e.stopPropagation();open(current-1)};
+  next.onclick=e=>{e.stopPropagation();open(current+1)};
 
-  let startX=null, scale=1, pinch=null;
+  viewer.onclick=e=>{ if(e.target===viewer) close(); };
 
-  viewer.addEventListener("touchstart",e=>{
-    if(e.touches.length===1){
-      startX=e.touches[0].clientX;
-    }else if(e.touches.length===2){
+  viewer.ontouchstart=e=>{
+    if(e.touches.length===1){ startX=e.touches[0].clientX; startY=e.touches[0].clientY; }
+    else if(e.touches.length===2){
       const dx=e.touches[0].clientX-e.touches[1].clientX;
       const dy=e.touches[0].clientY-e.touches[1].clientY;
       pinch=Math.hypot(dx,dy);
     }
-  },{passive:false});
-
-  viewer.addEventListener("touchmove",e=>{
+  };
+  viewer.ontouchmove=e=>{
     if(e.touches.length===2&&pinch){
       e.preventDefault();
       const dx=e.touches[0].clientX-e.touches[1].clientX;
       const dy=e.touches[0].clientY-e.touches[1].clientY;
-      let dist=Math.hypot(dx,dy);
-      scale=Math.min(3,Math.max(1,(dist/pinch)));
+      scale=Math.min(3,Math.max(1,Math.hypot(dx,dy)/pinch));
       viewerImg.style.transform=`scale(${scale})`;
     }
-  },{passive:false});
-
-  viewer.addEventListener("touchend",e=>{
-    if(startX!==null&&e.changedTouches){
-      const dx=e.changedTouches[0].clientX-startX;
-      if(scale===1){
-        if(dx>50)showPrev();
-        if(dx<-50)showNext();
-      }
+  };
+  viewer.ontouchend=e=>{
+    const touch=e.changedTouches[0];
+    const dx=touch.clientX-startX;
+    const dy=touch.clientY-startY;
+    if(scale===1){
+      if(dx>60)open(current-1);
+      if(dx<-60)open(current+1);
+      if(dy>80)close();
     }
-    startX=null; pinch=null;
-  });
+    startX=null; startY=null; pinch=null;
+  };
 
   document.oncontextmenu=e=>e.preventDefault();
 })();
