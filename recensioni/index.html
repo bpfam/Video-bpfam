@@ -60,10 +60,8 @@
 
 <h1>⭐ BPFAM RECENSIONI ⭐</h1>
 
-<!-- 🔙 TORNA ALLA HOME DI VIDEO-BPFAM -->
-<a class="back-btn" href="/Video-bpfam/">🔙 Torna indietro</a>
-
-<!-- NIENTE TESTO "carica un video/immagine..." -->
+<!-- 🔙 TORNA ALLA HOME DEI VIDEO -->
+<a class="back-btn" href="../">🔙 Torna indietro</a>
 
 <div class="grid" id="contenitore"></div>
 
@@ -80,7 +78,6 @@ fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`)
     files.forEach(file => {
       let ext = file.name.split('.').pop().toLowerCase();
 
-      // VIDEO
       if (["mp4","mov","webm"].includes(ext)) {
         box.innerHTML += `
           <video controls>
@@ -88,7 +85,6 @@ fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`)
           </video>`;
       }
 
-      // FOTO
       if (["jpg","jpeg","png","gif","webp"].includes(ext)) {
         box.innerHTML += `
           <img src="${file.download_url}">
