@@ -8,34 +8,20 @@
   body {
     background: #000;
     color: #fff;
-    font-family: Arial;
+    font-family: Arial, sans-serif;
     text-align: center;
+    margin: 0;
   }
 
   h1 {
-    margin-top: 20px;
+    margin-top: 30px;
     font-size: 28px;
     letter-spacing: 2px;
   }
 
-  .grid {
-    display: flex;
-    flex-direction: column;
-    gap: 25px;
-    width: 90%;
-    margin: 40px auto;
-  }
-
-  video, img {
-    width: 100%;
-    border-radius: 12px;
-    border: 2px solid #00eaff;
-    box-shadow: 0 0 15px #00eaff;
-  }
-
   .back-btn {
     display: inline-block;
-    margin-top: 15px;
+    margin-top: 10px;
     padding: 12px 25px;
     border-radius: 10px;
     text-decoration: none;
@@ -53,16 +39,31 @@
     color: #000;
     box-shadow: 0 0 25px #00eaff;
   }
+
+  .grid {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    width: 90%;
+    margin: 40px auto 50px;
+  }
+
+  video, img {
+    width: 100%;
+    border-radius: 12px;
+    border: 2px solid #00eaff;
+    box-shadow: 0 0 15px #00eaff;
+  }
 </style>
 </head>
 <body>
 
 <h1>⭐ BPFAM RECENSIONI ⭐</h1>
 
-<!-- 🔙 QUI TORNI ALLA HOME PRINCIPALE -->
-<a class="back-btn" href="https://bpfam.github.io">🔙 Torna indietro</a>
+<!-- 🔙 TORNA ALLA HOME DI VIDEO-BPFAM -->
+<a class="back-btn" href="/Video-bpfam/">🔙 Torna indietro</a>
 
-<!-- NESSUNA SCRITTA "Carica un video/immagine..." -->
+<!-- NIENTE TESTO "carica un video/immagine..." -->
 
 <div class="grid" id="contenitore"></div>
 
@@ -80,7 +81,7 @@ fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`)
       let ext = file.name.split('.').pop().toLowerCase();
 
       // VIDEO
-      if(["mp4","mov","webm"].includes(ext)) {
+      if (["mp4","mov","webm"].includes(ext)) {
         box.innerHTML += `
           <video controls>
             <source src="${file.download_url}">
@@ -88,7 +89,7 @@ fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`)
       }
 
       // FOTO
-      if(["jpg","jpeg","png","gif","webp"].includes(ext)) {
+      if (["jpg","jpeg","png","gif","webp"].includes(ext)) {
         box.innerHTML += `
           <img src="${file.download_url}">
         `;
