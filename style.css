@@ -1,125 +1,245 @@
 :root{
-  --c-hash:#00eaff;
-  --c-weed:#00ffcc;
-  --c-rec:#ffc149;
-  --c-neve:#8b6aff;
+  --bg:#020205;
 
-  --bg1:#020202;
-  --bg2:#000000;
+  --ice:#7fe7ff;
+  --ice2:#2bbdff;
+
+  --hash:#6ad7ff;
+  --weed:#52ff78;
+  --rec:#ffcc4a;
+  --neve:#9fdcff;
+
+  --txt:#eaf6ff;
+  --muted:rgba(234,246,255,.65);
+
+  --radius:18px;
 }
 
-*{ box-sizing:border-box; }
-
+*{box-sizing:border-box}
+html,body{height:100%}
 body{
   margin:0;
-  color:#fff;
-  font-family:"Montserrat", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  text-align:center;
-  background: radial-gradient(circle at center, var(--bg1) 40%, var(--bg2) 100%);
+  background: var(--bg);
+  color:var(--txt);
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   overflow-x:hidden;
 }
 
-.hero{
-  padding-top:68px;
+/* =========================
+   SFONDO FUMO (solo CSS)
+   ========================= */
+body::before{
+  content:"";
+  position:fixed;
+  inset:-20%;
+  background:
+    radial-gradient(80% 60% at 50% 10%, rgba(120,220,255,.25), transparent 60%),
+    radial-gradient(70% 50% at 30% 40%, rgba(255,255,255,.10), transparent 60%),
+    radial-gradient(70% 60% at 70% 55%, rgba(255,255,255,.12), transparent 60%),
+    radial-gradient(60% 55% at 40% 80%, rgba(120,220,255,.12), transparent 65%),
+    radial-gradient(80% 70% at 60% 85%, rgba(255,255,255,.10), transparent 70%),
+    radial-gradient(45% 45% at 15% 25%, rgba(255,255,255,.08), transparent 60%),
+    radial-gradient(45% 45% at 85% 20%, rgba(255,255,255,.08), transparent 60%),
+    linear-gradient(180deg, rgba(0,0,0,.15), rgba(0,0,0,.65));
+  filter: blur(18px) saturate(1.25) contrast(1.05);
+  opacity:.95;
+  transform: translate3d(0,0,0);
+  animation: smokeMove 14s ease-in-out infinite alternate;
+  pointer-events:none;
+  z-index:0;
 }
 
-h1{
-  margin:0;
-  font-size:clamp(30px, 6vw, 56px);
-  letter-spacing:3px;
-  color:var(--c-hash);
-  /* neon SOFT (come il tuo screen) */
+/* vignetta */
+body::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  background:
+    radial-gradient(60% 55% at 50% 30%, transparent 0 55%, rgba(0,0,0,.75) 100%),
+    radial-gradient(90% 90% at 50% 60%, transparent 0 50%, rgba(0,0,0,.55) 100%);
+  pointer-events:none;
+  z-index:0;
+}
+
+@keyframes smokeMove{
+  0%{ transform: translate(-2%, -2%) scale(1.02); }
+  100%{ transform: translate(2%, 2%) scale(1.08); }
+}
+
+/* =========================
+   LAYOUT
+   ========================= */
+.wrap{
+  position:relative;
+  z-index:1;
+  max-width:720px;
+  margin:0 auto;
+  padding:56px 18px 44px;
+  text-align:center;
+}
+
+.hero h1{
+  margin:0 0 14px;
+  font-weight:900;
+  letter-spacing:.6px;
+  font-size: clamp(28px, 5.8vw, 54px);
   text-shadow:
-    0 0 10px rgba(0,234,255,.55),
-    0 0 28px rgba(0,234,255,.35);
+    0 0 12px rgba(127,231,255,.35),
+    0 0 40px rgba(127,231,255,.18);
 }
 
-.subtitle{
-  margin-top:14px;
-  font-size:14px;
-  letter-spacing:3px;
-  color:rgba(255,255,255,.55);
+.brand{
+  color:var(--ice);
+  text-shadow: 0 0 12px rgba(127,231,255,.55), 0 0 48px rgba(43,189,255,.25);
 }
+.brand2{
+  color:#cfefff;
+  text-shadow: 0 0 10px rgba(127,231,255,.35);
+}
+
+.rule{
+  height:2px;
+  width:min(520px, 92%);
+  margin:12px auto 14px;
+  background: linear-gradient(90deg, transparent, rgba(127,231,255,.7), transparent);
+  box-shadow: 0 0 18px rgba(127,231,255,.25);
+}
+
+.sub{
+  margin:0 0 26px;
+  color:var(--muted);
+  font-weight:700;
+  letter-spacing:4px;
+  text-transform:uppercase;
+  font-size: 13px;
+}
+.sub span{opacity:.95}
 
 .menu{
   display:flex;
   flex-direction:column;
-  align-items:center;
-  gap:26px;
-  padding:52px 16px 40px;
+  gap:18px;
+  margin: 18px auto 30px;
 }
 
-/* base bottone: grande, “gangster clean”, glow diffuso */
+/* =========================
+   BOTTONI “ICE / NEON”
+   ========================= */
 .btn{
-  width:min(640px, 92vw);
+  position:relative;
   display:flex;
   align-items:center;
   justify-content:center;
-
+  padding:18px 18px;
+  border-radius: var(--radius);
   text-decoration:none;
-  text-transform:uppercase;
-  font-weight:800;
-  letter-spacing:2px;
-  font-size:20px;
-
-  padding:22px 28px;
-  border-radius:22px;
-
-  background:rgba(0,0,0,.55);
-  backdrop-filter: blur(8px);
-
-  transition: transform .18s ease, box-shadow .18s ease, background .18s ease, color .18s ease;
+  color:var(--txt);
+  font-weight:900;
+  font-size: clamp(18px, 4.2vw, 28px);
+  letter-spacing:1.2px;
+  background: rgba(0,0,0,.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 2px solid rgba(255,255,255,.10);
+  box-shadow:
+    0 18px 40px rgba(0,0,0,.55),
+    inset 0 0 20px rgba(255,255,255,.06);
+  overflow:hidden;
   transform: translateZ(0);
+  transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
 }
+
+.btn::before{
+  content:"";
+  position:absolute;
+  inset:-2px;
+  border-radius: var(--radius);
+  opacity:.95;
+  filter: blur(.2px);
+  z-index:0;
+}
+
+/* scintillio tipo ghiaccio */
+.btn::after{
+  content:"";
+  position:absolute;
+  inset:-60% -30%;
+  background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,.20) 50%, transparent 70%);
+  transform: translateX(-40%) rotate(8deg);
+  opacity:.35;
+  animation: shine 3.8s ease-in-out infinite;
+  z-index:0;
+}
+@keyframes shine{
+  0%{ transform: translateX(-55%) rotate(8deg); opacity:.18; }
+  50%{ opacity:.36; }
+  100%{ transform: translateX(55%) rotate(8deg); opacity:.18; }
+}
+
+.btnText{position:relative; z-index:1}
 
 /* hover */
 .btn:hover{
-  transform: scale(1.03);
+  transform: scale(1.02);
+  filter: saturate(1.15);
 }
 
-/* HASH */
-.btn.hash{
-  color:var(--c-hash);
-  border:3px solid rgba(0,234,255,.85);
+/* varianti colore (bordo + glow) */
+.btn-hash::before{
+  background: linear-gradient(90deg, rgba(106,215,255,.00), rgba(106,215,255,.95), rgba(106,215,255,.00));
+}
+.btn-hash{
+  border-color: rgba(106,215,255,.45);
   box-shadow:
-    0 0 14px rgba(0,234,255,.35),
-    0 0 40px rgba(0,234,255,.22),
-    inset 0 0 18px rgba(0,234,255,.18);
+    0 20px 50px rgba(0,0,0,.60),
+    0 0 26px rgba(106,215,255,.35),
+    inset 0 0 18px rgba(106,215,255,.14);
 }
 
-/* WEED */
-.btn.weed{
-  color:var(--c-weed);
-  border:3px solid rgba(0,255,204,.85);
+.btn-weed::before{
+  background: linear-gradient(90deg, rgba(82,255,120,.00), rgba(82,255,120,.95), rgba(82,255,120,.00));
+}
+.btn-weed{
+  border-color: rgba(82,255,120,.42);
   box-shadow:
-    0 0 14px rgba(0,255,204,.35),
-    0 0 40px rgba(0,255,204,.22),
-    inset 0 0 18px rgba(0,255,204,.16);
+    0 20px 50px rgba(0,0,0,.60),
+    0 0 26px rgba(82,255,120,.32),
+    inset 0 0 18px rgba(82,255,120,.12);
 }
 
-/* RECENSIONI */
-.btn.recensioni{
-  color:var(--c-rec);
-  border:3px solid rgba(255,193,73,.9);
+.btn-rec::before{
+  background: linear-gradient(90deg, rgba(255,204,74,.00), rgba(255,204,74,.98), rgba(255,204,74,.00));
+}
+.btn-rec{
+  border-color: rgba(255,204,74,.45);
   box-shadow:
-    0 0 14px rgba(255,193,73,.35),
-    0 0 40px rgba(255,193,73,.22),
-    inset 0 0 18px rgba(255,193,73,.14);
+    0 20px 50px rgba(0,0,0,.60),
+    0 0 26px rgba(255,204,74,.30),
+    inset 0 0 18px rgba(255,204,74,.12);
 }
 
-/* NEVE */
-.btn.neve{
-  color:#b9a7ff;
-  border:3px solid rgba(139,106,255,.9);
+.btn-neve::before{
+  background: linear-gradient(90deg, rgba(159,220,255,.00), rgba(159,220,255,.98), rgba(159,220,255,.00));
+}
+.btn-neve{
+  border-color: rgba(159,220,255,.45);
   box-shadow:
-    0 0 14px rgba(139,106,255,.35),
-    0 0 42px rgba(139,106,255,.22),
-    inset 0 0 18px rgba(139,106,255,.14);
+    0 20px 50px rgba(0,0,0,.60),
+    0 0 26px rgba(159,220,255,.30),
+    inset 0 0 18px rgba(159,220,255,.12);
 }
 
+/* footer */
 .foot{
-  padding:18px 10px 26px;
-  font-size:13px;
+  margin-top: 18px;
+  color: rgba(255,255,255,.70);
+  font-weight:700;
   letter-spacing:1px;
-  color:rgba(255,255,255,.45);
+  text-shadow: 0 0 14px rgba(0,0,0,.85);
+}
+
+/* mobile spacing */
+@media (max-width: 420px){
+  .wrap{ padding-top:46px; }
+  .sub{ letter-spacing:3px; }
 }
