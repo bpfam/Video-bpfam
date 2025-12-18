@@ -1,73 +1,125 @@
 :root{
-  --bg:#06090e;
-  --fg:#eef5ff;
-  --led-1:#00ffe6;
-  --led-2:#00aaff;
-  --gold-1:#ffeaa0;
-  --gold-2:#ffc149;
-  --gold-3:#ff9f0d;
-  --gold-4:#ffd36e;
+  --c-hash:#00eaff;
+  --c-weed:#00ffcc;
+  --c-rec:#ffc149;
+  --c-neve:#8b6aff;
+
+  --bg1:#020202;
+  --bg2:#000000;
 }
 
-*{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--bg);color:var(--fg);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+*{ box-sizing:border-box; }
 
-.topbar{padding:28px 16px 8px;text-align:center}
+body{
+  margin:0;
+  color:#fff;
+  font-family:"Montserrat", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  text-align:center;
+  background: radial-gradient(circle at center, var(--bg1) 40%, var(--bg2) 100%);
+  overflow-x:hidden;
+}
 
-/* TITOLO DORATO */
-.bpfam-title{
-  margin:0 0 14px;
-  font-size:clamp(28px,5vw,44px);
-  font-weight:900;
-  letter-spacing:.6px;
-  background:linear-gradient(180deg,var(--gold-1),var(--gold-2) 40%,var(--gold-3) 70%,var(--gold-4) 100%);
-  -webkit-background-clip:text;
-  background-clip:text;
-  color:transparent;
+.hero{
+  padding-top:68px;
+}
+
+h1{
+  margin:0;
+  font-size:clamp(30px, 6vw, 56px);
+  letter-spacing:3px;
+  color:var(--c-hash);
+  /* neon SOFT (come il tuo screen) */
   text-shadow:
-    0 0 10px rgba(255,160,30,.55),
-    0 0 24px rgba(255,190,60,.35),
-    0 0 40px rgba(255,200,80,.18);
+    0 0 10px rgba(0,234,255,.55),
+    0 0 28px rgba(0,234,255,.35);
 }
 
-/* GRIGLIA */
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
-  gap:18px;
-  padding:16px;
-  max-width:1200px;
-  margin:0 auto 56px;
+.subtitle{
+  margin-top:14px;
+  font-size:14px;
+  letter-spacing:3px;
+  color:rgba(255,255,255,.55);
 }
 
-/* CARD + LED */
-.card{
-  position:relative;
-  background:#0f1622;
-  border:1px solid #1a2533;
-  border-radius:16px;
-  overflow:hidden;
-}
-.card.led{
-  box-shadow:0 0 0 1px rgba(0,170,255,.35),0 8px 22px rgba(0,0,0,.35);
-}
-.card.led::before{
-  content:"";
-  position:absolute; inset:-1px; border-radius:16px;
-  background:linear-gradient(135deg,var(--led-1),var(--led-2) 45%,transparent 65%);
-  filter:blur(18px); opacity:.55; pointer-events:none; z-index:0;
+.menu{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:26px;
+  padding:52px 16px 40px;
 }
 
-/* VIDEO */
-.ratio{position:relative;width:100%;aspect-ratio:16/9;background:#000;border-radius:12px;overflow:hidden}
-.ratio video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
-.ratio::after{
-  content:""; position:absolute; inset:0; border-radius:12px; pointer-events:none;
-  box-shadow: inset 0 0 0 1px rgba(0,170,255,.25), inset 0 0 18px rgba(0,170,255,.14);
+/* base bottone: grande, “gangster clean”, glow diffuso */
+.btn{
+  width:min(640px, 92vw);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  text-decoration:none;
+  text-transform:uppercase;
+  font-weight:800;
+  letter-spacing:2px;
+  font-size:20px;
+
+  padding:22px 28px;
+  border-radius:22px;
+
+  background:rgba(0,0,0,.55);
+  backdrop-filter: blur(8px);
+
+  transition: transform .18s ease, box-shadow .18s ease, background .18s ease, color .18s ease;
+  transform: translateZ(0);
 }
 
-/* Stato */
-.empty{
-  max-width:760px;margin:32px auto;padding:14px 16px;text-align:center;
-  color:#a9b6c6;background:rgba(255,255,255,.04);border:1px dashed #1a2533;border-radius:12px;
+/* hover */
+.btn:hover{
+  transform: scale(1.03);
+}
+
+/* HASH */
+.btn.hash{
+  color:var(--c-hash);
+  border:3px solid rgba(0,234,255,.85);
+  box-shadow:
+    0 0 14px rgba(0,234,255,.35),
+    0 0 40px rgba(0,234,255,.22),
+    inset 0 0 18px rgba(0,234,255,.18);
+}
+
+/* WEED */
+.btn.weed{
+  color:var(--c-weed);
+  border:3px solid rgba(0,255,204,.85);
+  box-shadow:
+    0 0 14px rgba(0,255,204,.35),
+    0 0 40px rgba(0,255,204,.22),
+    inset 0 0 18px rgba(0,255,204,.16);
+}
+
+/* RECENSIONI */
+.btn.recensioni{
+  color:var(--c-rec);
+  border:3px solid rgba(255,193,73,.9);
+  box-shadow:
+    0 0 14px rgba(255,193,73,.35),
+    0 0 40px rgba(255,193,73,.22),
+    inset 0 0 18px rgba(255,193,73,.14);
+}
+
+/* NEVE */
+.btn.neve{
+  color:#b9a7ff;
+  border:3px solid rgba(139,106,255,.9);
+  box-shadow:
+    0 0 14px rgba(139,106,255,.35),
+    0 0 42px rgba(139,106,255,.22),
+    inset 0 0 18px rgba(139,106,255,.14);
+}
+
+.foot{
+  padding:18px 10px 26px;
+  font-size:13px;
+  letter-spacing:1px;
+  color:rgba(255,255,255,.45);
 }
