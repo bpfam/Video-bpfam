@@ -1,139 +1,33 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>🎥 BPFAM — VIDEO UFFICIALI 🖤💎</title>
-  <style>
-    :root{
-      --c-hash:#00eaff;
-      --c-weed:#00ffcc;
-      --c-rec-1:#ffeaa0;
-      --c-rec-2:#ffc149;
-      --c-neve-1:#9ae1ff;
-      --c-neve-2:#8b6aff;
-    }
 
-    body {
-      background: radial-gradient(circle at center, #020202 40%, #000 100%);
-      color: #fff;
-      font-family: "Poppins", sans-serif;
-      margin: 0;
-      text-align: center;
-      overflow-x: hidden;
-    }
+  <!-- Font (più “pulito-ma-maschile”) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800&display=swap" rel="stylesheet">
 
-    h1 {
-      margin-top: 70px;
-      font-size: clamp(28px, 6vw, 56px);
-      color: var(--c-hash);
-      text-shadow: 0 0 10px var(--c-hash), 0 0 30px var(--c-hash), 0 0 60px var(--c-hash);
-      letter-spacing: 3px;
-      animation: glow 2.5s infinite alternate;
-    }
-
-    @keyframes glow {
-      from { text-shadow: 0 0 8px var(--c-hash), 0 0 16px var(--c-hash); }
-      to   { text-shadow: 0 0 30px var(--c-hash), 0 0 80px var(--c-hash); }
-    }
-
-    .subtitle{
-      margin-top: 10px;
-      font-size: 14px;
-      letter-spacing: 2px;
-      color:#aaa;
-    }
-
-    .menu {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 28px;
-      margin-top: 55px;
-      padding: 0 16px 70px;
-    }
-
-    .btn {
-      display: inline-block;
-      background: transparent;
-      border-radius: 16px;
-      padding: 16px 32px;
-      font-size: 20px;
-      font-weight: 700;
-      text-decoration: none;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      transition: all .25s ease;
-    }
-    .btn:hover { transform: scale(1.07); }
-
-    .btn.hash {
-      color: var(--c-hash);
-      border: 2px solid var(--c-hash);
-      box-shadow: 0 0 15px var(--c-hash), inset 0 0 15px var(--c-hash);
-    }
-    .btn.hash:hover {
-      background: var(--c-hash);
-      color:#000;
-      box-shadow: 0 0 40px var(--c-hash), 0 0 90px var(--c-hash);
-    }
-
-    .btn.weed {
-      color: var(--c-weed);
-      border: 2px solid var(--c-weed);
-      box-shadow: 0 0 15px var(--c-weed), inset 0 0 15px var(--c-weed);
-    }
-    .btn.weed:hover {
-      background: var(--c-weed);
-      color:#000;
-      box-shadow: 0 0 40px var(--c-weed), 0 0 90px var(--c-weed);
-    }
-
-    .btn.recensioni {
-      color: var(--c-rec-2);
-      border: 2px solid var(--c-rec-2);
-      box-shadow: 0 0 18px rgba(255,193,73,.9);
-    }
-    .btn.recensioni:hover {
-      background: linear-gradient(180deg, var(--c-rec-1), var(--c-rec-2));
-      color:#000;
-      box-shadow: 0 0 40px rgba(255,193,73,.9), 0 0 90px rgba(255,193,73,.6);
-    }
-
-    .btn.neve {
-      color: var(--c-neve-1);
-      border: 2px solid var(--c-neve-2);
-      box-shadow: 0 0 18px var(--c-neve-2);
-    }
-    .btn.neve:hover {
-      background: linear-gradient(135deg, var(--c-neve-1), var(--c-neve-2));
-      color:#000;
-      box-shadow: 0 0 40px var(--c-neve-2), 0 0 90px var(--c-neve-1);
-    }
-
-    footer {
-      font-size: 13px;
-      color: #888;
-      padding-bottom: 20px;
-      letter-spacing: 1px;
-    }
-  </style>
+  <link rel="stylesheet" href="./style.css" />
 </head>
+
 <body>
+  <header class="hero">
+    <h1>🎥 BPFAM — VIDEO UFFICIALI 🖤💎</h1>
+    <div class="subtitle">🔒 SILENZIO • LAVORO • RISPETTO</div>
+  </header>
 
-  <h1>🎥 BPFAM — VIDEO UFFICIALI 🖤💎</h1>
-  <div class="subtitle">🔒 SILENZIO • LAVORO • RISPETTO</div>
-
-  <div class="menu">
+  <main class="menu">
     <a class="btn hash" href="/Video-bpfam/videos/hash/">💣 HASH — 🇺🇸 🇲🇦</a>
     <a class="btn weed" href="/Video-bpfam/videos/weed/">🌿 WEED — 🇺🇸 🇪🇸 🇳🇱 🇹🇭</a>
     <a class="btn recensioni" href="/Video-bpfam/recensioni/">🌠 RECENSIONI REALI</a>
     <a class="btn neve" href="/Video-bpfam/videos/neve-estratti/">❄️ NEVE / ESTRATTI — 🍯🇧🇴🇨🇴🇺🇸</a>
-  </div>
+  </main>
 
-  <footer>
+  <footer class="foot">
     🖤 BPFAM OFFICIAL NETWORK — WORK IN PROGRESS ⚠️
   </footer>
-
 </body>
 </html>
