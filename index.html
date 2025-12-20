@@ -9,11 +9,42 @@
 <body>
 
   <!-- BACKGROUND -->
-  <div class="bg"></div>
+  <div class="bg" aria-hidden="true"></div>
+
+  <!-- FUMO ANIMATO -->
+  <svg class="smoke" viewBox="0 0 1000 1600" preserveAspectRatio="none" aria-hidden="true">
+    <defs>
+      <filter id="smokeFilter">
+        <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="4" seed="8">
+          <animate attributeName="baseFrequency" dur="8s" values="0.010;0.015;0.010" repeatCount="indefinite" />
+        </feTurbulence>
+        <feDisplacementMap in="SourceGraphic" scale="55" />
+        <feGaussianBlur stdDeviation="12" />
+        <feColorMatrix type="matrix"
+          values="
+            1 0 0 0 0
+            0 1 0 0 0
+            0 0 1 0 0
+            0 0 0 .45 0"/>
+      </filter>
+
+      <linearGradient id="smokeGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#bfe9ff" stop-opacity="0.22"/>
+        <stop offset="60%" stop-color="#4a94b7" stop-opacity="0.14"/>
+        <stop offset="100%" stop-color="#000" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+
+    <rect width="100%" height="100%" fill="url(#smokeGrad)" filter="url(#smokeFilter)" opacity="0.9">
+      <animate attributeName="opacity" dur="6s" values="0.7;0.95;0.7" repeatCount="indefinite"/>
+    </rect>
+  </svg>
 
   <main class="container">
 
     <header class="hero">
+      <div class="logo3d" aria-hidden="true"></div>
+
       <h1>🎬 BPFAM — VIDEO UFFICIALI 🖤💎</h1>
       <p>🔒 SILENZIO • LAVORO • RISPETTO</p>
     </header>
@@ -21,19 +52,23 @@
     <section class="buttons">
 
       <a class="btn blue" href="/Video-bpfam/videos/hash/">
-        💣 HASH — 🇺🇸 🇲🇦
+        <span class="txt">💣 HASH — 🇺🇸 🇲🇦</span>
+        <span class="shine" aria-hidden="true"></span>
       </a>
 
       <a class="btn green" href="/Video-bpfam/videos/weed/">
-        🌿 WEED — 🇺🇸 🇪🇸 🇳🇱 🇹🇭
+        <span class="txt">🌿 WEED — 🇺🇸 🇪🇸 🇳🇱 🇹🇭</span>
+        <span class="shine" aria-hidden="true"></span>
       </a>
 
       <a class="btn gold" href="/Video-bpfam/recensioni/">
-        ✨ RECENSIONI REALI
+        <span class="txt">✨ RECENSIONI REALI</span>
+        <span class="shine" aria-hidden="true"></span>
       </a>
 
       <a class="btn ice" href="/Video-bpfam/videos/neve-estratti/">
-        ❄️ NEVE / ESTRATTI — 🍯 🇧🇴 🇨🇴 🇺🇸
+        <span class="txt">❄️ NEVE / ESTRATTI — 🍯 🇧🇴 🇨🇴 🇺🇸</span>
+        <span class="shine" aria-hidden="true"></span>
       </a>
 
     </section>
