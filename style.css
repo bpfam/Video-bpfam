@@ -1,167 +1,144 @@
 /* =====================================================
-   RESET BASE
+   RESET TOTALE
    ===================================================== */
-*,
-*::before,
-*::after {
+* {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 html, body {
-  margin: 0;
-  padding: 0;
-  min-height: 100%;
+  width: 100%;
+  height: 100%;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
                Roboto, Helvetica, Arial, sans-serif;
   background: #000;
-  color: #eee;
+  color: #fff;
 }
 
 /* =====================================================
-   DISATTIVA BACKGROUND VECCHIO (FUMO / SVG)
+   RIMUOVE QUALSIASI BACKGROUND VECCHIO
    ===================================================== */
 .bg,
 .smoke,
 .grain,
-.vignette {
+.vignette,
+svg {
   display: none !important;
 }
 
 /* =====================================================
-   SFONDO LOGO (POSTIMG)
+   SFONDO LOGO FULLSCREEN
    ===================================================== */
 body {
+  min-height: 100svh;
   background:
-    radial-gradient(
-      circle at 50% 35%,
-      rgba(0,0,0,0.25) 0%,
-      rgba(0,0,0,0.80) 60%,
-      rgba(0,0,0,0.95) 100%
+    linear-gradient(
+      rgba(0,0,0,0.45),
+      rgba(0,0,0,0.85)
     ),
     url("https://i.postimg.cc/MGysjYcL/IMG-0306.jpg");
-
-  background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
-  background-attachment: fixed;
+  background-repeat: no-repeat;
 }
 
 /* =====================================================
-   CONTENITORE PRINCIPALE
+   CONTENITORE CENTRATO VERO
    ===================================================== */
 .wrap {
-  position: relative;
-  z-index: 2;
-  max-width: 920px;
-  margin: 0 auto;
-  padding: 24px 16px 40px;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 24px 16px;
+  gap: 22px;
 }
 
 /* =====================================================
-   HEADER / TITOLO
+   HEADER
    ===================================================== */
 .hero {
   text-align: center;
-  margin-bottom: 28px;
 }
 
 .hero h1 {
-  margin: 0;
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   letter-spacing: 2px;
   font-weight: 700;
   text-transform: uppercase;
-  text-shadow: 0 0 14px rgba(0,0,0,0.9);
+  text-shadow: 0 0 20px rgba(0,0,0,0.9);
 }
 
 .sub {
   margin-top: 6px;
-  font-size: 0.75rem;
-  opacity: 0.75;
+  font-size: 0.7rem;
   letter-spacing: 2px;
+  opacity: 0.75;
 }
 
 /* =====================================================
    MENU BOTTONI
    ===================================================== */
 .menu {
+  width: 100%;
+  max-width: 420px;
   display: flex;
   flex-direction: column;
   gap: 14px;
-  margin-top: 24px;
 }
 
 /* =====================================================
-   BOTTONI BASE (NON TOCCA IL TUO HTML)
+   BOTTONI
    ===================================================== */
 .btn {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px 18px;
+  width: 100%;
+  padding: 16px;
   border-radius: 14px;
   text-decoration: none;
   color: #fff;
   font-weight: 600;
   letter-spacing: 1px;
-  backdrop-filter: blur(4px);
   background: rgba(0,0,0,0.55);
-  border: 1px solid rgba(255,255,255,0.08);
-  box-shadow:
-    0 0 0 rgba(0,0,0,0),
-    inset 0 0 12px rgba(255,255,255,0.02);
-  transition: all 0.25s ease;
+  border: 1px solid rgba(255,255,255,0.12);
+  backdrop-filter: blur(6px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all .25s ease;
 }
 
 .btn:hover {
-  transform: translateY(-1px);
-  box-shadow:
-    0 10px 25px rgba(0,0,0,0.55),
-    inset 0 0 18px rgba(255,255,255,0.05);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.6);
 }
 
 /* =====================================================
-   VARIANTI COLORI (SE USATE)
+   COLORI
    ===================================================== */
-.neon.blue   { border-color: rgba(0,180,255,0.35); }
-.neon.green  { border-color: rgba(0,255,140,0.35); }
-.neon.gold   { border-color: rgba(255,200,90,0.35); }
-.neon.ice    { border-color: rgba(180,240,255,0.35); }
-
-/* =====================================================
-   TESTO INTERNO BOTTONI
-   ===================================================== */
-.btn .label {
-  font-size: 0.9rem;
-}
-
-.btn .right,
-.btn .left {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
+.neon.blue  { border-color: rgba(0,180,255,.4); }
+.neon.green { border-color: rgba(0,255,150,.4); }
+.neon.gold  { border-color: rgba(255,200,90,.4); }
+.neon.ice   { border-color: rgba(180,240,255,.4); }
 
 /* =====================================================
    FOOTER
    ===================================================== */
 .foot {
-  margin-top: 40px;
+  margin-top: 18px;
+  font-size: .65rem;
+  letter-spacing: 2px;
+  opacity: .6;
   text-align: center;
-  font-size: 0.7rem;
-  opacity: 0.55;
-  letter-spacing: 1.5px;
 }
 
 /* =====================================================
-   RESPONSIVE
+   MOBILE FINE TUNING
    ===================================================== */
-@media (max-width: 600px) {
-  .hero h1 {
-    font-size: 1.1rem;
-  }
-
-  .btn {
-    padding: 14px 14px;
+@media (max-height: 700px) {
+  .wrap {
+    justify-content: flex-start;
+    padding-top: 40px;
   }
 }
