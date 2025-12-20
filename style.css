@@ -1,144 +1,99 @@
-/* =====================================================
-   RESET TOTALE
-   ===================================================== */
+/* RESET */
 * {
-  box-sizing: border-box;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
-html, body {
-  width: 100%;
-  height: 100%;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
-               Roboto, Helvetica, Arial, sans-serif;
+/* BODY */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   background: #000;
   color: #fff;
+  min-height: 100vh;
 }
 
-/* =====================================================
-   RIMUOVE QUALSIASI BACKGROUND VECCHIO
-   ===================================================== */
-.bg,
-.smoke,
-.grain,
-.vignette,
-svg {
-  display: none !important;
-}
-
-/* =====================================================
-   SFONDO LOGO FULLSCREEN
-   ===================================================== */
-body {
-  min-height: 100svh;
+/* BACKGROUND CON LOGO */
+.bg {
+  position: fixed;
+  inset: 0;
   background:
-    linear-gradient(
-      rgba(0,0,0,0.45),
-      rgba(0,0,0,0.85)
-    ),
-    url("https://i.postimg.cc/MGysjYcL/IMG-0306.jpg");
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
+    radial-gradient(circle at center, rgba(0,0,0,0.4), #000 70%),
+    url("https://i.postimg.cc/MGysjYcL/IMG-0306.jpg") center/contain no-repeat;
+  filter: blur(1px) brightness(0.6);
+  z-index: -1;
 }
 
-/* =====================================================
-   CONTENITORE CENTRATO VERO
-   ===================================================== */
-.wrap {
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 24px 16px;
-  gap: 22px;
-}
-
-/* =====================================================
-   HEADER
-   ===================================================== */
-.hero {
+/* CONTENITORE */
+.container {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 24px 16px 40px;
   text-align: center;
 }
 
+/* HEADER */
 .hero h1 {
-  font-size: 1.3rem;
-  letter-spacing: 2px;
-  font-weight: 700;
-  text-transform: uppercase;
-  text-shadow: 0 0 20px rgba(0,0,0,0.9);
+  font-size: 22px;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+  text-shadow: 0 0 12px rgba(0,200,255,0.6);
 }
 
-.sub {
-  margin-top: 6px;
-  font-size: 0.7rem;
-  letter-spacing: 2px;
-  opacity: 0.75;
+.hero p {
+  font-size: 13px;
+  opacity: 0.85;
+  margin-bottom: 28px;
 }
 
-/* =====================================================
-   MENU BOTTONI
-   ===================================================== */
-.menu {
-  width: 100%;
-  max-width: 420px;
+/* BOTTONI */
+.buttons {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 16px;
 }
 
-/* =====================================================
-   BOTTONI
-   ===================================================== */
 .btn {
-  width: 100%;
+  display: block;
   padding: 16px;
   border-radius: 14px;
+  font-size: 16px;
+  font-weight: 600;
   text-decoration: none;
   color: #fff;
-  font-weight: 600;
-  letter-spacing: 1px;
-  background: rgba(0,0,0,0.55);
-  border: 1px solid rgba(255,255,255,0.12);
   backdrop-filter: blur(6px);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  transition: all .25s ease;
+  border: 2px solid transparent;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+  transform: scale(1.03);
 }
 
-/* =====================================================
-   COLORI
-   ===================================================== */
-.neon.blue  { border-color: rgba(0,180,255,.4); }
-.neon.green { border-color: rgba(0,255,150,.4); }
-.neon.gold  { border-color: rgba(255,200,90,.4); }
-.neon.ice   { border-color: rgba(180,240,255,.4); }
-
-/* =====================================================
-   FOOTER
-   ===================================================== */
-.foot {
-  margin-top: 18px;
-  font-size: .65rem;
-  letter-spacing: 2px;
-  opacity: .6;
-  text-align: center;
+/* COLORI NEON */
+.btn.blue {
+  border-color: #00cfff;
+  box-shadow: 0 0 18px rgba(0,207,255,0.6);
 }
 
-/* =====================================================
-   MOBILE FINE TUNING
-   ===================================================== */
-@media (max-height: 700px) {
-  .wrap {
-    justify-content: flex-start;
-    padding-top: 40px;
-  }
+.btn.green {
+  border-color: #3cff3c;
+  box-shadow: 0 0 18px rgba(60,255,60,0.6);
+}
+
+.btn.gold {
+  border-color: #ffcc33;
+  box-shadow: 0 0 18px rgba(255,204,51,0.6);
+}
+
+.btn.ice {
+  border-color: #7ddfff;
+  box-shadow: 0 0 18px rgba(125,223,255,0.6);
+}
+
+/* FOOTER */
+.footer {
+  margin-top: 32px;
+  font-size: 12px;
+  opacity: 0.7;
 }
