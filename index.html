@@ -8,108 +8,40 @@
 </head>
 <body>
 
-  <!-- BACKGROUND: fumo animato + grana -->
-  <div class="bg" aria-hidden="true">
-    <svg class="smoke" viewBox="0 0 1000 1600" preserveAspectRatio="none">
-      <defs>
-        <filter id="f">
-          <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="4" seed="8">
-            <animate attributeName="baseFrequency" dur="8s" values="0.010;0.015;0.010" repeatCount="indefinite" />
-          </feTurbulence>
-          <feDisplacementMap in="SourceGraphic" scale="60" />
-          <feGaussianBlur stdDeviation="14" />
-          <feColorMatrix type="matrix"
-            values="
-              1 0 0 0 0
-              0 1 0 0 0
-              0 0 1 0 0
-              0 0 0 .55 0"/>
-        </filter>
+  <!-- BACKGROUND -->
+  <div class="bg"></div>
 
-        <radialGradient id="g" cx="50%" cy="35%" r="70%">
-          <stop offset="0%" stop-color="#0b1b24" stop-opacity="1"/>
-          <stop offset="55%" stop-color="#05090d" stop-opacity="1"/>
-          <stop offset="100%" stop-color="#000" stop-opacity="1"/>
-        </radialGradient>
-      </defs>
+  <main class="container">
 
-      <rect width="100%" height="100%" fill="url(#g)"/>
-      <g filter="url(#f)" opacity="0.95">
-        <rect x="-120" y="-180" width="1240" height="1960" fill="#9fb4c6" opacity="0.18">
-          <animate attributeName="x" dur="10s" values="-140;-80;-140" repeatCount="indefinite"/>
-        </rect>
-      </g>
-    </svg>
-    <div class="grain"></div>
-    <div class="vignette"></div>
-  </div>
-
-  <main class="wrap">
     <header class="hero">
-      <div class="title">
-        <span class="ico ico-clap" aria-hidden="true"></span>
-        <h1>BPFAM — VIDEO UFFICIALI</h1>
-        <span class="ico ico-heart" aria-hidden="true"></span>
-        <span class="ico ico-diamond" aria-hidden="true"></span>
-      </div>
-
-      <div class="sub">
-        <span class="ico ico-lock" aria-hidden="true"></span>
-        <span class="subtxt">SILENZIO • LAVORO • RISPETTO</span>
-      </div>
+      <h1>🎬 BPFAM — VIDEO UFFICIALI 🖤💎</h1>
+      <p>🔒 SILENZIO • LAVORO • RISPETTO</p>
     </header>
 
-    <section class="menu" aria-label="Menu">
-      <a class="btn neon blue" href="/Video-bpfam/videos/hash/">
-        <span class="left">
-          <span class="icon icon-bomb" aria-hidden="true"></span>
-          <span class="label">HASH —</span>
-        </span>
-        <span class="right">
-          <span class="flag flag-us" aria-hidden="true"></span>
-          <span class="flag flag-ma" aria-hidden="true"></span>
-        </span>
+    <section class="buttons">
+
+      <a class="btn blue" href="/Video-bpfam/videos/hash/">
+        💣 HASH — 🇺🇸 🇲🇦
       </a>
 
-      <a class="btn neon green" href="/Video-bpfam/videos/weed/">
-        <span class="left">
-          <span class="icon icon-weed" aria-hidden="true"></span>
-          <span class="label">WEED —</span>
-        </span>
-        <span class="right">
-          <span class="flag flag-us" aria-hidden="true"></span>
-          <span class="flag flag-es" aria-hidden="true"></span>
-          <span class="flag flag-nl" aria-hidden="true"></span>
-          <span class="flag flag-th" aria-hidden="true"></span>
-        </span>
+      <a class="btn green" href="/Video-bpfam/videos/weed/">
+        🌿 WEED — 🇺🇸 🇪🇸 🇳🇱 🇹🇭
       </a>
 
-      <a class="btn neon gold" href="/Video-bpfam/recensioni/">
-        <span class="left">
-          <span class="icon icon-spark" aria-hidden="true"></span>
-          <span class="label">RECENSIONI REALI</span>
-        </span>
+      <a class="btn gold" href="/Video-bpfam/recensioni/">
+        ✨ RECENSIONI REALI
       </a>
 
-      <a class="btn neon ice" href="/Video-bpfam/videos/neve-estratti/">
-        <span class="left">
-          <span class="icon icon-snow" aria-hidden="true"></span>
-          <span class="label">NEVE / ESTRATTI —</span>
-        </span>
-        <span class="right">
-          <span class="icon icon-honey" aria-hidden="true"></span>
-          <span class="flag flag-bo" aria-hidden="true"></span>
-          <span class="flag flag-co" aria-hidden="true"></span>
-          <span class="flag flag-us" aria-hidden="true"></span>
-        </span>
+      <a class="btn ice" href="/Video-bpfam/videos/neve-estratti/">
+        ❄️ NEVE / ESTRATTI — 🍯 🇧🇴 🇨🇴 🇺🇸
       </a>
+
     </section>
 
-    <footer class="foot">
-      <span class="ico ico-heart" aria-hidden="true"></span>
-      <span class="footxt">BPFAM OFFICIAL NETWORK — WORK IN PROGRESS</span>
-      <span class="ico ico-warn" aria-hidden="true"></span>
+    <footer class="footer">
+      🖤 BPFAM OFFICIAL NETWORK — WORK IN PROGRESS ⚠️
     </footer>
+
   </main>
 
 </body>
