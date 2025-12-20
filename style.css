@@ -1,268 +1,167 @@
-:root{
-  --bg:#000;
-  --txt:#e9f7ff;
-  --muted:#9fe8ff;
-
-  --neon-blue:#00eaff;
-  --neon-green:#1bff7a;
-  --neon-gold:#ffb300;
-  --neon-ice:#8fe7ff;
-
-  --card:#06070a;
-  --stroke:rgba(255,255,255,.08);
+/* =====================================================
+   RESET BASE
+   ===================================================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
-*{ box-sizing:border-box; }
-html,body{ height:100%; }
-body{
-  margin:0;
-  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-  color:var(--txt);
-  background:var(--bg);
-  overflow-x:hidden;
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+               Roboto, Helvetica, Arial, sans-serif;
+  background: #000;
+  color: #eee;
 }
 
-/* ---------- BG (svg fumo già in index) ---------- */
-.bg{
-  position:fixed;
-  inset:0;
-  z-index:-2;
+/* =====================================================
+   DISATTIVA BACKGROUND VECCHIO (FUMO / SVG)
+   ===================================================== */
+.bg,
+.smoke,
+.grain,
+.vignette {
+  display: none !important;
 }
-.bg .smoke{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-}
-.grain{
-  position:absolute;
-  inset:-20%;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
-  opacity:.12;
-  mix-blend-mode:overlay;
-  animation:grain 6s steps(10) infinite;
-}
-@keyframes grain{
-  0%{ transform:translate(0,0) }
-  10%{ transform:translate(-2%, -3%) }
-  20%{ transform:translate(-4%, 2%) }
-  30%{ transform:translate(3%, -4%) }
-  40%{ transform:translate(2%, 3%) }
-  50%{ transform:translate(-3%, 2%) }
-  60%{ transform:translate(-5%, -1%) }
-  70%{ transform:translate(4%, 2%) }
-  80%{ transform:translate(2%, -4%) }
-  90%{ transform:translate(-2%, 3%) }
-  100%{ transform:translate(0,0) }
-}
-.vignette{
-  position:absolute;
-  inset:0;
+
+/* =====================================================
+   SFONDO LOGO (POSTIMG)
+   ===================================================== */
+body {
   background:
-    radial-gradient(80% 70% at 50% 15%, rgba(0,0,0,.15), rgba(0,0,0,.55) 65%, rgba(0,0,0,.85) 100%);
-  pointer-events:none;
+    radial-gradient(
+      circle at 50% 35%,
+      rgba(0,0,0,0.25) 0%,
+      rgba(0,0,0,0.80) 60%,
+      rgba(0,0,0,0.95) 100%
+    ),
+    url("https://i.postimg.cc/MGysjYcL/IMG-0306.jpg");
+
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
 }
 
-/* ---------- Layout ---------- */
-.wrap{
-  max-width:820px;
-  margin:0 auto;
-  padding:22px 16px 26px;
+/* =====================================================
+   CONTENITORE PRINCIPALE
+   ===================================================== */
+.wrap {
+  position: relative;
+  z-index: 2;
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 24px 16px 40px;
 }
 
-.hero{
-  padding:18px 14px;
-  border:1px solid rgba(0,234,255,.18);
-  border-radius:18px;
-  background:linear-gradient(180deg, rgba(2,10,18,.70), rgba(2,6,12,.35));
+/* =====================================================
+   HEADER / TITOLO
+   ===================================================== */
+.hero {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: 1.4rem;
+  letter-spacing: 2px;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-shadow: 0 0 14px rgba(0,0,0,0.9);
+}
+
+.sub {
+  margin-top: 6px;
+  font-size: 0.75rem;
+  opacity: 0.75;
+  letter-spacing: 2px;
+}
+
+/* =====================================================
+   MENU BOTTONI
+   ===================================================== */
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 24px;
+}
+
+/* =====================================================
+   BOTTONI BASE (NON TOCCA IL TUO HTML)
+   ===================================================== */
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 18px;
+  border-radius: 14px;
+  text-decoration: none;
+  color: #fff;
+  font-weight: 600;
+  letter-spacing: 1px;
+  backdrop-filter: blur(4px);
+  background: rgba(0,0,0,0.55);
+  border: 1px solid rgba(255,255,255,0.08);
   box-shadow:
-    0 0 0 1px rgba(0,234,255,.08) inset,
-    0 10px 40px rgba(0,0,0,.55),
-    0 0 30px rgba(0,234,255,.12);
-  margin-bottom:16px;
+    0 0 0 rgba(0,0,0,0),
+    inset 0 0 12px rgba(255,255,255,0.02);
+  transition: all 0.25s ease;
 }
 
-.title{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:10px;
-  flex-wrap:wrap;
-  text-align:center;
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    0 10px 25px rgba(0,0,0,0.55),
+    inset 0 0 18px rgba(255,255,255,0.05);
 }
 
-h1{
-  margin:0;
-  font-size:20px;
-  letter-spacing:2px;
-  text-transform:uppercase;
-  text-shadow:0 0 18px rgba(0,234,255,.45);
+/* =====================================================
+   VARIANTI COLORI (SE USATE)
+   ===================================================== */
+.neon.blue   { border-color: rgba(0,180,255,0.35); }
+.neon.green  { border-color: rgba(0,255,140,0.35); }
+.neon.gold   { border-color: rgba(255,200,90,0.35); }
+.neon.ice    { border-color: rgba(180,240,255,0.35); }
+
+/* =====================================================
+   TESTO INTERNO BOTTONI
+   ===================================================== */
+.btn .label {
+  font-size: 0.9rem;
 }
 
-.sub{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  gap:8px;
-  margin-top:10px;
-  opacity:.9;
-}
-.subtxt{
-  font-size:12px;
-  letter-spacing:2px;
-  text-transform:uppercase;
-  color:#bfefff;
+.btn .right,
+.btn .left {
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
-/* ---------- Menu buttons ---------- */
-.menu{
-  display:grid;
-  gap:12px;
-  margin-top:14px;
+/* =====================================================
+   FOOTER
+   ===================================================== */
+.foot {
+  margin-top: 40px;
+  text-align: center;
+  font-size: 0.7rem;
+  opacity: 0.55;
+  letter-spacing: 1.5px;
 }
 
-.btn{
-  text-decoration:none;
-  color:var(--txt);
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-  padding:14px 14px;
-  border-radius:16px;
-  background:linear-gradient(180deg, rgba(10,10,10,.85), rgba(0,0,0,.75));
-  border:1px solid var(--stroke);
-  position:relative;
-  overflow:hidden;
-  transform:translateZ(0);
-}
+/* =====================================================
+   RESPONSIVE
+   ===================================================== */
+@media (max-width: 600px) {
+  .hero h1 {
+    font-size: 1.1rem;
+  }
 
-/* glow line */
-.btn::before{
-  content:"";
-  position:absolute;
-  inset:-2px;
-  border-radius:18px;
-  opacity:.55;
-  filter:blur(10px);
-  pointer-events:none;
-}
-.btn::after{
-  content:"";
-  position:absolute;
-  left:-40%;
-  top:-60%;
-  width:80%;
-  height:220%;
-  background:linear-gradient(90deg, transparent, rgba(255,255,255,.18), transparent);
-  transform:rotate(18deg);
-  opacity:.35;
-  transition:transform .55s ease, opacity .55s ease;
-}
-.btn:hover::after{ transform:translateX(120%) rotate(18deg); opacity:.55; }
-
-.left{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  min-width:0;
-}
-.label{
-  font-weight:800;
-  letter-spacing:1px;
-  text-transform:uppercase;
-  font-size:14px;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-
-.right{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  opacity:.95;
-}
-
-/* neon variants */
-.neon.blue{
-  border-color:rgba(0,234,255,.35);
-  box-shadow:0 0 18px rgba(0,234,255,.18), 0 0 0 1px rgba(0,234,255,.10) inset;
-}
-.neon.blue::before{ background:radial-gradient(circle at 30% 30%, rgba(0,234,255,.55), transparent 60%); }
-
-.neon.green{
-  border-color:rgba(27,255,122,.30);
-  box-shadow:0 0 18px rgba(27,255,122,.14), 0 0 0 1px rgba(27,255,122,.08) inset;
-}
-.neon.green::before{ background:radial-gradient(circle at 30% 30%, rgba(27,255,122,.45), transparent 60%); }
-
-.neon.gold{
-  border-color:rgba(255,179,0,.28);
-  box-shadow:0 0 18px rgba(255,179,0,.14), 0 0 0 1px rgba(255,179,0,.08) inset;
-}
-.neon.gold::before{ background:radial-gradient(circle at 30% 30%, rgba(255,179,0,.45), transparent 60%); }
-
-.neon.ice{
-  border-color:rgba(143,231,255,.30);
-  box-shadow:0 0 18px rgba(143,231,255,.14), 0 0 0 1px rgba(143,231,255,.08) inset;
-}
-.neon.ice::before{ background:radial-gradient(circle at 30% 30%, rgba(143,231,255,.45), transparent 60%); }
-
-/* ---------- Icons (emoji) ---------- */
-.ico, .icon, .flag{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  width:22px;
-  height:22px;
-  font-size:18px;
-  line-height:1;
-  filter:drop-shadow(0 0 10px rgba(255,255,255,.25));
-}
-
-.ico-clap::before{ content:"👏"; }
-.ico-heart::before{ content:"🖤"; }
-.ico-diamond::before{ content:"💎"; }
-.ico-lock::before{ content:"🔒"; }
-.ico-warn::before{ content:"⚠️"; }
-
-.icon-bomb::before{ content:"💣"; }
-.icon-weed::before{ content:"🍀"; }
-.icon-spark::before{ content:"✨"; }
-.icon-snow::before{ content:"❄️"; }
-.icon-honey::before{ content:"🍯"; }
-
-/* flags */
-.flag-us::before{ content:"🇺🇸"; }
-.flag-ma::before{ content:"🇲🇦"; }
-.flag-es::before{ content:"🇪🇸"; }
-.flag-nl::before{ content:"🇳🇱"; }
-.flag-th::before{ content:"🇹🇭"; }
-.flag-bo::before{ content:"🇧🇴"; }
-.flag-co::before{ content:"🇨🇴"; }
-
-/* ---------- Footer ---------- */
-.foot{
-  margin-top:18px;
-  padding:14px 12px;
-  text-align:center;
-  border-radius:16px;
-  border:1px solid rgba(255,255,255,.06);
-  background:linear-gradient(180deg, rgba(0,0,0,.70), rgba(6,6,6,.35));
-  opacity:.9;
-}
-.footxt{
-  display:inline-block;
-  margin:0 8px;
-  font-size:11px;
-  letter-spacing:2px;
-  text-transform:uppercase;
-  color:#bfefff;
-}
-
-/* mobile tweak */
-@media (max-width:420px){
-  h1{ font-size:18px; }
-  .label{ font-size:13px; }
+  .btn {
+    padding: 14px 14px;
+  }
 }
