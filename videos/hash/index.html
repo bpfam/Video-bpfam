@@ -3,33 +3,127 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>BPFAM — Hash Video</title>
+<title>PACKZ-ITA — Vetrina</title>
+
 <style>
-  :root { --neon:#00eaff; --gap:12px; }
-  * { box-sizing:border-box; }
-  body { margin:0; background:#000; color:#e9feff; font-family:system-ui, Arial, sans-serif; }
+  :root{
+    --bg0:#07070a;
+    --bg1:#0b0b10;
+    --text:#f2f4ff;
+    --muted:rgba(255,255,255,.72);
+
+    /* street/luxury */
+    --gold:#ffd24a;
+    --red:#ff3b3b;
+    --cyan:#2ad7ff;
+
+    --glass: rgba(8,8,12,.35);
+    --stroke: rgba(255,255,255,.14);
+    --gap:12px;
+  }
+
+  *{ box-sizing:border-box; }
+  body{
+    margin:0;
+    min-height:100vh;
+    color:var(--text);
+    font-family:system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    background:
+      radial-gradient(900px 600px at 15% 10%, rgba(42,215,255,.18), transparent 60%),
+      radial-gradient(900px 700px at 85% 18%, rgba(255,59,59,.16), transparent 62%),
+      radial-gradient(900px 700px at 50% 95%, rgba(255,210,74,.14), transparent 65%),
+      linear-gradient(180deg, #06060a, #000 65%);
+    overflow-x:hidden;
+  }
+
+  /* fumo leggero (non copre troppo) */
+  .smoke{
+    position:fixed; inset:-35%;
+    z-index:-1;
+    pointer-events:none;
+    opacity:.28;
+    mix-blend-mode: screen;
+    filter: blur(28px);
+    background:
+      radial-gradient(circle at 20% 20%, rgba(255,255,255,.18), transparent 55%),
+      radial-gradient(circle at 70% 25%, rgba(255,255,255,.10), transparent 60%),
+      radial-gradient(circle at 35% 75%, rgba(255,255,255,.10), transparent 60%),
+      radial-gradient(circle at 80% 80%, rgba(255,255,255,.12), transparent 60%);
+    animation: drift 18s ease-in-out infinite;
+  }
+  @keyframes drift{
+    0%{transform:translate3d(-1%,0,0) scale(1.02)}
+    50%{transform:translate3d(2%,-1%,0) scale(1.07)}
+    100%{transform:translate3d(-1%,0,0) scale(1.02)}
+  }
 
   header{
     position:sticky; top:0; z-index:10;
-    display:flex; align-items:center; gap:10px; justify-content:space-between;
-    padding:12px; background:radial-gradient(circle at center, #030b0c 40%, #000 100%);
-    border-bottom:1px solid rgba(0,234,255,.18);
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+    padding:12px 14px;
+    background: linear-gradient(180deg, rgba(0,0,0,.78), rgba(0,0,0,.42));
+    border-bottom:1px solid rgba(255,255,255,.10);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
   }
-  .left{ display:flex; gap:10px; align-items:center; min-width:0; }
+  .left{ display:flex; align-items:center; gap:10px; min-width:0; }
   .back{
-    text-decoration:none; padding:.5rem .9rem; border:1px solid var(--neon); border-radius:999px;
-    color:var(--neon); box-shadow:0 0 12px var(--neon); transition:all .2s ease; white-space:nowrap;
+    text-decoration:none;
+    padding:.48rem .9rem;
+    border-radius:999px;
+    border:1px solid rgba(255,210,74,.75);
+    color:rgba(255,210,74,.95);
+    box-shadow: 0 0 16px rgba(255,210,74,.22);
+    white-space:nowrap;
   }
-  .back:hover{ background:var(--neon); color:#000; }
+
+  /* titolo “graffiti/luxury” (non troppo luminoso) */
   .title{
-    margin:0; font-size:1rem; line-height:1; display:flex; align-items:center; gap:8px;
-    color:var(--neon); text-shadow:0 0 10px var(--neon), 0 0 30px var(--neon);
+    margin:0;
+    font-weight:900;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    font-size:13px;
+    color:rgba(255,255,255,.92);
     white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-    animation: glow 2s infinite alternate;
+    text-shadow:
+      0 2px 0 rgba(0,0,0,.65),
+      0 0 14px rgba(255,210,74,.10);
   }
-  @keyframes glow { from { text-shadow:0 0 10px var(--neon) } to { text-shadow:0 0 25px var(--neon) } }
+  .sub{
+    font-size:11px;
+    color:var(--muted);
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    text-shadow:0 0 12px rgba(0,0,0,.7);
+  }
 
   .wrap{ max-width:1200px; margin:0 auto; padding:16px; }
+  .toolbar{
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+    margin-bottom:12px;
+  }
+  .pill{
+    display:flex; gap:8px; flex-wrap:wrap;
+  }
+  .chip{
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(0,0,0,.28);
+    color: rgba(255,255,255,.86);
+    padding:.38rem .7rem;
+    border-radius:999px;
+    font-weight:800;
+    font-size:12px;
+    cursor:pointer;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  .chip.active{
+    border-color: rgba(255,210,74,.55);
+    box-shadow: 0 0 18px rgba(255,210,74,.12);
+    color: rgba(255,210,74,.95);
+  }
+
   .grid{ display:grid; gap:var(--gap); }
   .grid[data-cols="4"]{ grid-template-columns:repeat(4,1fr); }
   .grid[data-cols="3"]{ grid-template-columns:repeat(3,1fr); }
@@ -37,58 +131,131 @@
   .grid[data-cols="1"]{ grid-template-columns:repeat(1,1fr); }
 
   .card{
-    padding:10px; border-radius:14px; background:#020202; border:1px solid rgba(0,234,255,.2);
-    box-shadow:0 0 0 1px rgba(0,234,255,.25) inset, 0 0 22px rgba(0,234,255,.25), 0 0 44px rgba(0,234,255,.15);
-    transition:transform .15s ease, box-shadow .15s ease;
+    padding:10px;
+    border-radius:16px;
+    background: linear-gradient(180deg, rgba(10,10,14,.62), rgba(10,10,14,.38));
+    border:1px solid rgba(255,255,255,.12);
+    box-shadow:
+      0 0 0 1px rgba(255,255,255,.06) inset,
+      0 16px 40px rgba(0,0,0,.45);
+    overflow:hidden;
+    position:relative;
   }
-  .card:hover{ transform:scale(1.03); box-shadow:0 0 28px rgba(0,234,255,.45); }
-
-  video{
-    width:100%; aspect-ratio:9/16; object-fit:cover; display:block; border-radius:12px; background:#000;
+  .card::after{
+    content:"";
+    position:absolute; inset:-2px;
+    border-radius:18px;
+    pointer-events:none;
+    box-shadow:
+      0 0 0 1px rgba(255,255,255,.08),
+      0 0 22px rgba(42,215,255,.10),
+      0 0 22px rgba(255,59,59,.08),
+      0 0 22px rgba(255,210,74,.08);
   }
-  .name{ margin:.45rem 0 0; text-align:center; font-size:.7rem; color:#9af6ff; word-break:break-word; }
 
-  .empty{ color:#9af6ff; text-align:center; padding:40px 12px; }
-  footer{ text-align:center; color:#9af6ff; opacity:.8; padding:26px 12px; }
+  /* media */
+  video, img{
+    width:100%;
+    aspect-ratio:9/16;
+    object-fit:cover;
+    display:block;
+    border-radius:12px;
+    background:#000;
+  }
 
-  /* FAB 1-2-3-4 */
+  .name{
+    margin:.5rem 0 0;
+    text-align:center;
+    font-size:.72rem;
+    color: rgba(255,255,255,.82);
+    word-break:break-word;
+    opacity:.95;
+  }
+
+  .empty{
+    color:rgba(255,255,255,.8);
+    text-align:center;
+    padding:46px 12px;
+    font-size:13px;
+  }
+
+  footer{
+    text-align:center;
+    color:rgba(255,255,255,.72);
+    padding:26px 12px;
+    font-size:11px;
+    letter-spacing:.22em;
+    text-transform:uppercase;
+  }
+
+  /* FAB colonne */
   .fab{ position:fixed; right:14px; bottom:18px; z-index:20; display:flex; flex-direction:column; align-items:flex-end; gap:8px; }
   .fab-toggle{
-    width:52px; height:52px; border-radius:50%; border:1px solid var(--neon); background:#000; color:var(--neon);
-    box-shadow:0 0 12px var(--neon), inset 0 0 10px rgba(0,234,255,.2);
-    font-size:1.2rem; cursor:pointer; transition:transform .15s ease, box-shadow .2s ease;
+    width:52px; height:52px; border-radius:50%;
+    border:1px solid rgba(255,210,74,.75);
+    background: rgba(0,0,0,.5);
+    color: rgba(255,210,74,.95);
+    box-shadow:0 0 14px rgba(255,210,74,.18), inset 0 0 10px rgba(255,210,74,.08);
+    font-size:1.2rem; cursor:pointer;
   }
-  .fab-toggle:hover{ transform:scale(1.05); box-shadow:0 0 18px var(--neon); }
   .fab-menu{
     display:none; flex-direction:column; gap:6px; padding:8px;
-    background:#020202; border:1px solid rgba(0,234,255,.25); border-radius:12px;
-    box-shadow:0 0 24px rgba(0,234,255,.35);
+    background: rgba(0,0,0,.6);
+    border:1px solid rgba(255,255,255,.14);
+    border-radius:12px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow:0 0 24px rgba(0,0,0,.55);
   }
   .fab.open .fab-menu{ display:flex; }
   .fab-btn{
     min-width:44px; padding:.35rem .65rem; border-radius:999px; cursor:pointer;
-    background:transparent; color:var(--neon); border:1px solid var(--neon); font-weight:700;
-    box-shadow:0 0 8px var(--neon);
+    background:transparent; color: rgba(255,255,255,.88);
+    border:1px solid rgba(255,255,255,.16);
+    font-weight:900;
   }
-  .fab-btn.active{ background:var(--neon); color:#000; }
+  .fab-btn.active{
+    border-color: rgba(255,210,74,.75);
+    color: rgba(255,210,74,.95);
+  }
+
+  @media (max-width:420px){
+    .title{ font-size:12px; }
+    .wrap{ padding:14px; }
+  }
 </style>
 </head>
+
 <body>
+  <div class="smoke" aria-hidden="true"></div>
+
   <header>
     <div class="left">
-      <a class="back" href="/Video-bpfam/">⬅️ Torna al Menù</a>
-      <h1 class="title">🎥 BPFAM — HASH VIDEO 💎</h1>
+      <!-- cambia qui se vuoi tornare al tuo index contatti -->
+      <a class="back" href="../../index.html">⬅️ Home</a>
+      <div style="min-width:0">
+        <h1 class="title">PACKZ-ITA — VETRINA</h1>
+        <div class="sub">VIDEO + FOTO • AUTO-LIST</div>
+      </div>
     </div>
   </header>
 
   <div class="wrap">
+    <div class="toolbar">
+      <div class="pill">
+        <button class="chip active" data-filter="all">TUTTO</button>
+        <button class="chip" data-filter="video">VIDEO</button>
+        <button class="chip" data-filter="img">FOTO</button>
+      </div>
+    </div>
+
     <div id="grid" class="grid" data-cols="2"></div>
-    <div id="empty" class="empty" style="display:none">Nessun video trovato.</div>
+    <div id="empty" class="empty" style="display:none">Nessun file trovato.</div>
   </div>
 
-  <footer>💎 BPFAM — Serietà, Qualità e Rispetto</footer>
+  <footer>PACKZ-ITA • OFFICIAL</footer>
 
-  <!-- FAB: controllo vista -->
+  <!-- FAB colonne -->
   <div class="fab" id="fab">
     <div class="fab-menu" id="fabMenu" aria-label="Numero colonne">
       <button class="fab-btn" data-c="1">1</button>
@@ -101,107 +268,130 @@
 
 <script>
 (async () => {
+  // 🔧 METTI QUI IL TUO REPO PACKZ SE VUOI
   const owner = "bpfam";
-  const repo  = "Video-bpfam";
-  const path  = "videos/hash";
+  const repo  = "Video-bpfam";          // <--- se la vetrina sta in un altro repo, cambia questo
+  const path  = "videos/hash";          // <--- cartella dove metti file (come nel tuo screen)
   const api   = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
 
-  // Vista salvata (default "2")
-  const grid = document.getElementById("grid");
-  const saved = localStorage.getItem("bpfam_cols") || "2";
-  grid.setAttribute("data-cols", saved);
+  const grid  = document.getElementById("grid");
+  const empty = document.getElementById("empty");
 
+  // colonne salvate
+  const savedCols = localStorage.getItem("packz_cols") || "2";
+  grid.setAttribute("data-cols", savedCols);
+
+  // FAB
   const fab = document.getElementById("fab");
   const toggle = document.getElementById("fabToggle");
-  const menu = document.getElementById("fabMenu");
-  const btns = menu.querySelectorAll(".fab-btn");
-
-  function setActive(c){
+  const btns = document.querySelectorAll(".fab-btn");
+  function setCols(c){
     grid.setAttribute("data-cols", c);
-    localStorage.setItem("bpfam_cols", c);
+    localStorage.setItem("packz_cols", c);
     btns.forEach(b => b.classList.toggle("active", b.dataset.c === c));
   }
-  setActive(saved);
+  setCols(savedCols);
   toggle.addEventListener("click", ()=> fab.classList.toggle("open"));
   document.addEventListener("click", (e)=>{ if(!fab.contains(e.target)) fab.classList.remove("open"); });
-  btns.forEach(b=> b.addEventListener("click", ()=>{ setActive(b.dataset.c); fab.classList.remove("open"); }));
+  btns.forEach(b=> b.addEventListener("click", ()=>{ setCols(b.dataset.c); fab.classList.remove("open"); }));
 
-  // --- Riconoscimento automatico dei video ---
-  const VIDEO_RE = /\.(mp4|mov|m4v|webm|mkv|avi)$/i;
+  // filtri
+  const chips = document.querySelectorAll(".chip");
+  let filter = "all";
+  chips.forEach(ch => ch.addEventListener("click", ()=>{
+    chips.forEach(x => x.classList.remove("active"));
+    ch.classList.add("active");
+    filter = ch.dataset.filter;
+    renderFiltered();
+  }));
 
-  function guessMime(name){
-    const ext = (name.split('.').pop() || '').toLowerCase();
-    return ({
-      mp4:'video/mp4',
-      mov:'video/quicktime',
-      m4v:'video/x-m4v',
-      webm:'video/webm',
-      mkv:'video/x-matroska',
-      avi:'video/x-msvideo'
-    })[ext] || 'video/mp4';
+  // estensioni
+  const VIDEO_RE = /\.(mp4|mov|m4v|webm)$/i;
+  const IMG_RE   = /\.(jpg|jpeg|png|webp|gif)$/i;
+
+  // lista items renderizzati
+  const items = [];
+
+  function renderFiltered(){
+    // mostra/nasconde card in base al tipo
+    let shown = 0;
+    for(const it of items){
+      const ok = (filter === "all") || (filter === it.kind);
+      it.el.style.display = ok ? "" : "none";
+      if(ok) shown++;
+    }
+    empty.style.display = shown ? "none" : "block";
+    empty.textContent = shown ? "" : "Nessun file per questo filtro.";
+  }
+
+  function makeCard(name, kind, src){
+    const card = document.createElement("div");
+    card.className = "card";
+
+    let media;
+    if(kind === "video"){
+      media = document.createElement("video");
+      media.controls = true;
+      media.playsInline = true;
+      media.preload = "metadata";
+      media.src = src;
+
+      // se non parte, togli la card
+      media.addEventListener("error", ()=> card.remove());
+    } else {
+      media = document.createElement("img");
+      media.loading = "lazy";
+      media.alt = name;
+      media.src = src;
+
+      media.addEventListener("error", ()=> card.remove());
+    }
+
+    const label = document.createElement("div");
+    label.className = "name";
+    label.textContent = name;
+
+    card.appendChild(media);
+    card.appendChild(label);
+
+    return card;
   }
 
   try{
     const res = await fetch(api, { headers:{ "Accept":"application/vnd.github+json" }});
     const data = await res.json();
-    // Prendi tutti i file (escludi index.html, .gitkeep). Includi:
-    // - file con estensione video,
-    // - file senza estensione (li proveremo lo stesso).
-    const files = (Array.isArray(data)?data:[])
-      .filter(f => f.type === "file" &&
-                   !/^(index\.html|\.gitkeep)$/i.test(f.name) )
+
+    const files = (Array.isArray(data) ? data : [])
+      .filter(f => f.type === "file" && !/^(index\.html|\.gitkeep)$/i.test(f.name))
       .sort((a,b)=> a.name.localeCompare(b.name));
 
     if(!files.length){
-      document.getElementById("empty").style.display = "block";
+      empty.style.display = "block";
+      empty.textContent = "Nessun file trovato.";
       return;
     }
 
-    for (const f of files) {
-      const encoded = encodeURIComponent(f.name);
+    for(const f of files){
+      const name = f.name;
+      const encoded = encodeURIComponent(name);
       const src = `./${encoded}`;
 
-      // Se ha estensione nota, usala; se non ce l'ha, proviamo comunque.
-      const mime = guessMime(f.name);
+      let kind = null;
+      if(VIDEO_RE.test(name)) kind = "video";
+      else if(IMG_RE.test(name)) kind = "img";
+      else continue; // ignora altri file
 
-      const card = document.createElement('div');
-      card.className = 'card';
-
-      const v = document.createElement('video');
-      v.controls = true;
-      v.playsInline = true;
-      v.preload = "metadata";
-
-      // Usa <source> con type per aiutare i browser
-      const s = document.createElement('source');
-      s.src = src;
-      s.type = mime;
-      v.appendChild(s);
-
-      // Se il browser non può riprodurlo, non lo mostriamo (fallback pulito)
-      const can = v.canPlayType(mime);
-      if (VIDEO_RE.test(f.name) && can === "") {
-        // estensione nota ma non supportata: salta
-        continue;
-      }
-
-      // per file senza estensione, proviamo comunque (Safari iPhone legge mp4/mov)
-      v.addEventListener('error', () => {
-        card.remove(); // se non parte, togli la card
-      });
-
-      const name = document.createElement('div');
-      name.className = 'name';
-      name.textContent = f.name;
-
-      card.appendChild(v);
-      card.appendChild(name);
+      const card = makeCard(name, kind, src);
       grid.appendChild(card);
+      items.push({ el: card, kind });
     }
+
+    renderFiltered();
+
   }catch(e){
     console.error(e);
-    document.getElementById("empty").style.display = "block";
-    document.getElementById("empty").textContent = "Errore nel caricare i file.";
+    empty.style.display = "block";
+    empty.textContent = "Errore nel caricare i file (GitHub API).";
   }
 })();
 </script>
