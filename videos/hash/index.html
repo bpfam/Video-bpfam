@@ -1,399 +1,187 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>BPFAM — Vetrina</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BPFAM — VETRINA</title>
 
 <style>
-  :root{
-    --bg0:#07070a;
-    --bg1:#0b0b10;
-    --text:#f2f4ff;
-    --muted:rgba(255,255,255,.72);
+:root{
+  --gold:#d4af37;
+  --bg:#0b0d10;
+  --card:#141821;
+  --txt:#eaeaea;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:linear-gradient(180deg,#06080c,#0b0d10);
+  color:var(--txt);
+  font-family:system-ui,-apple-system,Segoe UI,Roboto;
+}
 
-    /* street/luxury */
-    --gold:#ffd24a;
-    --red:#ff3b3b;
-    --cyan:#2ad7ff;
+/* HEADER */
+header{
+  position:sticky; top:0; z-index:10;
+  padding:14px;
+  display:flex; align-items:center; gap:12px;
+  background:rgba(10,12,16,.9);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+.back{
+  text-decoration:none;
+  padding:.45rem .9rem;
+  border-radius:999px;
+  border:1px solid var(--gold);
+  color:var(--gold);
+  font-size:13px;
+}
+.title{
+  font-weight:900;
+  letter-spacing:.18em;
+  font-size:14px;
+}
 
-    --glass: rgba(8,8,12,.35);
-    --stroke: rgba(255,255,255,.14);
-    --gap:12px;
-  }
+/* FILTRI */
+.filters{
+  display:flex; gap:10px;
+  padding:12px;
+}
+.filters button{
+  flex:1;
+  background:#10131a;
+  border:1px solid rgba(255,255,255,.1);
+  color:#fff;
+  padding:10px;
+  border-radius:999px;
+  font-weight:700;
+}
+.filters button.active{
+  background:var(--gold);
+  color:#000;
+}
 
-  *{ box-sizing:border-box; }
-  body{
-    margin:0;
-    min-height:100vh;
-    color:var(--text);
-    font-family:system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-    background:
-      radial-gradient(900px 600px at 15% 10%, rgba(42,215,255,.18), transparent 60%),
-      radial-gradient(900px 700px at 85% 18%, rgba(255,59,59,.16), transparent 62%),
-      radial-gradient(900px 700px at 50% 95%, rgba(255,210,74,.14), transparent 65%),
-      linear-gradient(180deg, #06060a, #000 65%);
-    overflow-x:hidden;
-  }
+/* GRID */
+.wrap{ padding:14px; }
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:14px;
+}
+.card{
+  background:var(--card);
+  border-radius:18px;
+  padding:10px;
+  box-shadow:0 10px 30px rgba(0,0,0,.5);
+}
+.card video,
+.card img{
+  width:100%;
+  border-radius:14px;
+  display:block;
+  background:#000;
+}
+.name{
+  margin-top:8px;
+  font-size:12px;
+  text-align:center;
+  opacity:.85;
+}
 
-  /* fumo leggero (non copre troppo) */
-  .smoke{
-    position:fixed; inset:-35%;
-    z-index:-1;
-    pointer-events:none;
-    opacity:.28;
-    mix-blend-mode: screen;
-    filter: blur(28px);
-    background:
-      radial-gradient(circle at 20% 20%, rgba(255,255,255,.18), transparent 55%),
-      radial-gradient(circle at 70% 25%, rgba(255,255,255,.10), transparent 60%),
-      radial-gradient(circle at 35% 75%, rgba(255,255,255,.10), transparent 60%),
-      radial-gradient(circle at 80% 80%, rgba(255,255,255,.12), transparent 60%);
-    animation: drift 18s ease-in-out infinite;
-  }
-  @keyframes drift{
-    0%{transform:translate3d(-1%,0,0) scale(1.02)}
-    50%{transform:translate3d(2%,-1%,0) scale(1.07)}
-    100%{transform:translate3d(-1%,0,0) scale(1.02)}
-  }
-
-  header{
-    position:sticky; top:0; z-index:10;
-    display:flex; align-items:center; justify-content:space-between; gap:10px;
-    padding:12px 14px;
-    background: linear-gradient(180deg, rgba(0,0,0,.78), rgba(0,0,0,.42));
-    border-bottom:1px solid rgba(255,255,255,.10);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-  }
-  .left{ display:flex; align-items:center; gap:10px; min-width:0; }
-  .back{
-    text-decoration:none;
-    padding:.48rem .9rem;
-    border-radius:999px;
-    border:1px solid rgba(255,210,74,.75);
-    color:rgba(255,210,74,.95);
-    box-shadow: 0 0 16px rgba(255,210,74,.22);
-    white-space:nowrap;
-  }
-
-  /* titolo “graffiti/luxury” (non troppo luminoso) */
-  .title{
-    margin:0;
-    font-weight:900;
-    letter-spacing:.14em;
-    text-transform:uppercase;
-    font-size:13px;
-    color:rgba(255,255,255,.92);
-    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-    text-shadow:
-      0 2px 0 rgba(0,0,0,.65),
-      0 0 14px rgba(255,210,74,.10);
-  }
-  .sub{
-    font-size:11px;
-    color:var(--muted);
-    letter-spacing:.18em;
-    text-transform:uppercase;
-    text-shadow:0 0 12px rgba(0,0,0,.7);
-  }
-
-  .wrap{ max-width:1200px; margin:0 auto; padding:16px; }
-  .toolbar{
-    display:flex; align-items:center; justify-content:space-between; gap:10px;
-    margin-bottom:12px;
-  }
-  .pill{
-    display:flex; gap:8px; flex-wrap:wrap;
-  }
-  .chip{
-    border:1px solid rgba(255,255,255,.14);
-    background: rgba(0,0,0,.28);
-    color: rgba(255,255,255,.86);
-    padding:.38rem .7rem;
-    border-radius:999px;
-    font-weight:800;
-    font-size:12px;
-    cursor:pointer;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-  }
-  .chip.active{
-    border-color: rgba(255,210,74,.55);
-    box-shadow: 0 0 18px rgba(255,210,74,.12);
-    color: rgba(255,210,74,.95);
-  }
-
-  .grid{ display:grid; gap:var(--gap); }
-  .grid[data-cols="4"]{ grid-template-columns:repeat(4,1fr); }
-  .grid[data-cols="3"]{ grid-template-columns:repeat(3,1fr); }
-  .grid[data-cols="2"]{ grid-template-columns:repeat(2,1fr); }
-  .grid[data-cols="1"]{ grid-template-columns:repeat(1,1fr); }
-
-  .card{
-    padding:10px;
-    border-radius:16px;
-    background: linear-gradient(180deg, rgba(10,10,14,.62), rgba(10,10,14,.38));
-    border:1px solid rgba(255,255,255,.12);
-    box-shadow:
-      0 0 0 1px rgba(255,255,255,.06) inset,
-      0 16px 40px rgba(0,0,0,.45);
-    overflow:hidden;
-    position:relative;
-  }
-  .card::after{
-    content:"";
-    position:absolute; inset:-2px;
-    border-radius:18px;
-    pointer-events:none;
-    box-shadow:
-      0 0 0 1px rgba(255,255,255,.08),
-      0 0 22px rgba(42,215,255,.10),
-      0 0 22px rgba(255,59,59,.08),
-      0 0 22px rgba(255,210,74,.08);
-  }
-
-  /* media */
-  video, img{
-    width:100%;
-    aspect-ratio:9/16;
-    object-fit:cover;
-    display:block;
-    border-radius:12px;
-    background:#000;
-  }
-
-  .name{
-    margin:.5rem 0 0;
-    text-align:center;
-    font-size:.72rem;
-    color: rgba(255,255,255,.82);
-    word-break:break-word;
-    opacity:.95;
-  }
-
-  .empty{
-    color:rgba(255,255,255,.8);
-    text-align:center;
-    padding:46px 12px;
-    font-size:13px;
-  }
-
-  footer{
-    text-align:center;
-    color:rgba(255,255,255,.72);
-    padding:26px 12px;
-    font-size:11px;
-    letter-spacing:.22em;
-    text-transform:uppercase;
-  }
-
-  /* FAB colonne */
-  .fab{ position:fixed; right:14px; bottom:18px; z-index:20; display:flex; flex-direction:column; align-items:flex-end; gap:8px; }
-  .fab-toggle{
-    width:52px; height:52px; border-radius:50%;
-    border:1px solid rgba(255,210,74,.75);
-    background: rgba(0,0,0,.5);
-    color: rgba(255,210,74,.95);
-    box-shadow:0 0 14px rgba(255,210,74,.18), inset 0 0 10px rgba(255,210,74,.08);
-    font-size:1.2rem; cursor:pointer;
-  }
-  .fab-menu{
-    display:none; flex-direction:column; gap:6px; padding:8px;
-    background: rgba(0,0,0,.6);
-    border:1px solid rgba(255,255,255,.14);
-    border-radius:12px;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    box-shadow:0 0 24px rgba(0,0,0,.55);
-  }
-  .fab.open .fab-menu{ display:flex; }
-  .fab-btn{
-    min-width:44px; padding:.35rem .65rem; border-radius:999px; cursor:pointer;
-    background:transparent; color: rgba(255,255,255,.88);
-    border:1px solid rgba(255,255,255,.16);
-    font-weight:900;
-  }
-  .fab-btn.active{
-    border-color: rgba(255,210,74,.75);
-    color: rgba(255,210,74,.95);
-  }
-
-  @media (max-width:420px){
-    .title{ font-size:12px; }
-    .wrap{ padding:14px; }
-  }
+/* FOOTER */
+footer{
+  text-align:center;
+  padding:26px 12px;
+  font-size:11px;
+  opacity:.6;
+}
 </style>
 </head>
 
 <body>
-  <div class="smoke" aria-hidden="true"></div>
 
-  <header>
-    <div class="left">
-      <!-- cambia qui se vuoi tornare al tuo index contatti -->
-      <a class="back" href="../../index.html">⬅️ Home</a>
-      <div style="min-width:0">
-        <h1 class="title">PACKZ-ITA — VETRINA</h1>
-        <div class="sub">VIDEO + FOTO • AUTO-LIST</div>
-      </div>
-    </div>
-  </header>
+<header>
+  <a class="back" href="../../index.html">⬅ Home</a>
+  <div class="title">BPFAM — VETRINA</div>
+</header>
 
-  <div class="wrap">
-    <div class="toolbar">
-      <div class="pill">
-        <button class="chip active" data-filter="all">TUTTO</button>
-        <button class="chip" data-filter="video">VIDEO</button>
-        <button class="chip" data-filter="img">FOTO</button>
-      </div>
-    </div>
+<div class="filters">
+  <button class="active" data-filter="all">TUTTO</button>
+  <button data-filter="video">VIDEO</button>
+  <button data-filter="photo">FOTO</button>
+</div>
 
-    <div id="grid" class="grid" data-cols="2"></div>
-    <div id="empty" class="empty" style="display:none">Nessun file trovato.</div>
-  </div>
+<div class="wrap">
+  <div id="grid" class="grid"></div>
+</div>
 
-  <footer>PACKZ-ITA • OFFICIAL</footer>
-
-  <!-- FAB colonne -->
-  <div class="fab" id="fab">
-    <div class="fab-menu" id="fabMenu" aria-label="Numero colonne">
-      <button class="fab-btn" data-c="1">1</button>
-      <button class="fab-btn" data-c="2">2</button>
-      <button class="fab-btn" data-c="3">3</button>
-      <button class="fab-btn" data-c="4">4</button>
-    </div>
-    <button class="fab-toggle" id="fabToggle" aria-label="Vista">⧉</button>
-  </div>
+<footer>© BPFAM • Premium Network</footer>
 
 <script>
-(async () => {
-  // 🔧 METTI QUI IL TUO REPO PACKZ SE VUOI
-  const owner = "bpfam";
-  const repo  = "Video-bpfam";          // <--- se la vetrina sta in un altro repo, cambia questo
-  const path  = "videos/hash";          // <--- cartella dove metti file (come nel tuo screen)
-  const api   = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
+(async ()=>{
+  const owner="bpfam";
+  const repo="Video-bpfam";
+  const path="videos/hash";
+  const api=`https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
 
-  const grid  = document.getElementById("grid");
-  const empty = document.getElementById("empty");
+  const grid=document.getElementById("grid");
+  const btns=document.querySelectorAll(".filters button");
 
-  // colonne salvate
-  const savedCols = localStorage.getItem("packz_cols") || "2";
-  grid.setAttribute("data-cols", savedCols);
+  let items=[];
 
-  // FAB
-  const fab = document.getElementById("fab");
-  const toggle = document.getElementById("fabToggle");
-  const btns = document.querySelectorAll(".fab-btn");
-  function setCols(c){
-    grid.setAttribute("data-cols", c);
-    localStorage.setItem("packz_cols", c);
-    btns.forEach(b => b.classList.toggle("active", b.dataset.c === c));
-  }
-  setCols(savedCols);
-  toggle.addEventListener("click", ()=> fab.classList.toggle("open"));
-  document.addEventListener("click", (e)=>{ if(!fab.contains(e.target)) fab.classList.remove("open"); });
-  btns.forEach(b=> b.addEventListener("click", ()=>{ setCols(b.dataset.c); fab.classList.remove("open"); }));
-
-  // filtri
-  const chips = document.querySelectorAll(".chip");
-  let filter = "all";
-  chips.forEach(ch => ch.addEventListener("click", ()=>{
-    chips.forEach(x => x.classList.remove("active"));
-    ch.classList.add("active");
-    filter = ch.dataset.filter;
-    renderFiltered();
-  }));
-
-  // estensioni
-  const VIDEO_RE = /\.(mp4|mov|m4v|webm)$/i;
-  const IMG_RE   = /\.(jpg|jpeg|png|webp|gif)$/i;
-
-  // lista items renderizzati
-  const items = [];
-
-  function renderFiltered(){
-    // mostra/nasconde card in base al tipo
-    let shown = 0;
-    for(const it of items){
-      const ok = (filter === "all") || (filter === it.kind);
-      it.el.style.display = ok ? "" : "none";
-      if(ok) shown++;
-    }
-    empty.style.display = shown ? "none" : "block";
-    empty.textContent = shown ? "" : "Nessun file per questo filtro.";
+  function render(type){
+    grid.innerHTML="";
+    items.filter(i=>type==="all"||i.kind===type)
+      .forEach(i=>grid.appendChild(i.el));
   }
 
-  function makeCard(name, kind, src){
-    const card = document.createElement("div");
-    card.className = "card";
-
-    let media;
-    if(kind === "video"){
-      media = document.createElement("video");
-      media.controls = true;
-      media.playsInline = true;
-      media.preload = "metadata";
-      media.src = src;
-
-      // se non parte, togli la card
-      media.addEventListener("error", ()=> card.remove());
-    } else {
-      media = document.createElement("img");
-      media.loading = "lazy";
-      media.alt = name;
-      media.src = src;
-
-      media.addEventListener("error", ()=> card.remove());
+  btns.forEach(b=>{
+    b.onclick=()=>{
+      btns.forEach(x=>x.classList.remove("active"));
+      b.classList.add("active");
+      render(b.dataset.filter);
     }
+  });
 
-    const label = document.createElement("div");
-    label.className = "name";
-    label.textContent = name;
+  const res=await fetch(api);
+  const files=await res.json();
 
-    card.appendChild(media);
-    card.appendChild(label);
+  files.filter(f=>f.type==="file"&&!f.name.match(/index\.html|\.gitkeep/i))
+    .forEach(f=>{
+      const ext=f.name.split(".").pop().toLowerCase();
+      let kind=null, media=null;
 
-    return card;
-  }
+      if(["mp4","mov","webm","m4v"].includes(ext)){
+        kind="video";
+        media=document.createElement("video");
+        media.controls=true;
+        media.playsInline=true;
+        media.src=f.name;
+      }
+      if(["jpg","jpeg","png","webp"].includes(ext)){
+        kind="photo";
+        media=document.createElement("img");
+        media.src=f.name;
+      }
+      if(!media) return;
 
-  try{
-    const res = await fetch(api, { headers:{ "Accept":"application/vnd.github+json" }});
-    const data = await res.json();
+      const card=document.createElement("div");
+      card.className="card";
 
-    const files = (Array.isArray(data) ? data : [])
-      .filter(f => f.type === "file" && !/^(index\.html|\.gitkeep)$/i.test(f.name))
-      .sort((a,b)=> a.name.localeCompare(b.name));
+      const name=document.createElement("div");
+      name.className="name";
+      name.textContent=f.name;
 
-    if(!files.length){
-      empty.style.display = "block";
-      empty.textContent = "Nessun file trovato.";
-      return;
-    }
+      card.appendChild(media);
+      card.appendChild(name);
 
-    for(const f of files){
-      const name = f.name;
-      const encoded = encodeURIComponent(name);
-      const src = `./${encoded}`;
+      items.push({kind,el:card});
+    });
 
-      let kind = null;
-      if(VIDEO_RE.test(name)) kind = "video";
-      else if(IMG_RE.test(name)) kind = "img";
-      else continue; // ignora altri file
-
-      const card = makeCard(name, kind, src);
-      grid.appendChild(card);
-      items.push({ el: card, kind });
-    }
-
-    renderFiltered();
-
-  }catch(e){
-    console.error(e);
-    empty.style.display = "block";
-    empty.textContent = "Errore nel caricare i file (GitHub API).";
-  }
+  render("all");
 })();
 </script>
+
 </body>
 </html>
